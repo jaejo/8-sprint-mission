@@ -126,7 +126,7 @@ public class JavaApplication {
 
         System.out.println("discodeit 프로그램을 실행합니다.");
 
-        // File I/O 데이터 Init
+        //File I/O 데이터 Init
 //        UserRepository userRepository1 = new FileUserRepository();
 //        UserService userService1 = new FileUserService(userRepository1);
 //
@@ -137,6 +137,7 @@ public class JavaApplication {
 //        MessageService messageService1 = new FileMessageService(messageRepository1, userService1,  channelService1);
 //
 //        init(userService1, channelService1, messageService1);
+        //init end
 
         UserRepository userRepository = new JCFUserRepository();
         UserService userService = new JCFUserService(userRepository);
@@ -272,8 +273,6 @@ public class JavaApplication {
                     System.out.println("================ 생성 ==================");
 
                     Channel c;
-                    userService.createUser(user);
-
                     user = new User("jj", "이재준", "jj@naver.com", '남', 3);
 
                     switch(task_c) {
@@ -315,7 +314,6 @@ public class JavaApplication {
                             channelService = new FileChannelService(channelRepository, userService);
 
                             userService.createUser(user);
-                            channelService.createChannel(channel);
 
                             c = channelService.create(user.getId(), channel.getName(), user.getName(), channel.getParticipant(), channel.getParticipants());
                             channelService.saveChannel(c);
@@ -325,7 +323,7 @@ public class JavaApplication {
                                     ", 참여인원: " + channel.getParticipants());
                             System.out.println("================ 조회 ==================");
                             System.out.println("[단건 조회 - FileChannelService - createChannel 생성 후 조회]: ");
-                            System.out.println(channelService.findById(channel.getId()));
+                            System.out.println(channelService.findById(c.getId()));
 
                             System.out.println("[다건 조회 - 전체 조회]: ");
                             printList(channelService.findChannels());
@@ -334,7 +332,7 @@ public class JavaApplication {
                             System.out.println("[다건 조회 - 인기있는 TOP-N 채널 조회]: ");
                             printList(channelService.findChannelByTopNParticipant(3));
                             System.out.println("[다건 조회 - 채널에 있는 유저 오름차순 조회]: ");
-                            printList(channelService.findChannelByParticipantsASC(cid));
+                            printList(channelService.findChannelByParticipantsASC(c.getId()));
 
                             System.out.println("================ 수정 ==================");
                             System.out.println("수정된 채널 데이터 조회");
@@ -355,6 +353,8 @@ public class JavaApplication {
 
                             channelRepository = new FileChannelRepository();
                             channelService = new FileChannelService(channelRepository, userService);
+
+                            userService.createUser(user);
 
                             c = channelService.create(user.getId(), channel.getName(), user.getName(), channel.getParticipant(), channel.getParticipants());
                             channelService.saveChannel(c);
