@@ -4,6 +4,7 @@ import com.sprint.mission.discodeit.entity.UserStatusType;
 import com.sprint.mission.discodeit.entity.User;
 import com.sprint.mission.discodeit.entity.UserStatus;
 
+import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -15,7 +16,9 @@ public record UserResponse(
         char gender,
         int grade,
         Optional<UUID> profileId,
-        UserStatusType userStatusType
+        UserStatusType userStatusType,
+        Instant createdAt,
+        Instant modifiedAt
 
 ) {
     public static UserResponse from(User user, UserStatus userStatus) {
@@ -27,7 +30,9 @@ public record UserResponse(
                 user.getGender(),
                 user.getGrade(),
                 Optional.ofNullable(user.getProfileId()),
-                userStatus.getCurrentStatus()
+                userStatus.getCurrentStatus(),
+                user.getCreatedAt(),
+                user.getModifiedAt()
         );
     }
 }

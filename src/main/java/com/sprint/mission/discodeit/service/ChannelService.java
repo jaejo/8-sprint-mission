@@ -15,7 +15,6 @@ public interface ChannelService {
 
     //단건 조회
     ChannelResponse findById(UUID id);
-
     //다건 조회
     //- 전체 조회
     List<ChannelResponse> findAll(UUID uId);

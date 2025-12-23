@@ -69,7 +69,7 @@ public class BasicUserService implements UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("해당하는 유저를 찾을 수 없습니다."));
 
-        UserStatus status = userStatusRepository.findById(user.getProfileId())
+        UserStatus status = userStatusRepository.findByUserId(user.getId())
                 .orElseThrow(() -> new NoSuchElementException("해당하는 userStatus를 찾을 수 없습니다."));
 
         return UserResponse.from(user, status);
@@ -81,7 +81,7 @@ public class BasicUserService implements UserService {
 
         return users.stream()
                 .map(user -> {
-                    UserStatus status = userStatusRepository.findById(user.getId())
+                    UserStatus status = userStatusRepository.findByUserId(user.getId())
                             .orElseThrow(()-> new NoSuchElementException("해당하는 userStatus를 찾을 수 없습니다."));
                     return UserResponse.from(user, status);
                 })
@@ -123,7 +123,7 @@ public class BasicUserService implements UserService {
         user.update(request.userId(), request.name(), request.email(), request.password(), request.gender(), request.grade(), newProfileId);
 
         User savedUser = userRepository.save(user);
-        UserStatus status = userStatusRepository.findById(savedUser.getId())
+        UserStatus status = userStatusRepository.findByUserId(savedUser.getId())
                 .orElseThrow(()-> new NoSuchElementException("존재하지 않는 UserStatus입니다."));
         return UserResponse.from(savedUser, status);
     }
@@ -133,7 +133,7 @@ public class BasicUserService implements UserService {
         User user = userRepository.findById(id)
                         .orElseThrow(() -> new NoSuchElementException("삭제하려는 유저가 없습니다."));
 
-        userStatusRepository.delete(user.getId());
+        userStatusRepository.deleteByUserId(user.getId());
 
         if(user.getProfileId() != null) {
             binaryContentRepository.delete(user.getProfileId());

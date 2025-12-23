@@ -2,6 +2,7 @@ package com.sprint.mission.discodeit.DTO.response;
 
 import com.sprint.mission.discodeit.entity.BinaryContent;
 
+import java.time.Instant;
 import java.util.UUID;
 
 public record BinaryContentResponse(
@@ -9,7 +10,8 @@ public record BinaryContentResponse(
         String fileName,
         String contentType,
         long size,
-        byte[] bytes
+        byte[] bytes,
+        Instant createdAt
 
 ) {
     public static BinaryContentResponse from(BinaryContent binaryContent) {
@@ -19,7 +21,8 @@ public record BinaryContentResponse(
                 binaryContent.getFileName(),
                 binaryContent.getContentType(),
                 binaryContent.getSize(),
-                binaryContent.getBytes()
+                binaryContent.getBytes(),
+                binaryContent.getCreatedAt()
         );
     }
 }

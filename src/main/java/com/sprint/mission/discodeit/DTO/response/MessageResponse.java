@@ -2,6 +2,7 @@ package com.sprint.mission.discodeit.DTO.response;
 
 import com.sprint.mission.discodeit.entity.Message;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,7 +13,9 @@ public record MessageResponse(
         String channelName,
         String from,
         String content,
-        List<UUID> attachmentIds
+        List<UUID> attachmentIds,
+        Instant createdAt,
+        Instant modifiedAt
 
 ) {
     public static MessageResponse from(Message message) {
@@ -23,7 +26,9 @@ public record MessageResponse(
                 message.getChannelName(),
                 message.getFrom(),
                 message.getContent(),
-                message.getAttachmentIds()
+                message.getAttachmentIds(),
+                message.getCreatedAt(),
+                message.getModifiedAt()
         );
     }
 }

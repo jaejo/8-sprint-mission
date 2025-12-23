@@ -77,4 +77,5 @@ public class Channel implements Serializable {
                 ", participants=" + participants +
                 '}';
     }
+
 }

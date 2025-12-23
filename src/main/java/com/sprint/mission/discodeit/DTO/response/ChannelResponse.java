@@ -18,7 +18,9 @@ public record ChannelResponse(
         int participant,
         List<String> participants,
         Instant latestMessageAt,
-        List<UUID> participantUserIds
+        List<UUID> participantUserIds,
+        Instant createAt,
+        Instant modifiedAt
 ) {
     public static ChannelResponse ofPublic(
             UUID id,
@@ -28,9 +30,11 @@ public record ChannelResponse(
             String description,
             int participant,
             List<String> participants,
-            Instant latestMessageAt
+            Instant latestMessageAt,
+            Instant createdAt,
+            Instant modifiedAt
     ) {
-        return new ChannelResponse(id, uid, ChannelStatus.PUBLIC, Optional.of(name), host, Optional.of(description), participant, participants, latestMessageAt, List.of());
+        return new ChannelResponse(id, uid, ChannelStatus.PUBLIC, Optional.of(name), host, Optional.of(description), participant, participants, latestMessageAt, List.of(), createdAt, modifiedAt);
     }
 
     public static ChannelResponse ofPrivate(
@@ -40,9 +44,11 @@ public record ChannelResponse(
             int participant,
             List<String> participants,
             Instant latestMessageAt,
-            List<UUID> participantUserIds
+            List<UUID> participantUserIds,
+            Instant createAt,
+            Instant modifiedAt
     ) {
-        return new ChannelResponse(id, uid, ChannelStatus.PRIVATE, Optional.empty(), host, Optional.empty(), participant, participants, latestMessageAt, participantUserIds);
+        return new ChannelResponse(id, uid, ChannelStatus.PRIVATE, Optional.empty(), host, Optional.empty(), participant, participants, latestMessageAt, participantUserIds, createAt, modifiedAt);
     }
 
     public static ChannelResponse from(Channel channel, Instant latestMessageAt, List<UUID> participantUserIds) {
@@ -55,7 +61,9 @@ public record ChannelResponse(
                     channel.getDescription(),
                     channel.getParticipant(),
                     channel.getParticipants(),
-                    latestMessageAt
+                    latestMessageAt,
+                    channel.getCreatedAt(),
+                    channel.getModifiedAt()
             );
             case PRIVATE -> ofPrivate(
                     channel.getId(),
@@ -64,7 +72,9 @@ public record ChannelResponse(
                     channel.getParticipant(),
                     channel.getParticipants(),
                     latestMessageAt,
-                    participantUserIds
+                    participantUserIds,
+                    channel.getCreatedAt(),
+                    channel.getModifiedAt()
             );
         };
     }
