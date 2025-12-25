@@ -26,14 +26,14 @@ public class BasicReadStatusService implements ReadStatusService {
     private final ChannelRepository channelRepository;
 
     public ReadStatusResponse create(ReadStatusCreateRequest request) {
-        User user = userRepository.findById(request.uId())
+        User user = userRepository.findById(request.userId())
                 .orElseThrow(()-> new NoSuchElementException("해당하는 유저가 없습니다."));
-        Channel channel = channelRepository.findById(request.cId())
+        Channel channel = channelRepository.findById(request.channelId())
                 .orElseThrow(()-> new NoSuchElementException("해당하는 채널이 없습니다."));
 
         boolean alreadyExists = readStatusRepository.existsByUserIdAndChannelId(
-                request.uId(),
-                request.cId()
+                request.userId(),
+                request.channelId()
         );
 
         if (alreadyExists) {
@@ -41,8 +41,8 @@ public class BasicReadStatusService implements ReadStatusService {
         }
         Instant lastMessageReadAt = request.newLastMessageReadAt();
         ReadStatus readStatus = new ReadStatus(
-                request.uId(),
-                request.cId(),
+                request.userId(),
+                request.channelId(),
                 lastMessageReadAt
         );
 

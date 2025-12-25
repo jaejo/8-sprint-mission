@@ -27,8 +27,8 @@ public class BasicMessageService implements MessageService {
 
     @Override
     public MessageResponse create(MessageCreateRequest request, List<BinaryContentCreateRequest> binaryContentCreateRequest) {
-        UUID uId =  request.uId();
-        UUID cId = request.cId();
+        UUID uId =  request.userId();
+        UUID cId = request.channelId();
 
         if(userRepository.findById(uId).isEmpty()) {
             throw new NoSuchElementException("존재하지 않는 유저입니다.");
@@ -53,8 +53,8 @@ public class BasicMessageService implements MessageService {
                 .orElse("private-channel");
 
         Message message = new Message(
-                request.uId(),
-                request.cId(),
+                request.userId(),
+                request.channelId(),
                 channelName,
                 request.from(),
                 request.content(),
@@ -80,7 +80,7 @@ public class BasicMessageService implements MessageService {
         List<Message> messages = messageRepository.findAll();
 
         return messages.stream()
-                .filter(message-> message.getCid().equals(id))
+                .filter(message-> message.getChannelId().equals(id))
                 .map(MessageResponse::from)
                 .toList();
     }

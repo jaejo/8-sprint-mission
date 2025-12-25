@@ -67,7 +67,7 @@ public class FileUserStatusRepository implements UserStatusRepository {
                             throw new RuntimeException(e);
                         }
                     })
-                    .anyMatch(status -> status.getUId().equals(uId));
+                    .anyMatch(status -> status.getUserId().equals(uId));
         } catch (IOException e) {
             throw new RuntimeException(uId + "로 UserStatus를 조회할 수 없습니다.", e);
         }
@@ -105,7 +105,7 @@ public class FileUserStatusRepository implements UserStatusRepository {
                             throw new RuntimeException(e);
                         }
                     })
-                    .filter(userStatus -> userStatus.getUId().equals(uId))
+                    .filter(userStatus -> userStatus.getUserId().equals(uId))
                     .findFirst();
         } catch (IOException e) {
             throw new RuntimeException(uId + "로 UserStatus를 조회할 수 없습니다.", e);

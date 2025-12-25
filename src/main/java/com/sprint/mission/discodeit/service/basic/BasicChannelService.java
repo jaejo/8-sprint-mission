@@ -28,12 +28,12 @@ public class BasicChannelService implements ChannelService {
 
     @Override
     public ChannelResponse createPublic(ChannelCreateRequest request) {
-        if (userRepository.findById(request.uId()).isEmpty()) {
+        if (userRepository.findById(request.userId()).isEmpty()) {
             throw new NoSuchElementException("존재하지 않는 유저입니다.");
         }
 
         Channel channel = new Channel(
-                request.uId(),
+                request.userId(),
                 request.status(),
                 request.name(),
                 request.host(),
@@ -49,12 +49,12 @@ public class BasicChannelService implements ChannelService {
 
     @Override
     public ChannelResponse createPrivate(ChannelCreateRequest request) {
-        if (userRepository.findById(request.uId()).isEmpty()) {
+        if (userRepository.findById(request.userId()).isEmpty()) {
             throw new NoSuchElementException("존재하지 않는 유저입니다.");
         }
 
         Channel channel = new Channel(
-                request.uId(),
+                request.userId(),
                 request.status(),
                 null,
                 request.host(),
@@ -146,7 +146,7 @@ public class BasicChannelService implements ChannelService {
         if(channel.getStatus().equals(ChannelStatus.PRIVATE)) {
             throw new ChannelUpdateNotAllowedException();
         }
-        channel.update(request.name(), request.description(), request.participant(), request.participants());
+        channel.update(request.channelName(), request.description(), request.participant(), request.participants());
 
         channelRepository.save(channel);
 

@@ -9,19 +9,21 @@ import java.util.UUID;
 
 @Getter
 public class UserStatus implements Serializable {
+    private static final int SESSION_TIMEOUT_MINUTES = 5;
+
     private static final long serialVersionUID = 1L;
     private final UUID id;
-    private UUID uId;
+    private final UUID userId;
     private UserStatusType userStatusType;
     private final Instant createdAt;
     private Instant lastAccessAt;
 
-    public UserStatus(UUID uId) {
+    public UserStatus(UUID userId) {
         id = UUID.randomUUID();
         userStatusType = null;
         createdAt = Instant.now();
         lastAccessAt = createdAt;
-        this.uId = uId;
+        this.userId = userId;
     }
 
     public void update(UserStatusType userStatusType) {
@@ -29,7 +31,7 @@ public class UserStatus implements Serializable {
     }
 
     public boolean isCurrentOnline() {
-        return Duration.between(lastAccessAt, Instant.now()).toMinutes() <= 5;
+        return Duration.between(lastAccessAt, Instant.now()).toMinutes() <= SESSION_TIMEOUT_MINUTES;
     }
 
     public void updateLastAccess() {

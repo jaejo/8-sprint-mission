@@ -11,7 +11,7 @@ import java.util.UUID;
 public class Channel implements Serializable {
     private static final long serialVersionUID = 1L;
     private final UUID id;
-    private UUID uid;
+    private UUID userId;
     private final Instant createdAt;
     private Instant modifiedAt;
     private ChannelStatus status;
@@ -21,12 +21,12 @@ public class Channel implements Serializable {
     private int participant;
     private List<String> participants;
 
-    public Channel(UUID uid, ChannelStatus status, String name, String host, String description, int participant, List<String> participants) {
+    public Channel(UUID userId, ChannelStatus status, String name, String host, String description, int participant, List<String> participants) {
         id = UUID.randomUUID();
         createdAt = Instant.now();
         modifiedAt = createdAt;
 
-        this.uid = uid;
+        this.userId = userId;
         this.status = status;
         this.name = name;
         this.host = host;
@@ -66,7 +66,7 @@ public class Channel implements Serializable {
     public String toString() {
         return "Channel{" +
                 "id=" + id +
-                ", uid=" + uid +
+                ", uid=" + userId +
                 ", createdAt=" + createdAt +
                 ", modifiedAt=" + modifiedAt +
                 ", status=" + status +

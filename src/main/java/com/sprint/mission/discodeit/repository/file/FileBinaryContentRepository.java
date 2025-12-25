@@ -100,34 +100,4 @@ public class FileBinaryContentRepository implements BinaryContentRepository {
             throw new RuntimeException(e);
         }
     }
-
-//    @Override
-//    public void deleteByMessageId(UUID mId) {
-//        try {
-//            List<UUID> binaryContentIds = Files.list(directory)
-//                .map(path -> {
-//                    try (
-//                            FileInputStream fis = new FileInputStream(path.toFile());
-//                            ObjectInputStream ois = new ObjectInputStream(fis);
-//                    ) {
-//                        return (BinaryContent) ois.readObject();
-//                    } catch (IOException | ClassNotFoundException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                })
-//                .filter(binaryContent -> binaryContent.getMid().equals(mId))
-//                .map(BinaryContent::getId)
-//                .toList();
-//            for(UUID binaryContentId : binaryContentIds) {
-//                Path path = resolvePath(binaryContentId);
-//                try {
-//                    Files.delete(path);
-//                } catch (IOException e) {
-//                    throw new RuntimeException(e);
-//                }
-//            }
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
 }

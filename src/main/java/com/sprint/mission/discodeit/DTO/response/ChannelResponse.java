@@ -10,9 +10,9 @@ import java.util.UUID;
 
 public record ChannelResponse(
         UUID id,
-        UUID uid,
+        UUID userId,
         ChannelStatus status,
-        Optional<String> name,
+        Optional<String> channelName,
         String host,
         Optional<String> description,
         int participant,
@@ -24,7 +24,7 @@ public record ChannelResponse(
 ) {
     public static ChannelResponse ofPublic(
             UUID id,
-            UUID uid,
+            UUID userId,
             String name,
             String host,
             String description,
@@ -34,12 +34,12 @@ public record ChannelResponse(
             Instant createdAt,
             Instant modifiedAt
     ) {
-        return new ChannelResponse(id, uid, ChannelStatus.PUBLIC, Optional.of(name), host, Optional.of(description), participant, participants, latestMessageAt, List.of(), createdAt, modifiedAt);
+        return new ChannelResponse(id, userId, ChannelStatus.PUBLIC, Optional.of(name), host, Optional.of(description), participant, participants, latestMessageAt, List.of(), createdAt, modifiedAt);
     }
 
     public static ChannelResponse ofPrivate(
             UUID id,
-            UUID uid,
+            UUID userId,
             String host,
             int participant,
             List<String> participants,
@@ -48,14 +48,14 @@ public record ChannelResponse(
             Instant createAt,
             Instant modifiedAt
     ) {
-        return new ChannelResponse(id, uid, ChannelStatus.PRIVATE, Optional.empty(), host, Optional.empty(), participant, participants, latestMessageAt, participantUserIds, createAt, modifiedAt);
+        return new ChannelResponse(id, userId, ChannelStatus.PRIVATE, Optional.empty(), host, Optional.empty(), participant, participants, latestMessageAt, participantUserIds, createAt, modifiedAt);
     }
 
     public static ChannelResponse from(Channel channel, Instant latestMessageAt, List<UUID> participantUserIds) {
         return switch(channel.getStatus()) {
             case PUBLIC -> ofPublic(
                     channel.getId(),
-                    channel.getUid(),
+                    channel.getUserId(),
                     channel.getName(),
                     channel.getHost(),
                     channel.getDescription(),
@@ -67,7 +67,7 @@ public record ChannelResponse(
             );
             case PRIVATE -> ofPrivate(
                     channel.getId(),
-                    channel.getUid(),
+                    channel.getUserId(),
                     channel.getHost(),
                     channel.getParticipant(),
                     channel.getParticipants(),
