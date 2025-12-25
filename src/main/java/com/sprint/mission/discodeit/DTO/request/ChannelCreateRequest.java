@@ -9,10 +9,7 @@ public record ChannelCreateRequest(
         UUID userId,
         ChannelStatus status,
         String name,
-        String host,
         String description,
-        int participant,
-        List<String> participants,
         List<UUID> participantsIds
 ) {
 }

@@ -17,7 +17,7 @@ public interface ChannelService {
     ChannelResponse findById(UUID id);
     //다건 조회
     //- 전체 조회
-    List<ChannelResponse> findAll(UUID uId);
+    List<ChannelResponse> findAll(UUID userId);
     //- 채널명별 조회
     Map<String, List<Channel>> findChannelByChannelName();
     //- TOP-N 채널 조회
@@ -25,7 +25,7 @@ public interface ChannelService {
     //- 채널에 있는 유저 오름차순 조회
     List<String> findChannelByParticipantsASC(UUID id);
 
-    ChannelResponse update(ChannelUpdateRequest request);
+    ChannelResponse update(UUID id, ChannelUpdateRequest request);
 
     //- 채널 삭제
     void delete(UUID id);

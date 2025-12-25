@@ -15,8 +15,8 @@ public record ChannelResponse(
         Optional<String> channelName,
         String host,
         Optional<String> description,
-        int participant,
-        List<String> participants,
+        Optional<Integer> participant,
+        Optional<List<String>> participants,
         Instant latestMessageAt,
         List<UUID> participantUserIds,
         Instant createAt,
@@ -28,13 +28,13 @@ public record ChannelResponse(
             String name,
             String host,
             String description,
-            int participant,
+            Integer participant,
             List<String> participants,
             Instant latestMessageAt,
             Instant createdAt,
             Instant modifiedAt
     ) {
-        return new ChannelResponse(id, userId, ChannelStatus.PUBLIC, Optional.of(name), host, Optional.of(description), participant, participants, latestMessageAt, List.of(), createdAt, modifiedAt);
+        return new ChannelResponse(id, userId, ChannelStatus.PUBLIC, Optional.of(name), host, Optional.of(description), Optional.empty(), Optional.empty(), latestMessageAt, List.of(), createdAt, modifiedAt);
     }
 
     public static ChannelResponse ofPrivate(
@@ -48,7 +48,7 @@ public record ChannelResponse(
             Instant createAt,
             Instant modifiedAt
     ) {
-        return new ChannelResponse(id, userId, ChannelStatus.PRIVATE, Optional.empty(), host, Optional.empty(), participant, participants, latestMessageAt, participantUserIds, createAt, modifiedAt);
+        return new ChannelResponse(id, userId, ChannelStatus.PRIVATE, Optional.empty(), host, Optional.empty(), Optional.of(participant), Optional.of(participants), latestMessageAt, participantUserIds, createAt, modifiedAt);
     }
 
     public static ChannelResponse from(Channel channel, Instant latestMessageAt, List<UUID> participantUserIds) {
@@ -59,8 +59,8 @@ public record ChannelResponse(
                     channel.getName(),
                     channel.getHost(),
                     channel.getDescription(),
-                    channel.getParticipant(),
-                    channel.getParticipants(),
+                    null,
+                    null,
                     latestMessageAt,
                     channel.getCreatedAt(),
                     channel.getModifiedAt()
