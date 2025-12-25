@@ -59,6 +59,7 @@ public class BasicReadStatusService implements ReadStatusService {
         return readStatusRepository.findAllByUserId(uId);
     }
 
+    //수정해야 됨
     public ReadStatusResponse update(UUID id, ReadStatusUpdateRequest request) {
         ReadStatus readStatus = readStatusRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 readStatus"));

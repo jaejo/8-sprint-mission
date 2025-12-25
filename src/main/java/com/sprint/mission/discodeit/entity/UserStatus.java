@@ -20,9 +20,9 @@ public class UserStatus implements Serializable {
 
     public UserStatus(UUID userId) {
         id = UUID.randomUUID();
-        userStatusType = null;
+        userStatusType = UserStatusType.OFFLINE;
         createdAt = Instant.now();
-        lastAccessAt = createdAt;
+        lastAccessAt = null;
         this.userId = userId;
     }
 
@@ -31,7 +31,10 @@ public class UserStatus implements Serializable {
     }
 
     public boolean isCurrentOnline() {
-        return Duration.between(lastAccessAt, Instant.now()).toMinutes() <= SESSION_TIMEOUT_MINUTES;
+        return lastAccessAt != null && Duration.between(
+                lastAccessAt,
+                Instant.now()
+        ).toMinutes() <= SESSION_TIMEOUT_MINUTES;
     }
 
     public void updateLastAccess() {
@@ -41,5 +44,15 @@ public class UserStatus implements Serializable {
 
     public UserStatusType getCurrentStatus() {
         return isCurrentOnline() ? UserStatusType.ONLINE : UserStatusType.OFFLINE;
+    }
+
+    public void markOffline() {
+        this.userStatusType = UserStatusType.OFFLINE;
+        this.lastAccessAt = null;
+    }
+
+    public void markOnline() {
+        this.userStatusType = UserStatusType.ONLINE;
+        this.lastAccessAt = Instant.now();
     }
 }

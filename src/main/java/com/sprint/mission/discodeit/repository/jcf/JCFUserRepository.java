@@ -19,7 +19,7 @@ public class JCFUserRepository implements UserRepository {
         //기본적으로 @Repository scope는 Singleton
         //Tread-Safe한 ConcurrentHashMap사용
         */
-        this.data = new ConcurrentHashMap<>()
+        this.data = new ConcurrentHashMap<>();
     }
 
     @Override

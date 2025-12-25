@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -87,7 +88,12 @@ public class BasicMessageService implements MessageService {
 
     @Override
     public Map<String, List<Message>> findMessagesByFrom() {
-        return Map.of();
+        return messageRepository.findAll().stream()
+                .collect(
+                        Collectors.groupingBy(
+                                Message::getFrom,
+                                Collectors.toList()
+                ));
     }
 
     @Override

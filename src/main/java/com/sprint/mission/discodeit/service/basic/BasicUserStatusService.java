@@ -43,22 +43,21 @@ public class BasicUserStatusService implements UserStatusService {
         return userStatusRepository.findAll();
     }
 
-    public UserStatus update(UUID id, UserStatusUpdateRequest request) {
-        UserStatus userStatus = userStatusRepository.findByUserId(id)
+    public UserStatus update(UUID userId, UserStatusUpdateRequest request) {
+        UserStatus userStatus = userStatusRepository.findByUserId(userId)
                 .orElseThrow(()-> new NoSuchElementException("존재하지 않는 userStatus입니다."));
         if(request.userStatusType() != null) {
             userStatus.update(request.userStatusType());
         }
-        userStatus.updateLastAccess();
         
         return userStatusRepository.save(userStatus);
     }
 
-    public void updateByUserId(UUID uid) {
-        User user = userRepository.findById(uid)
+    public void updateByUserId(UUID userId) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(()-> new NoSuchElementException("존재하지 않는 유저입니다."));
 
-        UserStatus userStatus = userStatusRepository.findByUserId(uid)
+        UserStatus userStatus = userStatusRepository.findByUserId(userId)
                 .orElseThrow(()-> new NoSuchElementException("해당하는 유저에 대한 UserStatus가 없습니다."));
 
         userStatus.updateLastAccess();

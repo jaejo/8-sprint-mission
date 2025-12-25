@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -125,18 +126,32 @@ public class BasicChannelService implements ChannelService {
     }
 
     @Override
-    public Map<String, List<Channel>> findChannelByName() {
-        return Map.of();
+    public Map<String, List<Channel>> findChannelByChannelName() {
+        return channelRepository.findAll().stream()
+                .collect(
+                        Collectors.groupingBy(
+                                Channel::getName,
+                                Collectors.toList()
+                        )
+                );
     }
 
     @Override
     public List<Channel> findChannelByTopNParticipant(int n) {
-        return List.of();
+        return channelRepository.findAll().stream()
+                .sorted((c1, c2) -> c2.getParticipant() - c1.getParticipant())
+                .limit(n)
+                .toList();
     }
 
     @Override
     public List<String> findChannelByParticipantsASC(UUID id) {
-        return List.of();
+        return channelRepository.findAll().stream()
+                .filter(channel -> channel.getId().equals(id))
+                .map(Channel::getParticipants)
+                .flatMap(List::stream)
+                .sorted()
+                .collect(Collectors.toList());
     }
 
     @Override

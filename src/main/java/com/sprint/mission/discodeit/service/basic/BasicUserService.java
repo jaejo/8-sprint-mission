@@ -94,15 +94,22 @@ public class BasicUserService implements UserService {
     }
 
     @Override
-    public UserResponse update(UserUpdateRequest request, Optional<BinaryContentCreateRequest> optionalProfileCreateRequest) {
-        User user = userRepository.findById(request.id())
+    public UserResponse update(UUID id, UserUpdateRequest request, Optional<BinaryContentCreateRequest> optionalProfileCreateRequest) {
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("수정하려는 유저가 없습니다."));
 
-        if (userRepository.existsByName(request.name())) {
-            throw new IllegalArgumentException("이미" + request.name() + "을 가진 유저가 존재합니다.");
+        // 기존 유저의 이름과 요청한 이름이 다를 경우, 같으면 넘어감
+        if (!user.getName().equals(request.name())) {
+            if (userRepository.existsByName(request.name())) {
+                throw new IllegalArgumentException("이미 " + request.name() + "을 가진 유저가 존재합니다.");
+            }
         }
-        if (userRepository.existsByEmail(request.email())) {
-            throw new IllegalArgumentException("이미" + request.email()+ "을 가진 유저가 존재합니다.");
+
+        // 기존 유저의 이메일과 요청한 이메일 다를 경우, 같으면 넘어감
+        if (!user.getEmail().equals(request.email())) {
+            if (userRepository.existsByEmail(request.email())) {
+                throw new IllegalArgumentException("이미 " + request.email()+ "을 가진 유저가 존재합니다.");
+            }
         }
 
         UUID newProfileId = optionalProfileCreateRequest
@@ -120,7 +127,7 @@ public class BasicUserService implements UserService {
 
 
 
-        user.update(request.userId(), request.name(), request.email(), request.password(), request.gender(), request.grade(), newProfileId);
+        user.update(request.userId(), request.name(), request.password(), request.email(), request.gender(), request.grade(), newProfileId);
 
         User savedUser = userRepository.save(user);
         UserStatus status = userStatusRepository.findByUserId(savedUser.getId())

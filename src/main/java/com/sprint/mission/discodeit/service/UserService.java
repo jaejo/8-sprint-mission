@@ -23,7 +23,7 @@ public interface UserService {
     //- 학년별 조회
     Map<Integer, List<User>> findUserByGrade();
 
-    UserResponse update(UserUpdateRequest request, Optional<BinaryContentCreateRequest> requestDTO);
+    UserResponse update(UUID id, UserUpdateRequest request, Optional<BinaryContentCreateRequest> requestDTO);
 
     //유저 삭제
     void delete(UUID id);

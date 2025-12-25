@@ -26,13 +26,13 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-devtools'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework:spring-core:6.2.14'
 	implementation 'org.springframework:spring-context:6.2.14'
 	implementation 'org.springframework:spring-beans:6.2.14'
 	implementation 'org.springframework:spring-expression:6.2.14'
 	implementation 'org.springframework:spring-aop:6.2.14'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
