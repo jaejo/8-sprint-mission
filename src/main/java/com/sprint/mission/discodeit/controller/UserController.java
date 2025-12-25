@@ -42,6 +42,18 @@ public class UserController {
         return userService.update(id, userUpdateRequest, Optional.empty());
     }
 
+    @RequestMapping(value = "/update/{id}/online", method = RequestMethod.GET)
+    public ResponseEntity<UserResponse> updateOnline(@PathVariable(value = "id") UUID id) {
+        UserResponse userResponse = userService.updateOnlineStatus(id);
+        return ResponseEntity.ok(userResponse);
+    }
+
+    @RequestMapping(value = "/update/{id}/offline", method = RequestMethod.GET)
+    public ResponseEntity<UserResponse> updateOffline(@PathVariable(value = "id") UUID id) {
+        UserResponse userResponse = userService.updateOfflineStatus(id);
+        return ResponseEntity.ok(userResponse);
+    }
+
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         userService.delete(id);

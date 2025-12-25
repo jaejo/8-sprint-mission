@@ -136,6 +136,34 @@ public class BasicUserService implements UserService {
     }
 
     @Override
+    public UserResponse updateOnlineStatus(UUID userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 유저입니다."));
+
+        UserStatus status = userStatusRepository.findByUserId(userId)
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 UserStatus입니다."));
+
+        status.markOnline();
+        userStatusRepository.save(status);
+
+        return UserResponse.from(user, status);
+    }
+
+    @Override
+    public UserResponse updateOfflineStatus(UUID userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 유저입니다."));
+
+        UserStatus status = userStatusRepository.findByUserId(userId)
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 UserStatus입니다."));
+
+        status.markOffline();
+        userStatusRepository.save(status);
+
+        return UserResponse.from(user, status);
+    }
+
+    @Override
     public void delete(UUID id) {
         User user = userRepository.findById(id)
                         .orElseThrow(() -> new NoSuchElementException("삭제하려는 유저가 없습니다."));
