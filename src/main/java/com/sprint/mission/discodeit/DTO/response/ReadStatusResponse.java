@@ -10,7 +10,6 @@ public record ReadStatusResponse(
         UUID userId,
         UUID channelId,
         Instant createdAt,
-        Instant modifiedAt,
         Instant lastReadMessageAt
 ) {
     public static ReadStatusResponse from(ReadStatus readStatus) {
@@ -19,7 +18,6 @@ public record ReadStatusResponse(
                 readStatus.getUserId(),
                 readStatus.getChannelId(),
                 readStatus.getCreatedAt(),
-                readStatus.getModifiedAt(),
                 readStatus.getLastReadMessageAt()
         );
     }

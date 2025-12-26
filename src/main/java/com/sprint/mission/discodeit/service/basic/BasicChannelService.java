@@ -72,7 +72,7 @@ public class BasicChannelService implements ChannelService {
                 .map(userId -> new ReadStatus(userId, savedChannel.getId(), Instant.MIN))
                 .forEach(readStatusRepository::save);
 
-        return ChannelResponse.from(savedChannel, null, List.of());
+        return ChannelResponse.from(savedChannel, Instant.MIN, List.of());
     }
     @Override
     public ChannelResponse findById(UUID id) {

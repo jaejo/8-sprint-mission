@@ -13,7 +13,6 @@ public class ReadStatus implements Serializable {
     private final UUID userId;
     private final UUID channelId;
     private final Instant createdAt;
-    private Instant modifiedAt;
     private Instant lastReadMessageAt;
 
     public ReadStatus(UUID userId, UUID channelId, Instant lastReadMessageAt) {
@@ -25,15 +24,7 @@ public class ReadStatus implements Serializable {
     }
 
     public void update(Instant newLastReadAt) {
-        boolean anyValueUpdated = false;
-        if (newLastReadAt != null && !newLastReadAt.equals(this.lastReadMessageAt)) {
-            this.lastReadMessageAt = newLastReadAt;
-            anyValueUpdated = true;
-        }
-
-        if (anyValueUpdated) {
-            this.modifiedAt = Instant.now();
-        }
+        this.lastReadMessageAt = newLastReadAt;
     }
 
 
