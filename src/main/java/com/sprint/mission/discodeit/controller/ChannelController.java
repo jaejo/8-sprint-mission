@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-@RestController()
+@RestController
 @RequestMapping("/channel")
 public class ChannelController {
     private final ChannelService channelService;

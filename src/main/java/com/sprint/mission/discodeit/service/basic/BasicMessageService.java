@@ -5,7 +5,9 @@ import com.sprint.mission.discodeit.DTO.request.MessageCreateRequest;
 import com.sprint.mission.discodeit.DTO.response.MessageResponse;
 import com.sprint.mission.discodeit.DTO.request.MessageUpdateRequest;
 import com.sprint.mission.discodeit.entity.BinaryContent;
+import com.sprint.mission.discodeit.entity.Channel;
 import com.sprint.mission.discodeit.entity.Message;
+import com.sprint.mission.discodeit.entity.User;
 import com.sprint.mission.discodeit.repository.BinaryContentRepository;
 import com.sprint.mission.discodeit.repository.ChannelRepository;
 import com.sprint.mission.discodeit.repository.MessageRepository;
@@ -28,15 +30,13 @@ public class BasicMessageService implements MessageService {
 
     @Override
     public MessageResponse create(MessageCreateRequest request, List<BinaryContentCreateRequest> binaryContentCreateRequest) {
-        UUID uId =  request.userId();
-        UUID cId = request.channelId();
+        UUID userId =  request.userId();
+        UUID channelId = request.channelId();
 
-        if(userRepository.findById(uId).isEmpty()) {
-            throw new NoSuchElementException("존재하지 않는 유저입니다.");
-        }
-        if(channelRepository.findById(cId).isEmpty()) {
-            throw new NoSuchElementException("존재하지 않는 채널입니다.");
-        }
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("해당하는 유저를 찾을 수 없습니다."));
+        Channel channel = channelRepository.findById(channelId)
+                .orElseThrow(() -> new NoSuchElementException("해당하는 채널을 찾을 수 없습니다."));
 
         List<UUID> attachmentIds = binaryContentCreateRequest.stream()
                 .map(attachmentRequest -> {
@@ -50,14 +50,14 @@ public class BasicMessageService implements MessageService {
                 })
                 .toList();
 
-        String channelName = Optional.ofNullable(request.channelName())
-                .orElse("private-channel");
+        String channelName = Optional.ofNullable(channel.getName())
+                .orElse("PRIVATE");
 
         Message message = new Message(
                 request.userId(),
                 request.channelId(),
                 channelName,
-                request.from(),
+                user.getName(),
                 request.content(),
                 attachmentIds
         );
