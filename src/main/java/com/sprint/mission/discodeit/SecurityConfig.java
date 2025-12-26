@@ -16,6 +16,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers("/user/**", "/channel/**", "/message/**", "/readStatus/**").permitAll()
                 .requestMatchers("/login", "/logout").permitAll()
+                .requestMatchers("/upload/**").permitAll()
                 .anyRequest().authenticated()
         );
         return http.build();
