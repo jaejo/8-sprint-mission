@@ -58,7 +58,6 @@ public class UserController {
                 e.printStackTrace();
             }
         }
-
         return userService.create(userCreateRequest, binaryRequest);
     }
 

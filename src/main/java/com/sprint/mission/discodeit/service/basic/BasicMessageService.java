@@ -29,7 +29,7 @@ public class BasicMessageService implements MessageService {
 
 
     @Override
-    public MessageResponse create(MessageCreateRequest request, List<BinaryContentCreateRequest> binaryContentCreateRequest) {
+    public MessageResponse create(MessageCreateRequest request, List<BinaryContentCreateRequest> binaryRequests) {
         UUID userId =  request.userId();
         UUID channelId = request.channelId();
 
@@ -38,7 +38,9 @@ public class BasicMessageService implements MessageService {
         Channel channel = channelRepository.findById(channelId)
                 .orElseThrow(() -> new NoSuchElementException("해당하는 채널을 찾을 수 없습니다."));
 
-        List<UUID> attachmentIds = binaryContentCreateRequest.stream()
+        List<BinaryContentCreateRequest> attachments = (binaryRequests != null) ? binaryRequests : Collections.emptyList();
+
+        List<UUID> attachmentIds = attachments.stream()
                 .map(attachmentRequest -> {
                     String originalFileName = attachmentRequest.originalFileName();
                     String savedName = attachmentRequest.savedName();
@@ -98,9 +100,25 @@ public class BasicMessageService implements MessageService {
     }
 
     @Override
-    public MessageResponse update(UUID id, MessageUpdateRequest request) {
+    public MessageResponse update(UUID id, MessageUpdateRequest request, List<BinaryContentCreateRequest> binaryRequests) {
         Message message = messageRepository.findById(id)
                 .orElseThrow(() ->  new NoSuchElementException("수정하려는 메시지가 없습니다."));
+
+        List<BinaryContentCreateRequest> attachments = (binaryRequests != null) ? binaryRequests : Collections.emptyList();
+
+        List<UUID> attachmentIds = attachments.stream()
+                .map(attachmentRequest -> {
+                    String originalFileName = attachmentRequest.originalFileName();
+                    String savedName = attachmentRequest.savedName();
+                    String uploadPath = attachmentRequest.uploadPath();
+                    String description = attachmentRequest.description();
+
+                    BinaryContent binaryContent = new BinaryContent(originalFileName, savedName, uploadPath, description);
+                    BinaryContent createdBinaryContent = binaryContentRepository.save(binaryContent);
+                    return createdBinaryContent.getId();
+                })
+                .toList();
+
         message.update(request.content());
 
         return MessageResponse.from(message);
