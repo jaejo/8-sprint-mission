@@ -38,10 +38,11 @@ public class BasicUserService implements UserService {
 
         UUID profileIdNullable = requestDTO
                 .map(profileRequest -> {
-                    String fileName = profileRequest.fileName();
-                    String contentType = profileRequest.contentType();
-                    byte[] bytes = profileRequest.bytes();
-                    BinaryContent binaryContent = new BinaryContent(fileName, (long)bytes.length, contentType, bytes);
+                    String originalFileName = profileRequest.originalFileName();
+                    String savedName = profileRequest.savedName();
+                    String uploadPath = profileRequest.uploadPath();
+                    String description = profileRequest.description();
+                    BinaryContent binaryContent = new BinaryContent(originalFileName, savedName, uploadPath, description);
                     return binaryContentRepository.save(binaryContent).getId();
                 })
                 .orElse(null);
@@ -117,10 +118,12 @@ public class BasicUserService implements UserService {
                     Optional.ofNullable(user.getProfileId())
                             .ifPresent(binaryContentRepository::delete);
 
-                    String fileName = profileRequest.fileName();
-                    String contentType = profileRequest.contentType();
-                    byte[] bytes = profileRequest.bytes();
-                    BinaryContent binaryContent = new BinaryContent(fileName, (long)bytes.length, contentType, bytes);
+                    String originalFileName = profileRequest.originalFileName();
+                    String savedName = profileRequest.savedName();
+                    String uploadPath = profileRequest.uploadPath();
+                    String description = profileRequest.description();
+
+                    BinaryContent binaryContent = new BinaryContent(originalFileName, savedName, uploadPath, description);
                     return binaryContentRepository.save(binaryContent).getId();
                 })
                 .orElse(null);

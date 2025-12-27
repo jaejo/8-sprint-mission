@@ -40,11 +40,12 @@ public class BasicMessageService implements MessageService {
 
         List<UUID> attachmentIds = binaryContentCreateRequest.stream()
                 .map(attachmentRequest -> {
-                    String fileName = attachmentRequest.fileName();
-                    String contentType = attachmentRequest.contentType();
-                    byte[] bytes = attachmentRequest.bytes();
+                    String originalFileName = attachmentRequest.originalFileName();
+                    String savedName = attachmentRequest.savedName();
+                    String uploadPath = attachmentRequest.uploadPath();
+                    String description = attachmentRequest.description();
 
-                    BinaryContent binaryContent = new BinaryContent(fileName, (long) bytes.length, contentType, bytes);
+                    BinaryContent binaryContent = new BinaryContent(originalFileName, savedName, uploadPath, description);
                     BinaryContent createdBinaryContent = binaryContentRepository.save(binaryContent);
                     return createdBinaryContent.getId();
                 })

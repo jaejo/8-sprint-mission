@@ -22,7 +22,7 @@ public class FileBinaryContentRepository implements BinaryContentRepository {
     public FileBinaryContentRepository(
             @Value("${discodeit.repository.file-directory:data}") String fileDirectory
     ) {
-        this.directory = Paths.get(System.getProperty("user.dir"), fileDirectory, BinaryContentRepository.class.getSimpleName());
+        this.directory = Paths.get(System.getProperty("user.dir"), fileDirectory, BinaryContent.class.getSimpleName());
 
         if (!Files.exists(directory)) {
             try {

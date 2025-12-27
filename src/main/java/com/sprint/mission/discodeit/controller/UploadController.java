@@ -1,11 +1,10 @@
 package com.sprint.mission.discodeit.controller;
 
-import com.sprint.mission.discodeit.DTO.response.FileDTO;
+import com.sprint.mission.discodeit.DTO.response.BinaryContentResponse;
 import com.sprint.mission.discodeit.FileUploadUtils;
 import com.sprint.mission.discodeit.service.BinaryContentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -59,7 +59,7 @@ public class UploadController {
     @RequestMapping(value = "/multi-file", method = RequestMethod.GET)
     public ResponseEntity<String> multifleUpload(@RequestParam List<MultipartFile> multiFiles,
                                                  @RequestParam(value = "multiFileDescription") String multiFileDescription) {
-        List<FileDTO> files = new ArrayList<>();
+        List<BinaryContentResponse> files = new ArrayList<>();
         List<String> savedFileNames = new ArrayList<>();
 
         String uploadPath = fileUploadUtils.getUploadPath("images");
@@ -70,14 +70,14 @@ public class UploadController {
                 String ext = originalFileName.substring(originalFileName.lastIndexOf("."));
                 String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
                 file.transferTo(new File(uploadPath, savedName));
-                files.add(new FileDTO(originalFileName, savedName, uploadPath, multiFileDescription));
+                files.add(new BinaryContentResponse(originalFileName, savedName, uploadPath, multiFileDescription, Instant.now()));
                 savedFileNames.add(savedName);
             }
 
             return ResponseEntity.ok("파일 업로드 성공. 저장된 이름: " + savedFileNames);
         } catch (IOException e) {
-            for (FileDTO fileDTO : files) {
-                File deleteFile = new File(fileDTO.getFilePath(), fileDTO.getSavedName());
+            for (BinaryContentResponse response : files) {
+                File deleteFile = new File(response.uploadPath(), response.savedName());
                 if (deleteFile.exists()) {
                     deleteFile.delete();
                 }
