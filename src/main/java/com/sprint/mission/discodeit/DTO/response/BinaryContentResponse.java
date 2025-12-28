@@ -9,6 +9,8 @@ public record BinaryContentResponse(
         String originalFileName,
         String savedName,
         String uploadPath,
+        String contentType,
+        byte[] bytes,
         String description,
         Instant createdAt
 ) {
@@ -18,6 +20,8 @@ public record BinaryContentResponse(
                 binaryContent.getOriginalFileName(),
                 binaryContent.getSavedName(),
                 binaryContent.getUploadPath(),
+                binaryContent.getContentType(),
+                binaryContent.getBytes(),
                 binaryContent.getDescription(),
                 binaryContent.getCreatedAt()
         );

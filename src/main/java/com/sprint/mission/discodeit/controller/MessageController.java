@@ -37,6 +37,8 @@ public class MessageController {
             try {
                 for(MultipartFile file : files) {
                     String originalFileName = file.getOriginalFilename();
+                    String contentType = file.getContentType();
+                    byte[] bytes = file.getBytes();
                     String ext = (originalFileName != null && originalFileName.contains("."))
                             ? originalFileName.substring(originalFileName.lastIndexOf("."))
                             : "";
@@ -51,6 +53,8 @@ public class MessageController {
                             originalFileName,
                             savedName,
                             uploadPath,
+                            contentType,
+                            bytes,
                             null
                     ));
                 }

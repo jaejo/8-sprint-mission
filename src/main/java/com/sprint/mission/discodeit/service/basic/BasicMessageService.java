@@ -45,9 +45,11 @@ public class BasicMessageService implements MessageService {
                     String originalFileName = attachmentRequest.originalFileName();
                     String savedName = attachmentRequest.savedName();
                     String uploadPath = attachmentRequest.uploadPath();
+                    String contentType = attachmentRequest.contentType();
+                    byte[] bytes = attachmentRequest.bytes();
                     String description = attachmentRequest.description();
 
-                    BinaryContent binaryContent = new BinaryContent(originalFileName, savedName, uploadPath, description);
+                    BinaryContent binaryContent = new BinaryContent(originalFileName, savedName, uploadPath, contentType, bytes, description);
                     BinaryContent createdBinaryContent = binaryContentRepository.save(binaryContent);
                     return createdBinaryContent.getId();
                 })
@@ -111,9 +113,11 @@ public class BasicMessageService implements MessageService {
                     String originalFileName = attachmentRequest.originalFileName();
                     String savedName = attachmentRequest.savedName();
                     String uploadPath = attachmentRequest.uploadPath();
+                    String contentType = attachmentRequest.contentType();
+                    byte[] bytes = attachmentRequest.bytes();
                     String description = attachmentRequest.description();
 
-                    BinaryContent binaryContent = new BinaryContent(originalFileName, savedName, uploadPath, description);
+                    BinaryContent binaryContent = new BinaryContent(originalFileName, savedName, uploadPath, contentType, bytes, description);
                     BinaryContent createdBinaryContent = binaryContentRepository.save(binaryContent);
                     return createdBinaryContent.getId();
                 })

@@ -4,6 +4,8 @@ public record BinaryContentCreateRequest(
         String originalFileName,
         String savedName,
         String uploadPath,
+        String contentType,
+        byte[] bytes,
         String description
 ) {
 }

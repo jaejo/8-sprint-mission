@@ -1,5 +1,6 @@
 package com.sprint.mission.discodeit;
 
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,6 +18,8 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                .requestMatchers("/", "/user-list.html").permitAll()
                 .requestMatchers("/api/user/**", "/api/channel/**", "/api/message/**", "/api/readStatus/**").permitAll()
                 .requestMatchers("/api/login", "/api/logout").permitAll()
                 .requestMatchers("/api/upload/**").permitAll()

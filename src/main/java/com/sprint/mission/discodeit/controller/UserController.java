@@ -36,6 +36,8 @@ public class UserController {
             try {
                 String uploadPath = fileUploadUtils.getUploadPath("images");
                 String originalFileName = file.getOriginalFilename();
+                String contentType = file.getContentType();
+                byte[] bytes = file.getBytes();
                 String ext = "";
                 if (originalFileName != null && originalFileName.contains(".")) {
                     //확장자 추출
@@ -50,7 +52,7 @@ public class UserController {
                 //저장
                 file.transferTo(targetFile);
 
-                BinaryContentCreateRequest profile = new BinaryContentCreateRequest(originalFileName, savedName, uploadPath, null);
+                BinaryContentCreateRequest profile = new BinaryContentCreateRequest(originalFileName, savedName, uploadPath, contentType, bytes, null);
                 binaryRequest = Optional.of(profile);
 
                 System.out.println("파일 업로드 성공. 저장된 이름: " + savedName);
@@ -82,6 +84,8 @@ public class UserController {
             try {
                 String uploadPath = fileUploadUtils.getUploadPath("images");
                 String originalFileName = file.getOriginalFilename();
+                String contentType = file.getContentType();
+                byte[] bytes = file.getBytes();
                 String ext = "";
                 if (originalFileName != null && originalFileName.contains(".")) {
                     //확장자 추출
@@ -96,7 +100,7 @@ public class UserController {
                 //저장
                 file.transferTo(targetFile);
 
-                BinaryContentCreateRequest profile = new BinaryContentCreateRequest(originalFileName, savedName, uploadPath, null);
+                BinaryContentCreateRequest profile = new BinaryContentCreateRequest(originalFileName, savedName, uploadPath, contentType, bytes, null);
                 binaryRequest = Optional.of(profile);
 
                 System.out.println("파일 업로드 성공. 저장된 이름: " + savedName);

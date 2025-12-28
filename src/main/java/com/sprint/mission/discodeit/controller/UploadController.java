@@ -2,6 +2,7 @@ package com.sprint.mission.discodeit.controller;
 
 import com.sprint.mission.discodeit.DTO.response.BinaryContentResponse;
 import com.sprint.mission.discodeit.FileUploadUtils;
+import com.sprint.mission.discodeit.entity.BinaryContent;
 import com.sprint.mission.discodeit.service.BinaryContentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,8 @@ public class UploadController {
         try {
             String uploadPath = fileUploadUtils.getUploadPath("images");
             String originalFileName = singleFile.getOriginalFilename();
+            String contentType = singleFile.getContentType();
+            byte[] bytes = singleFile.getBytes();
             String ext = "";
             if (originalFileName != null && originalFileName.contains(".")) {
                 //확장자 추출
@@ -67,10 +70,12 @@ public class UploadController {
         try {
             for(MultipartFile file : multiFiles) {
                 String originalFileName = file.getOriginalFilename();
+                String contentType = file.getContentType();
+                byte[] bytes = file.getBytes();
                 String ext = originalFileName.substring(originalFileName.lastIndexOf("."));
                 String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
                 file.transferTo(new File(uploadPath, savedName));
-                files.add(new BinaryContentResponse(originalFileName, savedName, uploadPath, multiFileDescription, Instant.now()));
+                files.add(new BinaryContentResponse(originalFileName, savedName, uploadPath, contentType, bytes, multiFileDescription, Instant.now()));
                 savedFileNames.add(savedName);
             }
 
@@ -86,5 +91,10 @@ public class UploadController {
                     .body("파일 업로드 실패: " + e.getMessage());
         }
 
+    }
+    @RequestMapping(value = "find", method = RequestMethod.GET)
+    public ResponseEntity<BinaryContentResponse> find(@RequestParam(value = "id") UUID binaryContentId) {
+        BinaryContentResponse binaryContent = binaryContentService.find(binaryContentId);
+        return ResponseEntity.ok(binaryContent);
     }
 }

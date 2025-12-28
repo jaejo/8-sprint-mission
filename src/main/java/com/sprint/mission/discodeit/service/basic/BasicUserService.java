@@ -41,8 +41,10 @@ public class BasicUserService implements UserService {
                     String originalFileName = profileRequest.originalFileName();
                     String savedName = profileRequest.savedName();
                     String uploadPath = profileRequest.uploadPath();
+                    String contentType = profileRequest.contentType();
+                    byte[] bytes = profileRequest.bytes();
                     String description = profileRequest.description();
-                    BinaryContent binaryContent = new BinaryContent(originalFileName, savedName, uploadPath, description);
+                    BinaryContent binaryContent = new BinaryContent(originalFileName, savedName, uploadPath, contentType, bytes, description);
                     return binaryContentRepository.save(binaryContent).getId();
                 })
                 .orElse(null);
@@ -121,9 +123,11 @@ public class BasicUserService implements UserService {
                     String originalFileName = profileRequest.originalFileName();
                     String savedName = profileRequest.savedName();
                     String uploadPath = profileRequest.uploadPath();
+                    String contentType = profileRequest.contentType();
+                    byte[] bytes = profileRequest.bytes();
                     String description = profileRequest.description();
 
-                    BinaryContent binaryContent = new BinaryContent(originalFileName, savedName, uploadPath, description);
+                    BinaryContent binaryContent = new BinaryContent(originalFileName, savedName, uploadPath, contentType, bytes, description);
                     return binaryContentRepository.save(binaryContent).getId();
                 })
                 .orElse(null);

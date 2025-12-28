@@ -23,6 +23,8 @@ public class BasicBinaryContentService implements BinaryContentService {
                 request.originalFileName(),
                 request.savedName(),
                 request.uploadPath(),
+                request.contentType(),
+                request.bytes(),
                 request.description()
         );
 
