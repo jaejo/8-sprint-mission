@@ -18,8 +18,8 @@ public class ReadStatusController {
     private final ReadStatusService readStatusService;
 
     @RequestMapping(value ="/create", method = RequestMethod.GET)
-    public ReadStatusResponse create(@RequestBody ReadStatusCreateRequest readStatusCreateRequest) {
-        return readStatusService.create(readStatusCreateRequest);
+    public ResponseEntity<ReadStatusResponse> create(@RequestBody ReadStatusCreateRequest readStatusCreateRequest) {
+        return ResponseEntity.ok(readStatusService.create(readStatusCreateRequest));
     }
 
     @RequestMapping(value = "/find/{userId}", method = RequestMethod.GET)

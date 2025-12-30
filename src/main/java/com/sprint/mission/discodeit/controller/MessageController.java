@@ -5,6 +5,7 @@ import com.sprint.mission.discodeit.DTO.request.MessageCreateRequest;
 import com.sprint.mission.discodeit.DTO.request.MessageUpdateRequest;
 import com.sprint.mission.discodeit.DTO.response.BinaryContentResponse;
 import com.sprint.mission.discodeit.DTO.response.MessageResponse;
+import com.sprint.mission.discodeit.Exception.FileUploadException;
 import com.sprint.mission.discodeit.FileUploadUtils;
 import com.sprint.mission.discodeit.service.MessageService;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +36,7 @@ public class MessageController {
 
         if (files != null && !files.isEmpty()) {
             try {
-                for(MultipartFile file : files) {
+                for (MultipartFile file : files) {
                     String originalFileName = file.getOriginalFilename();
                     String contentType = file.getContentType();
                     byte[] bytes = file.getBytes();
@@ -59,24 +60,18 @@ public class MessageController {
                     ));
                 }
             } catch (IOException e) {
-                //저장 로직 도중 실패했을 경우 저장된 파일 삭제
-                for (File file : uploadedFiles) {
-                    if (file.exists()) {
-                        file.delete();
-                    }
-                }
-                throw new RuntimeException("파일 업로드 중 오류가 발생하였습니다.", e);
+                throw new FileUploadException("파일 업로드 중 오류가 발생하였습니다.", e, uploadedFiles);
             }
         }
         return binaryRequests;
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
-    public MessageResponse create(@RequestPart(value = "request") MessageCreateRequest messageCreateRequest,
+    public ResponseEntity<MessageResponse> create(@RequestPart(value = "request") MessageCreateRequest messageCreateRequest,
                                   @RequestPart(value = "files", required = false) List<MultipartFile> files) {
         String uploadPath = fileUploadUtils.getUploadPath("images");
         List<BinaryContentCreateRequest> binaryRequests = files != null && !files.isEmpty() ? saveFiles(files, uploadPath) : List.of();
-        return messageService.create(messageCreateRequest, binaryRequests);
+        return ResponseEntity.ok(messageService.create(messageCreateRequest, binaryRequests));
     }
 
     @RequestMapping(value = "/find", method = RequestMethod.GET)

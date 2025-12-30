@@ -28,44 +28,38 @@ public class UserController {
     private final FileUploadUtils fileUploadUtils;
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
-    public UserResponse create(@RequestPart(value = "request") UserCreateRequest userCreateRequest,
-                               @RequestPart(value = "file", required = false) MultipartFile file) {
+    public ResponseEntity<UserResponse> create(@RequestPart(value = "request") UserCreateRequest userCreateRequest,
+                               @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
         Optional<BinaryContentCreateRequest> binaryRequest = Optional.empty();
 
         if (file != null && !file.isEmpty()) {
-            try {
-                String uploadPath = fileUploadUtils.getUploadPath("images");
-                String originalFileName = file.getOriginalFilename();
-                String contentType = file.getContentType();
-                byte[] bytes = file.getBytes();
-                String ext = "";
-                if (originalFileName != null && originalFileName.contains(".")) {
-                    //확장자 추출
-                    ext = originalFileName.substring(originalFileName.lastIndexOf("."));
-                }
-                //Random으로 UUID 생성 후 -가 존재하는 경우 삭제 후 확장자와 결합
-                String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
-
-                //saveName 이름과 uploadPath 경로를 가진 File객체 생성
-                File targetFile = new File(uploadPath, savedName);
-
-                //저장
-                file.transferTo(targetFile);
-
-                BinaryContentCreateRequest profile = new BinaryContentCreateRequest(originalFileName, savedName, uploadPath, contentType, bytes, null);
-                binaryRequest = Optional.of(profile);
-
-                System.out.println("파일 업로드 성공. 저장된 이름: " + savedName);
-            } catch (IOException e) {
-                e.printStackTrace();
+            String uploadPath = fileUploadUtils.getUploadPath("images");
+            String originalFileName = file.getOriginalFilename();
+            String contentType = file.getContentType();
+            byte[] bytes = file.getBytes();
+            String ext = "";
+            if (originalFileName != null && originalFileName.contains(".")) {
+                //확장자 추출
+                ext = originalFileName.substring(originalFileName.lastIndexOf("."));
             }
+            //Random으로 UUID 생성 후 -가 존재하는 경우 삭제 후 확장자와 결합
+            String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
+
+            //saveName 이름과 uploadPath 경로를 가진 File객체 생성
+            File targetFile = new File(uploadPath, savedName);
+
+            //저장
+            file.transferTo(targetFile);
+
+            BinaryContentCreateRequest profile = new BinaryContentCreateRequest(originalFileName, savedName, uploadPath, contentType, bytes, null);
+            binaryRequest = Optional.of(profile);
         }
-        return userService.create(userCreateRequest, binaryRequest);
+        return ResponseEntity.ok(userService.create(userCreateRequest, binaryRequest));
     }
 
     @RequestMapping(value = "/find", method = RequestMethod.GET)
-    public UserResponse findById(@RequestParam(value = "id") UUID id) {
-        return userService.findById(id);
+    public ResponseEntity<UserResponse> findById(@RequestParam(value = "id") UUID id) {
+        return ResponseEntity.ok(userService.findById(id));
     }
 
     @RequestMapping(value = "/findAll", method = RequestMethod.GET)
@@ -75,41 +69,35 @@ public class UserController {
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.GET)
-    public UserResponse update(@RequestParam(value = "id") UUID id,
+    public ResponseEntity<UserResponse> update(@RequestParam(value = "id") UUID id,
                                @RequestPart(value = "request") UserUpdateRequest userUpdateRequest,
-                               @RequestPart(value = "file", required = false) MultipartFile file) {
+                               @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
         Optional<BinaryContentCreateRequest> binaryRequest = Optional.empty();
 
         if (file != null && !file.isEmpty()) {
-            try {
-                String uploadPath = fileUploadUtils.getUploadPath("images");
-                String originalFileName = file.getOriginalFilename();
-                String contentType = file.getContentType();
-                byte[] bytes = file.getBytes();
-                String ext = "";
-                if (originalFileName != null && originalFileName.contains(".")) {
-                    //확장자 추출
-                    ext = originalFileName.substring(originalFileName.lastIndexOf("."));
-                }
-                //Random으로 UUID 생성 후 -가 존재하는 경우 삭제 후 확장자와 결합
-                String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
-
-                //saveName 이름과 uploadPath 경로를 가진 File객체 생성
-                File targetFile = new File(uploadPath, savedName);
-
-                //저장
-                file.transferTo(targetFile);
-
-                BinaryContentCreateRequest profile = new BinaryContentCreateRequest(originalFileName, savedName, uploadPath, contentType, bytes, null);
-                binaryRequest = Optional.of(profile);
-
-                System.out.println("파일 업로드 성공. 저장된 이름: " + savedName);
-            } catch (IOException e) {
-                e.printStackTrace();
+            String uploadPath = fileUploadUtils.getUploadPath("images");
+            String originalFileName = file.getOriginalFilename();
+            String contentType = file.getContentType();
+            byte[] bytes = file.getBytes();
+            String ext = "";
+            if (originalFileName != null && originalFileName.contains(".")) {
+                //확장자 추출
+                ext = originalFileName.substring(originalFileName.lastIndexOf("."));
             }
+            //Random으로 UUID 생성 후 -가 존재하는 경우 삭제 후 확장자와 결합
+            String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
+
+            //saveName 이름과 uploadPath 경로를 가진 File객체 생성
+            File targetFile = new File(uploadPath, savedName);
+
+            //저장
+            file.transferTo(targetFile);
+
+            BinaryContentCreateRequest profile = new BinaryContentCreateRequest(originalFileName, savedName, uploadPath, contentType, bytes, null);
+            binaryRequest = Optional.of(profile);
         }
 
-        return userService.update(id, userUpdateRequest, binaryRequest);
+        return ResponseEntity.ok(userService.update(id, userUpdateRequest, binaryRequest));
     }
 
     @RequestMapping(value = "/update/{id}/online", method = RequestMethod.GET)

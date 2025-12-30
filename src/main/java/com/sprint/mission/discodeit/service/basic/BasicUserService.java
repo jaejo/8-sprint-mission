@@ -132,9 +132,9 @@ public class BasicUserService implements UserService {
                 })
                 .orElse(null);
 
+        String encodedPassword = passwordEncoder.encode(request.password());
 
-
-        user.update(request.userId(), request.name(), request.password(), request.email(), request.gender(), request.grade(), newProfileId);
+        user.update(request.userId(), request.name(), encodedPassword, request.email(), request.gender(), request.grade(), newProfileId);
 
         User savedUser = userRepository.save(user);
         UserStatus status = userStatusRepository.findByUserId(savedUser.getId())

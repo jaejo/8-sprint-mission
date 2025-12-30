@@ -7,7 +7,6 @@ import com.sprint.mission.discodeit.Exception.AlreadyLoggedOutException;
 import com.sprint.mission.discodeit.Exception.InvalidPasswordException;
 import com.sprint.mission.discodeit.entity.User;
 import com.sprint.mission.discodeit.entity.UserStatus;
-import com.sprint.mission.discodeit.entity.UserStatusType;
 import com.sprint.mission.discodeit.repository.UserRepository;
 import com.sprint.mission.discodeit.repository.UserStatusRepository;
 import com.sprint.mission.discodeit.service.AuthService;

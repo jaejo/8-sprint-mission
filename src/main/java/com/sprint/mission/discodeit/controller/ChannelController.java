@@ -19,13 +19,13 @@ public class ChannelController {
     private final ChannelService channelService;
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
-    public ChannelResponse create(@RequestParam(value = "type") ChannelStatus status,
+    public ResponseEntity<ChannelResponse> create(@RequestParam(value = "type") ChannelStatus status,
                                   @RequestBody ChannelCreateRequest channelCreateRequest) {
         if(status.equals(ChannelStatus.PRIVATE)) {
-            return channelService.createPrivate(channelCreateRequest);
+            return ResponseEntity.ok(channelService.createPrivate(channelCreateRequest));
         }
         else {
-            return channelService.createPublic(channelCreateRequest);
+            return ResponseEntity.ok(channelService.createPublic(channelCreateRequest));
         }
     }
 
