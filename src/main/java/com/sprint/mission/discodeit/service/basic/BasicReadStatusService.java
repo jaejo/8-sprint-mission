@@ -23,77 +23,82 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 public class BasicReadStatusService implements ReadStatusService {
-    private final ReadStatusRepository readStatusRepository;
-    private final UserRepository userRepository;
-    private final ChannelRepository channelRepository;
 
-    @Override
-    public ReadStatusResponse create(ReadStatusCreateRequest request) {
-        User user = userRepository.findById(request.userId())
-                .orElseThrow(()-> new NoSuchElementException("해당하는 유저가 없습니다."));
-        Channel channel = channelRepository.findById(request.channelId())
-                .orElseThrow(()-> new NoSuchElementException("해당하는 채널이 없습니다."));
+  private final ReadStatusRepository readStatusRepository;
+  private final UserRepository userRepository;
+  private final ChannelRepository channelRepository;
 
-        boolean alreadyExists = readStatusRepository.existsByUserIdAndChannelId(
-                request.userId(),
-                request.channelId()
-        );
+  @Override
+  public ReadStatusResponse create(ReadStatusCreateRequest request) {
+    User user = userRepository.findById(request.userId())
+        .orElseThrow(() -> new NoSuchElementException("해당하는 유저가 없습니다."));
+    Channel channel = channelRepository.findById(request.channelId())
+        .orElseThrow(() -> new NoSuchElementException("해당하는 채널이 없습니다."));
 
-        if (alreadyExists) {
-            throw new IllegalStateException("이미 해당 채널에 대한 ReadStatus가 존재합니다.");
-        }
+    boolean alreadyExists = readStatusRepository.existsByUserIdAndChannelId(
+        request.userId(),
+        request.channelId()
+    );
 
-        ReadStatus readStatus = new ReadStatus(
-                request.userId(),
-                request.channelId(),
-                Instant.now()
-        );
-
-        ReadStatus savedRead = readStatusRepository.save(readStatus);
-        return  ReadStatusResponse.from(savedRead);
+    if (alreadyExists) {
+      throw new IllegalStateException("이미 해당 채널에 대한 ReadStatus가 존재합니다.");
     }
 
-    @Override
-    public ReadStatus find(UUID id) {
-        return readStatusRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 readSatus입니다."));
-    }
+    ReadStatus readStatus = new ReadStatus(
+        request.userId(),
+        request.channelId(),
+        Instant.now()
+    );
 
-    @Override
-    public List<ReadStatusResponse> findAllByUserId(UUID userId) {
-        return readStatusRepository.findAllByUserId(userId).stream()
-                .map(ReadStatusResponse::from)
-                .collect(Collectors.toList());
-    }
+    ReadStatus savedRead = readStatusRepository.save(readStatus);
+    return ReadStatusResponse.from(savedRead);
+  }
 
-    @Override
-    public ReadStatusResponse update(UUID id, ReadStatusUpdateRequest request) {
-        ReadStatus readStatus = readStatusRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 readStatus"));
+  @Override
+  public ReadStatus find(UUID id) {
+    return readStatusRepository.findById(id)
+        .orElseThrow(() -> new NoSuchElementException("존재하지 않는 readSatus입니다."));
+  }
 
-        Instant newLastReadAtMessageAt = request.newLastMessageReadAt() == null ? Instant.now() : request.newLastMessageReadAt();
-        readStatus.update(request.newLastMessageReadAt());
+  @Override
+  public List<ReadStatusResponse> findAllByUserId(UUID userId) {
+    return readStatusRepository.findAllByUserId(userId).stream()
+        .map(ReadStatusResponse::from)
+        .collect(Collectors.toList());
+  }
 
-        ReadStatus savedReadStatus = readStatusRepository.save(readStatus);
-        return ReadStatusResponse.from(savedReadStatus);
-    }
+  @Override
+  public ReadStatusResponse update(UUID id, ReadStatusUpdateRequest request) {
+    ReadStatus readStatus = readStatusRepository.findById(id)
+        .orElseThrow(() -> new NoSuchElementException("존재하지 않는 readStatus"));
 
-    @Override
-    public ReadStatusResponse update(UUID userId, UUID channelId, ReadStatusUpdateRequest readStatusUpdateRequest) {
-        ReadStatus readStatus = readStatusRepository.findByUserIdAndChannelId(userId, channelId)
-                .orElseThrow(NotExistReadStatusException::new);
-        Instant newLastMessageReadAt = readStatusUpdateRequest.newLastMessageReadAt() == null ?  Instant.now() : readStatusUpdateRequest.newLastMessageReadAt();
+    Instant newLastReadAtMessageAt =
+        request.newLastMessageReadAt() == null ? Instant.now() : request.newLastMessageReadAt();
+    readStatus.update(newLastReadAtMessageAt);
 
-        readStatus.update(newLastMessageReadAt);
-        readStatusRepository.save(readStatus);
+    ReadStatus savedReadStatus = readStatusRepository.save(readStatus);
+    return ReadStatusResponse.from(savedReadStatus);
+  }
 
-        return ReadStatusResponse.from(readStatus);
-    }
+  @Override
+  public ReadStatusResponse update(UUID userId, UUID channelId,
+      ReadStatusUpdateRequest readStatusUpdateRequest) {
+    ReadStatus readStatus = readStatusRepository.findByUserIdAndChannelId(userId, channelId)
+        .orElseThrow(NotExistReadStatusException::new);
+    Instant newLastMessageReadAt =
+        readStatusUpdateRequest.newLastMessageReadAt() == null ? Instant.now()
+            : readStatusUpdateRequest.newLastMessageReadAt();
 
-    @Override
-    public void delete(UUID id) {
-        ReadStatus readStatus = readStatusRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 readStatus입니다."));
-        readStatusRepository.delete(id);
-    }
+    readStatus.update(newLastMessageReadAt);
+    readStatusRepository.save(readStatus);
+
+    return ReadStatusResponse.from(readStatus);
+  }
+
+  @Override
+  public void delete(UUID id) {
+    ReadStatus readStatus = readStatusRepository.findById(id)
+        .orElseThrow(() -> new NoSuchElementException("존재하지 않는 readStatus입니다."));
+    readStatusRepository.delete(id);
+  }
 }

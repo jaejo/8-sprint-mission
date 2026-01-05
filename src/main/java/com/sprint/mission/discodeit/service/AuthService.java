@@ -6,6 +6,8 @@ import com.sprint.mission.discodeit.DTO.response.UserResponse;
 import java.util.UUID;
 
 public interface AuthService {
-    UserResponse login(LoginRequest request);
-    String logout(UUID userId);
+
+  UserResponse login(LoginRequest request);
+
+  String logout(UUID userId);
 }
