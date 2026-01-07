@@ -1,6 +1,7 @@
 package com.sprint.mission.discodeit.controller;
 
-import com.sprint.mission.discodeit.DTO.request.ChannelCreateRequest;
+import com.sprint.mission.discodeit.DTO.request.PrivateChannelCreateRequest;
+import com.sprint.mission.discodeit.DTO.request.PublicChannelCreateRequest;
 import com.sprint.mission.discodeit.DTO.request.ChannelUpdateRequest;
 import com.sprint.mission.discodeit.DTO.response.ChannelResponse;
 import com.sprint.mission.discodeit.service.ChannelService;
@@ -17,19 +18,17 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Channel", description = "Channel API")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/channel")
+@RequestMapping("/channels")
 public class ChannelController {
 
   private final ChannelService channelService;
@@ -40,16 +39,16 @@ public class ChannelController {
       description = "Public Channel이 성공적으로 생성됨",
       content = @Content(
           schema = @Schema(
-              implementation = ChannelCreateRequest.class
+              implementation = PublicChannelCreateRequest.class
           )
       )
   )
   @RequestMapping(value = "/public", method = RequestMethod.POST)
   public ResponseEntity<ChannelResponse> createPublicChannel(
-      @RequestBody(required = true) ChannelCreateRequest channelCreateRequest) {
+      @RequestBody PublicChannelCreateRequest channelCreateRequest) {
     return ResponseEntity
         .status(HttpStatus.CREATED)
-        .body(channelService.createPublic(channelCreateRequest));
+        .body(channelService.create(channelCreateRequest));
   }
 
 
@@ -59,16 +58,16 @@ public class ChannelController {
       description = "Private Channel이 성공적으로 생성됨",
       content = @Content(
           schema = @Schema(
-              implementation = ChannelCreateRequest.class
+              implementation = PublicChannelCreateRequest.class
           )
       )
   )
   @RequestMapping(value = "/private", method = RequestMethod.POST)
   public ResponseEntity<ChannelResponse> createPrivateChannel(
-      @RequestBody(required = true) ChannelCreateRequest channelCreateRequest) {
+      @RequestBody PrivateChannelCreateRequest channelCreateRequest) {
     return ResponseEntity
         .status(HttpStatus.CREATED)
-        .body(channelService.createPrivate(channelCreateRequest));
+        .body(channelService.create(channelCreateRequest));
   }
 
   @Operation(summary = "User가 참여 중인 Channel 목록 조회", operationId = "findAll_1")
@@ -79,7 +78,7 @@ public class ChannelController {
           schema = @Schema(implementation = ChannelResponse.class)
       )
   )
-  @RequestMapping(value = "/findAll", method = RequestMethod.GET)
+  @RequestMapping(method = RequestMethod.GET)
   public ResponseEntity<List<ChannelResponse>> findById(
       @Parameter(description = "조회할 User ID", required = true)
       @RequestParam(value = "userId") UUID userId) {

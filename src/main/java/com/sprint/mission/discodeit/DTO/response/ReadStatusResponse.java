@@ -6,19 +6,20 @@ import java.time.Instant;
 import java.util.UUID;
 
 public record ReadStatusResponse(
-        UUID id,
-        UUID userId,
-        UUID channelId,
-        Instant createdAt,
-        Instant lastReadMessageAt
+    UUID id,
+    UUID userId,
+    UUID channelId,
+    Instant createdAt,
+    Instant lastReadAt
 ) {
-    public static ReadStatusResponse from(ReadStatus readStatus) {
-        return new ReadStatusResponse(
-                readStatus.getId(),
-                readStatus.getUserId(),
-                readStatus.getChannelId(),
-                readStatus.getCreatedAt(),
-                readStatus.getLastReadMessageAt()
-        );
-    }
+
+  public static ReadStatusResponse from(ReadStatus readStatus) {
+    return new ReadStatusResponse(
+        readStatus.getId(),
+        readStatus.getUserId(),
+        readStatus.getChannelId(),
+        readStatus.getCreatedAt(),
+        readStatus.getLastReadAt()
+    );
+  }
 }

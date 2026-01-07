@@ -13,27 +13,23 @@ public class Message implements Serializable {
   private static final long serialVersionUID = 1L;
 
   private final UUID id;
-  private final UUID userId;
-  private final UUID channelId;
-
   private final Instant createdAt;
-  private Instant modifiedAt;
-  private final String channelName;
-  private final String from;
+  private Instant updatedAt;
+
   private String content;
+
+  private final UUID channelId;
+  private final UUID authorId;
   private List<UUID> attachmentIds;
 
-  public Message(UUID userId, UUID channelId, String channelName, String from, String content,
-      List<UUID> attachmentIds) {
+  public Message(String content, UUID channelId, UUID authorId, List<UUID> attachmentIds) {
     id = UUID.randomUUID();
     createdAt = Instant.now();
-    modifiedAt = createdAt;
+    updatedAt = createdAt;
 
-    this.userId = userId;
-    this.channelId = channelId;
-    this.channelName = channelName;
-    this.from = from;
     this.content = content;
+    this.channelId = channelId;
+    this.authorId = authorId;
     this.attachmentIds = attachmentIds;
   }
 
@@ -48,22 +44,7 @@ public class Message implements Serializable {
       anyValueUpdated = true;
     }
     if (anyValueUpdated) {
-      this.modifiedAt = Instant.now();
+      this.updatedAt = Instant.now();
     }
-  }
-
-  @Override
-  public String toString() {
-    return "Message{" +
-        "id=" + id +
-        ", uid=" + userId +
-        ", cid=" + channelId +
-        ", createdAt=" + createdAt +
-        ", modifiedAt=" + modifiedAt +
-        ", channelName='" + channelName + '\'' +
-        ", from='" + from + '\'' +
-        ", content='" + content + '\'' +
-        ", attachmentIds=" + attachmentIds +
-        '}';
   }
 }

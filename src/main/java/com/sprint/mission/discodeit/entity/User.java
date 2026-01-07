@@ -13,39 +13,28 @@ public class User implements Serializable {
   private final UUID id;
   private final Instant createdAt;
   private Instant modifiedAt;
-  private String userId;
-  private String name;
+
+  private String username;
   private String password;
   private String email;
-  private char gender;
-  private int grade;
   private UUID profileId;
 
-  public User(String userId, String name, String password, String email, char gender, int grade,
-      UUID profileId) {
+  public User(String username, String password, String email, UUID profileId) {
     id = UUID.randomUUID();
     createdAt = Instant.now();
     modifiedAt = createdAt;
 
-    this.userId = userId;
-    this.name = name;
+    this.username = username;
     this.password = password;
     this.email = email;
-    this.gender = gender;
-    this.grade = grade;
     this.profileId = profileId;
   }
 
-  public void update(String userId, String name, String password, String email, char gender,
-      int grade, UUID profileId) {
+  public void update(String username, String password, String email, UUID profileId) {
     boolean anyValueUpdated = false;
 
-    if (userId != null && !userId.equals(this.userId)) {
-      this.userId = userId;
-      anyValueUpdated = true;
-    }
-    if (name != null && !name.equals(this.name)) {
-      this.name = name;
+    if (username != null && !username.equals(this.username)) {
+      this.username = username;
       anyValueUpdated = true;
     }
     if (password != null && !password.equals(this.password)) {
@@ -56,34 +45,11 @@ public class User implements Serializable {
       this.email = email;
       anyValueUpdated = true;
     }
-    if (gender != this.gender) {
-      this.gender = gender;
-      anyValueUpdated = true;
-    }
-    if (grade != this.grade) {
-      this.grade = grade;
-      anyValueUpdated = true;
-    }
     if (profileId != null && !profileId.equals(this.profileId)) {
       this.profileId = profileId;
     }
     if (anyValueUpdated) {
       this.modifiedAt = Instant.now();
     }
-  }
-
-  @Override
-  public String toString() {
-    return "User{" +
-        "id=" + id +
-        ", createdAt=" + createdAt +
-        ", modifiedAt=" + modifiedAt +
-        ", userId='" + userId + '\'' +
-        ", name='" + name + '\'' +
-        ", email='" + email + '\'' +
-        ", gender=" + gender +
-        ", grade=" + grade +
-        ", profileId=" + profileId +
-        '}';
   }
 }

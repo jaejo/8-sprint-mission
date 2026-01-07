@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,14 +56,11 @@ public class AuthController {
       )
   })
   @RequestMapping(value = "/login", method = RequestMethod.POST)
-  public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
+  public ResponseEntity<UserResponse> login(@RequestBody LoginRequest request) {
     UserResponse userResponse = authService.login(request);
-    return ResponseEntity.ok(
-        new LoginResponse(
-            userResponse.name() + " 님이 로그인했습니다.",
-            userResponse
-        )
-    );
+    return ResponseEntity
+        .status(HttpStatus.OK)
+        .body(userResponse);
   }
 
   @Operation(summary = "로그아웃", operationId = "logout")

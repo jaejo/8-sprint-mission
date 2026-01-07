@@ -25,11 +25,12 @@ public class SecurityConfig {
                 "/api/v3/api-docs/**",
                 "/swagger-ui.html"
             ).permitAll()
-            .requestMatchers("/", "/user-list.html").permitAll()
-            .requestMatchers("/api/user/**", "/api/channel/**", "/api/message/**",
-                "/api/readStatus/**").permitAll()
+            .requestMatchers("/assets/**").permitAll()
+            .requestMatchers("/", "/index.html", "/user-list.html").permitAll()
+            .requestMatchers("/api/users/**", "/api/channels/**", "/api/messages/**",
+                "/api/readStatuses/**").permitAll()
             .requestMatchers("/api/auth/**").permitAll()
-            .requestMatchers("/api/upload/**").permitAll()
+            .requestMatchers("/api/binaryContents/**").permitAll()
             .anyRequest().authenticated()
         );
     return http.build();

@@ -5,8 +5,8 @@ import com.sprint.mission.discodeit.DTO.request.UserStatusUpdateRequest;
 import com.sprint.mission.discodeit.DTO.request.UserUpdateRequest;
 import com.sprint.mission.discodeit.DTO.response.UserResponse;
 import com.sprint.mission.discodeit.DTO.response.UserStatusResponse;
-import com.sprint.mission.discodeit.entity.UserStatus;
 import com.sprint.mission.discodeit.service.UserService;
+import com.sprint.mission.discodeit.service.UserStatusService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -34,10 +34,11 @@ import org.springframework.web.multipart.MultipartFile;
 @Tag(name = "User", description = "User API")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
   private final UserService userService;
+  private final UserStatusService userStatusService;
 
   @Operation(summary = "User 등록", operationId = "create")
   @ApiResponses(value = {
@@ -56,7 +57,7 @@ public class UserController {
           )
       )
   })
-  @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = {
+  @RequestMapping(method = RequestMethod.POST, consumes = {
       MediaType.MULTIPART_FORM_DATA_VALUE})
   public ResponseEntity<UserResponse> create(
       @Parameter(description = "User 생성 요청 정보", required = true)
@@ -83,7 +84,7 @@ public class UserController {
           schema = @Schema(implementation = UserResponse.class)
       )
   )
-  @RequestMapping(value = "/findAll", method = RequestMethod.GET)
+  @RequestMapping(method = RequestMethod.GET)
   public ResponseEntity<List<UserResponse>> findAll() {
     List<UserResponse> userResponses = userService.findAll();
     return ResponseEntity
@@ -114,18 +115,18 @@ public class UserController {
           )
       )
   })
-  @RequestMapping(value = "/update", method = RequestMethod.PATCH,
+  @RequestMapping(value = "/{userId}", method = RequestMethod.PATCH,
       consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
   public ResponseEntity<UserResponse> update(
       @Parameter(description = "수정할 UserID", required = true)
-      @RequestParam(value = "id") UUID id,
+      @PathVariable(value = "userId") UUID userId,
       @Parameter(description = "User 변경 요청 정보", required = true)
-      @RequestPart(value = "request") UserUpdateRequest userUpdateRequest,
+      @RequestPart(value = "userUpdateRequest") UserUpdateRequest userUpdateRequest,
       @Parameter(description = "수정할 User 프로필 이미지")
-      @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
+      @RequestPart(value = "profile", required = false) MultipartFile profile) throws IOException {
     return ResponseEntity
         .status(HttpStatus.OK)
-        .body(userService.update(id, userUpdateRequest, file));
+        .body(userService.update(userId, userUpdateRequest, profile));
   }
 
   @Operation(summary = "User 온라인 상태 업데이트", operationId = "updateUserStatusByUserId")
@@ -145,18 +146,17 @@ public class UserController {
           )
       )
   })
-
-  //수정해야 함
-  @RequestMapping(value = "/update/{id}/online", method = RequestMethod.PATCH)
-  public ResponseEntity<UserResponse> updateOnline(
+  @RequestMapping(value = "/{userId}/userStatus", method = RequestMethod.PATCH)
+  public ResponseEntity<UserStatusResponse> updateUserState(
       @Parameter(description = "상태를 변경할 User ID", required = true)
-      @PathVariable(value = "id") UUID id,
+      @PathVariable(value = "userId") UUID userId,
       @Parameter(description = "유저 온라인 상태 업데이트 요청", required = true)
       @RequestBody UserStatusUpdateRequest userStatusUpdateRequest) {
-    UserResponse userResponse = userService.updateOnlineStatus(id);
+    UserStatusResponse userStatusResponse = userStatusService.updateUserStatusByUserId(userId,
+        userStatusUpdateRequest);
     return ResponseEntity
         .status(HttpStatus.OK)
-        .body(userResponse);
+        .body(userStatusResponse);
   }
 
   @Operation(summary = "User 삭제", operationId = "delete")

@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "ReadStatus", description = "Message 읽음 상태 API")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/readStatus")
+@RequestMapping("/readStatuses")
 public class ReadStatusController {
 
   private final ReadStatusService readStatusService;
@@ -59,7 +59,7 @@ public class ReadStatusController {
           )
       )
   })
-  @RequestMapping(value = "/create", method = RequestMethod.POST)
+  @RequestMapping(method = RequestMethod.POST)
   public ResponseEntity<ReadStatusResponse> create(
       @RequestBody ReadStatusCreateRequest readStatusCreateRequest) {
     return ResponseEntity
@@ -75,10 +75,10 @@ public class ReadStatusController {
           schema = @Schema(implementation = ReadStatusResponse.class)
       )
   )
-  @RequestMapping(value = "/findAllByUserId/{userId}", method = RequestMethod.GET)
+  @RequestMapping(method = RequestMethod.GET)
   public ResponseEntity<List<ReadStatusResponse>> find(
       @Parameter(description = "조회할 User ID", required = true)
-      @PathVariable UUID userId) {
+      @RequestParam(value = "userId") UUID userId) {
     List<ReadStatusResponse> readStatusResponses = readStatusService.findAllByUserId(userId);
     return ResponseEntity
         .status(HttpStatus.OK)
@@ -116,7 +116,7 @@ public class ReadStatusController {
   @RequestMapping(value = "/{readStatusId}", method = RequestMethod.PATCH)
   public ResponseEntity<ReadStatusResponse> updateById(
       @Parameter(description = "수정할 읽음 상태 ID", required = true)
-      @PathVariable UUID readStatusId,
+      @PathVariable(value = "readStatusId") UUID readStatusId,
       @RequestBody ReadStatusUpdateRequest readStatusUpdateRequest) {
     ReadStatusResponse readStatusResponse = readStatusService.update(readStatusId,
         readStatusUpdateRequest);

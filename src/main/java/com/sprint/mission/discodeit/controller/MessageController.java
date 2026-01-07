@@ -31,7 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Tag(name = "Message", description = "Message API")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/message")
+@RequestMapping("/messages")
 public class MessageController {
 
   private final MessageService messageService;
@@ -55,7 +55,7 @@ public class MessageController {
           )
       )
   })
-  @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = {
+  @RequestMapping(method = RequestMethod.POST, consumes = {
       MediaType.MULTIPART_FORM_DATA_VALUE})
   public ResponseEntity<MessageResponse> create(
       @Parameter(name = "messageCreateRequest", description = "Message 생성 요청 정보", required = true)
@@ -75,11 +75,11 @@ public class MessageController {
           schema = @Schema(implementation = MessageResponse.class)
       )
   )
-  @RequestMapping(value = "/findAllByChannelId", method = RequestMethod.GET)
+  @RequestMapping(method = RequestMethod.GET)
   public ResponseEntity<List<MessageResponse>> findAllByChannelId(
       @Parameter(description = "조회할 Channel ID", required = true)
-      @RequestParam(value = "id") UUID channelId) {
-    List<MessageResponse> messageResponses = messageService.findallByChannelId(channelId);
+      @RequestParam(value = "channelId") UUID channelId) {
+    List<MessageResponse> messageResponses = messageService.findAllByChannelId(channelId);
     return ResponseEntity
         .status(HttpStatus.OK)
         .body(messageResponses);
@@ -102,14 +102,14 @@ public class MessageController {
           )
       )
   })
-  @RequestMapping(value = "/update", method = RequestMethod.PATCH, consumes = {
+  @RequestMapping(method = RequestMethod.PATCH, consumes = {
       MediaType.MULTIPART_FORM_DATA_VALUE})
   public ResponseEntity<MessageResponse> update(
       @Parameter(description = "수정할 Message ID", required = true)
-      @RequestParam(value = "id") UUID id,
+      @RequestParam(value = "messageId") UUID messageId,
       @RequestPart(value = "request") MessageUpdateRequest messageUpdateRequest,
       @RequestPart(value = "files", required = false) List<MultipartFile> files) {
-    MessageResponse messageResponse = messageService.update(id, messageUpdateRequest, files);
+    MessageResponse messageResponse = messageService.update(messageId, messageUpdateRequest, files);
     return ResponseEntity
         .status(HttpStatus.OK)
         .body(messageResponse);
@@ -129,11 +129,11 @@ public class MessageController {
           )
       )
   })
-  @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+  @RequestMapping(value = "{messageId}", method = RequestMethod.DELETE)
   public ResponseEntity<Void> delete(
       @Parameter(description = "삭제할 Message ID", required = true)
-      @PathVariable UUID id) {
-    messageService.delete(id);
+      @PathVariable(value = "messageId") UUID messageId) {
+    messageService.delete(messageId);
     return ResponseEntity
         .status(HttpStatus.NO_CONTENT)
         .build();

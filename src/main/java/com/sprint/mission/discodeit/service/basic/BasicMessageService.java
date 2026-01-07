@@ -34,25 +34,20 @@ public class BasicMessageService implements MessageService {
 
   @Override
   public MessageResponse create(MessageCreateRequest request, List<MultipartFile> files) {
-    UUID userId = request.userId();
+    UUID userId = request.authorId();
     UUID channelId = request.channelId();
 
-    User user = userRepository.findById(userId)
+    userRepository.findById(userId)
         .orElseThrow(() -> new NoSuchElementException("해당하는 유저를 찾을 수 없습니다."));
-    Channel channel = channelRepository.findById(channelId)
+    channelRepository.findById(channelId)
         .orElseThrow(() -> new NoSuchElementException("해당하는 채널을 찾을 수 없습니다."));
 
     List<UUID> attachmentIds = binaryContentService.save(files, "images");
 
-    String channelName = Optional.ofNullable(channel.getName())
-        .orElse("PRIVATE");
-
     Message message = new Message(
-        request.userId(),
-        request.channelId(),
-        channelName,
-        user.getName(),
         request.content(),
+        request.channelId(),
+        request.authorId(),
         attachmentIds
     );
 
@@ -70,7 +65,7 @@ public class BasicMessageService implements MessageService {
   }
 
   @Override
-  public List<MessageResponse> findallByChannelId(UUID id) {
+  public List<MessageResponse> findAllByChannelId(UUID id) {
     List<Message> messages = messageRepository.findAll();
 
     return messages.stream()
@@ -80,22 +75,9 @@ public class BasicMessageService implements MessageService {
   }
 
   @Override
-  public Map<String, List<Message>> findMessagesByFrom() {
-    return messageRepository.findAll().stream()
-        .collect(
-            Collectors.groupingBy(
-                Message::getFrom,
-                Collectors.toList()
-            ));
-  }
-
-  @Override
-  public MessageResponse update(UUID id, MessageUpdateRequest request,
-      List<MultipartFile> files) {
+  public MessageResponse update(UUID id, MessageUpdateRequest request, List<MultipartFile> files) {
     Message message = messageRepository.findById(id)
         .orElseThrow(() -> new NoSuchElementException("수정하려는 메시지가 없습니다."));
-
-    List<UUID> attachmentIds = binaryContentService.save(files, "images");
 
     message.update(request.content());
 

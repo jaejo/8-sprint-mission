@@ -10,6 +10,7 @@ import com.sprint.mission.discodeit.entity.UserStatus;
 import com.sprint.mission.discodeit.repository.UserRepository;
 import com.sprint.mission.discodeit.repository.UserStatusRepository;
 import com.sprint.mission.discodeit.service.AuthService;
+import java.time.Instant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,11 +35,8 @@ public class BasicAuthService implements AuthService {
     UserStatus status = userStatusRepository.findByUserId(user.getId())
         .orElseThrow(() -> new NoSuchElementException("해당하는 userStatus가 없습니다."));
 
-    if (status.isCurrentOnline()) {
-      throw new AlreadyLoggedInException();
-    }
-
-    status.markOnline();
+    Instant now = Instant.now();
+    status.update(now);
     userStatusRepository.save(status);
 
     return UserResponse.from(user, status);
@@ -52,13 +50,6 @@ public class BasicAuthService implements AuthService {
     UserStatus status = userStatusRepository.findByUserId(user.getId())
         .orElseThrow(() -> new NoSuchElementException("해당하는 userStatus가 없습니다."));
 
-    if (!status.isCurrentOnline()) {
-      throw new AlreadyLoggedOutException();
-    }
-
-    status.markOffline();
-    userStatusRepository.save(status);
-
-    return user.getName();
+    return user.getUsername();
   }
 }

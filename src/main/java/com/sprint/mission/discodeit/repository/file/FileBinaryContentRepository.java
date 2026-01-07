@@ -3,6 +3,7 @@ package com.sprint.mission.discodeit.repository.file;
 import com.sprint.mission.discodeit.entity.BinaryContent;
 import com.sprint.mission.discodeit.repository.BinaryContentRepository;
 import java.util.Collections;
+import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
@@ -40,10 +41,6 @@ public class FileBinaryContentRepository implements BinaryContentRepository {
     return directory.resolve(id + ".ser");
   }
 
-  public boolean checkExist(Path filePath) {
-    return Files.exists(filePath);
-  }
-
   @Override
   public BinaryContent save(BinaryContent binaryContent) {
     Path filePath = resolvePath(binaryContent.getId());
@@ -75,9 +72,7 @@ public class FileBinaryContentRepository implements BinaryContentRepository {
     BinaryContent binaryContentNullable = null;
     Path filePath = resolvePath(id);
 
-    if (!checkExist(filePath)) {
-      return Optional.empty();
-    } else {
+    if (Files.exists(filePath)) {
       try (FileInputStream fis = new FileInputStream(filePath.toFile());
           ObjectInputStream ois = new ObjectInputStream(fis);
       ) {
@@ -91,8 +86,8 @@ public class FileBinaryContentRepository implements BinaryContentRepository {
 
   @Override
   public List<UUID> findAll() {
-    try {
-      return Files.list(directory)
+    try (Stream<Path> paths = Files.list(directory)) {
+      return paths
           .map(path -> {
             try (
                 FileInputStream fis = new FileInputStream(path.toFile());

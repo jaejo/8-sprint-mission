@@ -20,10 +20,7 @@ public interface MessageService {
 
   //다건 조회
   //- 전체 조회
-  List<MessageResponse> findallByChannelId(UUID id);
-
-  //- 발신자별 조회
-  Map<String, List<Message>> findMessagesByFrom();
+  List<MessageResponse> findAllByChannelId(UUID id);
 
   //메시지 수정
   MessageResponse update(UUID id, MessageUpdateRequest request, List<MultipartFile> files);

@@ -3,6 +3,7 @@ package com.sprint.mission.discodeit.service;
 import com.sprint.mission.discodeit.DTO.request.UserCreateRequest;
 import com.sprint.mission.discodeit.DTO.request.UserUpdateRequest;
 import com.sprint.mission.discodeit.DTO.response.UserResponse;
+import com.sprint.mission.discodeit.DTO.response.UserStatusResponse;
 import com.sprint.mission.discodeit.entity.User;
 import java.util.List;
 import java.util.Map;
@@ -20,15 +21,8 @@ public interface UserService {
   //- 전체 조회
   List<UserResponse> findAll();
 
-  //- 학년별 조회
-  Map<Integer, List<User>> findUserByGrade();
-
   UserResponse update(UUID id, UserUpdateRequest request, MultipartFile file);
-
-  UserResponse updateOnlineStatus(UUID userId);
-
-  UserResponse updateOfflineStatus(UUID userId);
-
+  
   //유저 삭제
   void delete(UUID id);
 }
