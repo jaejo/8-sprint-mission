@@ -5,24 +5,20 @@ import com.sprint.mission.discodeit.entity.BinaryContent;
 import java.time.Instant;
 
 public record BinaryContentResponse(
-    String originalFileName,
-    String savedName,
-    String uploadPath,
+    String fileName,
+    Long size,
     String contentType,
     byte[] bytes,
-    String description,
     Instant createdAt
 ) {
 
   public static BinaryContentResponse from(BinaryContent binaryContent) {
 
     return new BinaryContentResponse(
-        binaryContent.getOriginalFileName(),
-        binaryContent.getSavedName(),
-        binaryContent.getUploadPath(),
+        binaryContent.getFileName(),
+        binaryContent.getSize(),
         binaryContent.getContentType(),
         binaryContent.getBytes(),
-        binaryContent.getDescription(),
         binaryContent.getCreatedAt()
     );
   }

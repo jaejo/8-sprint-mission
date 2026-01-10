@@ -13,33 +13,19 @@ public class BinaryContent implements Serializable {
   private static final long serialVersionUID = 1L;
   private final UUID id;
   private final Instant createdAt;
-  private final String originalFileName;
-  private final String savedName;
-  private final String uploadPath;
+
+  private final String fileName;
+  private final Long size;
   private final String contentType;
   private final byte[] bytes;
-  private final String description;
 
-  public BinaryContent(String originalFileName, String savedName, String uploadPath,
-      String contentType, byte[] bytes, String description) {
+  public BinaryContent(String fileName, Long size, String contentType, byte[] bytes) {
     this.id = UUID.randomUUID();
     this.createdAt = Instant.now();
-    this.originalFileName = originalFileName;
-    this.savedName = savedName;
-    this.uploadPath = uploadPath;
+
+    this.fileName = fileName;
+    this.size = size;
     this.contentType = contentType;
     this.bytes = bytes;
-    this.description = description;
-  }
-
-  public static BinaryContent from(BinaryContentCreateRequest request) {
-    return new BinaryContent(
-        request.originalFileName(),
-        request.savedName(),
-        request.uploadPath(),
-        request.contentType(),
-        request.bytes(),
-        request.description()
-    );
   }
 }

@@ -1,37 +1,38 @@
 package com.sprint.mission.discodeit.service.basic;
 
+import com.sprint.mission.discodeit.DTO.request.BinaryContentCreateRequest;
 import com.sprint.mission.discodeit.DTO.request.UserCreateRequest;
 import com.sprint.mission.discodeit.DTO.request.UserUpdateRequest;
 import com.sprint.mission.discodeit.DTO.response.UserResponse;
-import com.sprint.mission.discodeit.DTO.response.UserStatusResponse;
+import com.sprint.mission.discodeit.entity.BinaryContent;
 import com.sprint.mission.discodeit.entity.User;
 import com.sprint.mission.discodeit.entity.UserStatus;
 import com.sprint.mission.discodeit.repository.BinaryContentRepository;
 import com.sprint.mission.discodeit.repository.UserRepository;
 import com.sprint.mission.discodeit.repository.UserStatusRepository;
-import com.sprint.mission.discodeit.service.BinaryContentService;
 import com.sprint.mission.discodeit.service.UserService;
 import java.time.Instant;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @Service
 public class BasicUserService implements UserService {
 
   private final UserRepository userRepository;
+
   private final UserStatusRepository userStatusRepository;
   private final BinaryContentRepository binaryContentRepository;
   private final PasswordEncoder passwordEncoder;
-  private final BinaryContentService binaryContentService;
 
   @Override
-  public UserResponse create(UserCreateRequest request, MultipartFile file) {
+  public UserResponse create(UserCreateRequest request,
+      Optional<BinaryContentCreateRequest> optionalProfileCreateRequest) {
     if (userRepository.existsByName(request.username())) {
       throw new IllegalArgumentException(
           "User with name " + request.username() + " already exists");
@@ -40,9 +41,18 @@ public class BasicUserService implements UserService {
       throw new IllegalArgumentException("User with email " + request.email() + " already exists.");
     }
 
-    String encodedPassword = passwordEncoder.encode(request.password());
+    UUID profileIdNullable = optionalProfileCreateRequest
+        .map(profileRequest -> {
+          String fileName = profileRequest.fileName();
+          String contentType = profileRequest.contentType();
+          byte[] bytes = profileRequest.bytes();
+          BinaryContent binaryContent = new BinaryContent(fileName, (long) bytes.length,
+              contentType, bytes);
+          return binaryContentRepository.save(binaryContent).getId();
+        })
+        .orElse(null);
 
-    UUID profileIdNullable = binaryContentService.save(file, "images");
+    String encodedPassword = passwordEncoder.encode(request.password());
 
     User user = new User(
         request.username(),
@@ -57,19 +67,15 @@ public class BasicUserService implements UserService {
     UserStatus status = new UserStatus(savedUser.getId(), now);
     userStatusRepository.save(status);
 
-    return UserResponse.from(savedUser, status);
+    return toResponse(savedUser);
   }
 
 
   @Override
   public UserResponse findById(UUID id) {
-    User user = userRepository.findById(id)
-        .orElseThrow(() -> new NoSuchElementException("해당하는 유저를 찾을 수 없습니다."));
-
-    UserStatus status = userStatusRepository.findByUserId(user.getId())
-        .orElseThrow(() -> new NoSuchElementException("해당하는 userStatus를 찾을 수 없습니다."));
-
-    return UserResponse.from(user, status);
+    return userRepository.findById(id)
+        .map(this::toResponse)
+        .orElseThrow(() -> new NoSuchElementException(id + "가 존재하지 않습니다."));
   }
 
   @Override
@@ -77,16 +83,13 @@ public class BasicUserService implements UserService {
     List<User> users = userRepository.findAll();
 
     return users.stream()
-        .map(user -> {
-          UserStatus status = userStatusRepository.findByUserId(user.getId())
-              .orElseThrow(() -> new NoSuchElementException("해당하는 userStatus를 찾을 수 없습니다."));
-          return UserResponse.from(user, status);
-        })
+        .map(this::toResponse)
         .toList();
   }
 
   @Override
-  public UserResponse update(UUID userId, UserUpdateRequest request, MultipartFile file) {
+  public UserResponse update(UUID userId, UserUpdateRequest request,
+      Optional<BinaryContentCreateRequest> optionalProfileCreateRequest) {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new NoSuchElementException("수정하려는 유저가 없습니다."));
 
@@ -104,19 +107,35 @@ public class BasicUserService implements UserService {
       }
     }
 
-    UUID newProfileId = binaryContentService.save(file, "images");
+    UUID nullableProfileId = optionalProfileCreateRequest
+        .map(profileRequest -> {
+          Optional.ofNullable(user.getProfileId())
+              .ifPresent(binaryContentRepository::deleteById);
+
+          String fileName = profileRequest.fileName();
+          String contentType = profileRequest.contentType();
+          byte[] bytes = profileRequest.bytes();
+          BinaryContent binaryContent = new BinaryContent(fileName, (long) bytes.length,
+              contentType, bytes);
+          return binaryContentRepository.save(binaryContent).getId();
+        })
+        .orElse(null);
 
     String encodedPassword = user.getPassword();
     if (request.newPassword() != null) {
       encodedPassword = passwordEncoder.encode(request.newPassword());
     }
 
-    user.update(request.newUsername(), encodedPassword, request.newEmail(), newProfileId);
+    user.update(
+        request.newUsername(),
+        encodedPassword,
+        request.newEmail(),
+        nullableProfileId)
+    ;
 
     User savedUser = userRepository.save(user);
-    UserStatus status = userStatusRepository.findByUserId(savedUser.getId())
-        .orElseThrow(() -> new NoSuchElementException("존재하지 않는 UserStatus입니다."));
-    return UserResponse.from(savedUser, status);
+
+    return toResponse(savedUser);
   }
 
   @Override
@@ -127,9 +146,25 @@ public class BasicUserService implements UserService {
     userStatusRepository.deleteByUserId(user.getId());
 
     if (user.getProfileId() != null) {
-      binaryContentRepository.delete(user.getProfileId());
+      binaryContentRepository.deleteById(user.getProfileId());
     }
 
     userRepository.delete(userId);
+  }
+
+  private UserResponse toResponse(User user) {
+    Boolean online = userStatusRepository.findByUserId(user.getId())
+        .map(UserStatus::isOnline)
+        .orElse(null);
+
+    return new UserResponse(
+        user.getId(),
+        user.getUsername(),
+        user.getEmail(),
+        user.getProfileId(),
+        user.getCreatedAt(),
+        user.getModifiedAt(),
+        online
+    );
   }
 }

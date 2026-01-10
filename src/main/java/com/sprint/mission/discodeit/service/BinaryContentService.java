@@ -16,7 +16,4 @@ public interface BinaryContentService {
 
   void delete(UUID id);
 
-  UUID save(MultipartFile file, String category);
-
-  List<UUID> save(List<MultipartFile> files, String category);
 }

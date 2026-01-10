@@ -23,24 +23,29 @@ public class BasicUserStatusService implements UserStatusService {
   private final UserStatusRepository userStatusRepository;
   private final UserRepository userRepository;
 
-  public UserStatusResponse create(UserStatusCreateRequest request) {
-    User user = userRepository.findById(request.userId())
+  public UserStatus create(UserStatusCreateRequest request) {
+    UUID userId = request.userId();
+
+    User user = userRepository.findById(userId)
         .orElseThrow(() -> new NoSuchElementException("유저가 존재하지 않습니다."));
-    if (userStatusRepository.existsByUserId(request.userId())) {
+    if (userStatusRepository.existsByUserId(userId)) {
       throw new IllegalStateException("해당 사용자에 대한 UserStatus가 존재합니다.");
     }
-    UserStatus userStatus = new UserStatus(request.userId(), request.lastAccessAt());
+
+    Instant lastActiveAt = request.lastAccessAt();
+    UserStatus userStatus = new UserStatus(request.userId(), lastActiveAt);
     UserStatus savedUserstatus = userStatusRepository.save(userStatus);
-    return UserStatusResponse.from(savedUserstatus);
+    return userStatusRepository.save(savedUserstatus);
   }
 
   public UserStatus find(UUID id) {
     return userStatusRepository.findById(id)
-        .orElseThrow(() -> new NoSuchElementException("존재하지 않는 userStatus입니다."));
+        .orElseThrow(() -> new NoSuchElementException(id + "는 존재하지 않는 userStatus입니다."));
   }
 
   public List<UserStatus> findAll() {
-    return userStatusRepository.findAll();
+    return userStatusRepository.findAll().stream()
+        .toList();
   }
 
   public UserStatus update(UUID userId, UserStatusUpdateRequest request) {
@@ -53,14 +58,14 @@ public class BasicUserStatusService implements UserStatusService {
     return userStatusRepository.save(userStatus);
   }
 
-  public UserStatusResponse updateUserStatusByUserId(UUID userId, UserStatusUpdateRequest request) {
+  public UserStatus updateUserStatusByUserId(UUID userId, UserStatusUpdateRequest request) {
     Instant newLastAccessAt = request.newLastAccessAt();
 
     UserStatus userStatus = userStatusRepository.findByUserId(userId)
         .orElseThrow(() -> new NoSuchElementException("해당하는 유저에 대한 UserStatus가 없습니다."));
 
     userStatus.update(newLastAccessAt);
-    return UserStatusResponse.from(userStatusRepository.save(userStatus));
+    return userStatusRepository.save(userStatus);
   }
 
   public void delete(UUID userStatusId) {

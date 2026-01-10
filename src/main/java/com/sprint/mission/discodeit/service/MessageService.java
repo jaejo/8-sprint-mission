@@ -13,7 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface MessageService {
 
-  MessageResponse create(MessageCreateRequest request, List<MultipartFile> files);
+  MessageResponse create(MessageCreateRequest request,
+      List<BinaryContentCreateRequest> binaryContentCreateRequests);
 
   //단건 조회
   MessageResponse findById(UUID id);
@@ -23,7 +24,7 @@ public interface MessageService {
   List<MessageResponse> findAllByChannelId(UUID id);
 
   //메시지 수정
-  MessageResponse update(UUID id, MessageUpdateRequest request, List<MultipartFile> files);
+  MessageResponse update(UUID id, MessageUpdateRequest request);
 
   //메시지 삭제
   void delete(UUID id);

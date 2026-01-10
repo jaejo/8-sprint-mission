@@ -37,8 +37,8 @@ public class BinaryContentController {
           schema = @Schema(implementation = BinaryContentResponse.class)
       )
   )
-  @GetMapping("/")
-  public ResponseEntity<List<BinaryContentResponse>> findAll(
+  @GetMapping
+  public ResponseEntity<List<BinaryContentResponse>> findAllByIdIn(
       @Parameter(description = "조회할 첨부 파일 ID 목록", required = true)
       @RequestParam("binaryContentIds") List<UUID> binaryContentIds) {
     List<BinaryContentResponse> binaryContentResponses = binaryContentService.findAllByIn(
@@ -68,7 +68,7 @@ public class BinaryContentController {
   @GetMapping("/{binaryContentId}")
   public ResponseEntity<BinaryContentResponse> findById(
       @Parameter(description = "조회할 첨부 파일 ID", required = true)
-      @PathVariable UUID binaryContentId) {
+      @PathVariable("binaryContentId") UUID binaryContentId) {
     return ResponseEntity
         .status(HttpStatus.OK)
         .body(binaryContentService.find(binaryContentId));

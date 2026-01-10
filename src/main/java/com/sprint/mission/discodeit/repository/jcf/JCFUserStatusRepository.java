@@ -23,7 +23,6 @@ public class JCFUserStatusRepository implements UserStatusRepository {
     this.data = new ConcurrentHashMap<>();
   }
 
-
   @Override
   public UserStatus save(UserStatus userStatus) {
     data.put(userStatus.getId(), userStatus);

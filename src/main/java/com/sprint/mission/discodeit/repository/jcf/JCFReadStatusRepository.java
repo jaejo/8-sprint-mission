@@ -37,14 +37,6 @@ public class JCFReadStatusRepository implements ReadStatusRepository {
   }
 
   @Override
-  public Optional<ReadStatus> findByUserIdAndChannelId(UUID userId, UUID channelId) {
-    return data.values().stream()
-        .filter(readStatus -> readStatus.getUserId().equals(userId) && readStatus.getChannelId()
-            .equals(channelId))
-        .findFirst();
-  }
-
-  @Override
   public boolean existsByUserIdAndChannelId(UUID userId, UUID channelId) {
     return data.values().stream()
         .anyMatch(readStatus ->
@@ -61,7 +53,7 @@ public class JCFReadStatusRepository implements ReadStatusRepository {
   }
 
   @Override
-  public void delete(UUID id) {
+  public void deleteById(UUID id) {
     this.data.remove(id);
   }
 

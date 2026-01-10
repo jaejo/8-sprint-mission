@@ -18,7 +18,11 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -43,14 +47,13 @@ public class ChannelController {
           )
       )
   )
-  @RequestMapping(value = "/public", method = RequestMethod.POST)
+  @PostMapping("/public")
   public ResponseEntity<ChannelResponse> createPublicChannel(
       @RequestBody PublicChannelCreateRequest channelCreateRequest) {
     return ResponseEntity
         .status(HttpStatus.CREATED)
         .body(channelService.create(channelCreateRequest));
   }
-
 
   @Operation(summary = "Private Channel 생성", operationId = "create_4")
   @ApiResponse(
@@ -62,7 +65,7 @@ public class ChannelController {
           )
       )
   )
-  @RequestMapping(value = "/private", method = RequestMethod.POST)
+  @PostMapping("/private")
   public ResponseEntity<ChannelResponse> createPrivateChannel(
       @RequestBody PrivateChannelCreateRequest channelCreateRequest) {
     return ResponseEntity
@@ -78,8 +81,8 @@ public class ChannelController {
           schema = @Schema(implementation = ChannelResponse.class)
       )
   )
-  @RequestMapping(method = RequestMethod.GET)
-  public ResponseEntity<List<ChannelResponse>> findById(
+  @GetMapping
+  public ResponseEntity<List<ChannelResponse>> findAll(
       @Parameter(description = "조회할 User ID", required = true)
       @RequestParam(value = "userId") UUID userId) {
     List<ChannelResponse> channelResponse = channelService.findAll(userId);
@@ -114,12 +117,12 @@ public class ChannelController {
           )
       )
   })
-  @RequestMapping(value = "/update", method = RequestMethod.PATCH)
+  @PatchMapping("/{channelId}")
   public ResponseEntity<ChannelResponse> update(
       @Parameter(description = "수정할 Channel ID", required = true)
-      @RequestParam(value = "id") UUID id,
+      @PathVariable("channelId") UUID channelId,
       @RequestBody ChannelUpdateRequest channelUpdateRequest) {
-    ChannelResponse channelResponse = channelService.update(id, channelUpdateRequest);
+    ChannelResponse channelResponse = channelService.update(channelId, channelUpdateRequest);
     return ResponseEntity
         .status(HttpStatus.OK)
         .body(channelResponse);
@@ -139,11 +142,11 @@ public class ChannelController {
           description = "Channel이 성공적으로 삭제됨"
       )
   })
-  @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+  @DeleteMapping(value = "/{channelId}")
   public ResponseEntity<Void> delete(
       @Parameter(description = "삭제할 Channel ID", required = true)
-      @PathVariable UUID id) {
-    channelService.delete(id);
+      @PathVariable("channelId") UUID channelId) {
+    channelService.delete(channelId);
     return ResponseEntity
         .status(HttpStatus.NO_CONTENT)
         .build();

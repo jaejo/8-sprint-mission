@@ -101,27 +101,6 @@ public class FileChannelRepository implements ChannelRepository {
   }
 
   @Override
-  public List<Channel> findAllByStatus(ChannelType type) {
-    try {
-      return Files.list(directory)
-          .map(path -> {
-            try (
-                FileInputStream fis = new FileInputStream(path.toFile());
-                ObjectInputStream ois = new ObjectInputStream(fis);
-            ) {
-              return (Channel) ois.readObject();
-            } catch (IOException | ClassNotFoundException e) {
-              throw new RuntimeException(e);
-            }
-          })
-          .filter(channel -> channel.getType().equals(ChannelType.PUBLIC))
-          .toList();
-    } catch (IOException e) {
-      throw new RuntimeException(type + "로 채널을 조회할 수 없습니다.", e);
-    }
-  }
-
-  @Override
   public void delete(UUID channelId) {
     Path path = resolovePath(channelId);
     try {

@@ -81,28 +81,6 @@ public class FileReadStatusRepository implements ReadStatusRepository {
   }
 
   @Override
-  public Optional<ReadStatus> findByUserIdAndChannelId(UUID userId, UUID channelId) {
-    try {
-      return Files.list(directory)
-          .map(path -> {
-            try (
-                FileInputStream fis = new FileInputStream(path.toFile());
-                ObjectInputStream ois = new ObjectInputStream(fis);
-            ) {
-              return (ReadStatus) ois.readObject();
-            } catch (IOException | ClassNotFoundException e) {
-              throw new RuntimeException(e);
-            }
-          })
-          .filter(readStatus -> readStatus.getUserId().equals(userId) &&
-              readStatus.getChannelId().equals(channelId))
-          .findFirst();
-    } catch (IOException e) {
-      throw new RuntimeException(userId + "&" + channelId + "로 ReadStatus를 조회할 수 없습니다.", e);
-    }
-  }
-
-  @Override
   public boolean existsByUserIdAndChannelId(UUID userId, UUID channelId) {
     try {
       return Files.list(directory)
@@ -116,8 +94,10 @@ public class FileReadStatusRepository implements ReadStatusRepository {
               throw new RuntimeException(e);
             }
           })
-          .anyMatch(readStatus -> readStatus.getUserId().equals(userId) &&
-              readStatus.getChannelId().equals(channelId));
+          .anyMatch(readStatus ->
+              readStatus.getUserId().equals(userId) &&
+                  readStatus.getChannelId().equals(channelId)
+          );
 
     } catch (IOException e) {
       throw new RuntimeException(userId + "&" + channelId + "로 ReadStatus를 조회할 수  없습니다. ", e);
@@ -146,7 +126,7 @@ public class FileReadStatusRepository implements ReadStatusRepository {
   }
 
   @Override
-  public void delete(UUID id) {
+  public void deleteById(UUID id) {
     Path path = resolvePath(id);
     try {
       Files.delete(path);

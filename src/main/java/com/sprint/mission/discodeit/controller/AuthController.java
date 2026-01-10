@@ -1,10 +1,8 @@
 package com.sprint.mission.discodeit.controller;
 
 import com.sprint.mission.discodeit.DTO.request.LoginRequest;
-import com.sprint.mission.discodeit.DTO.request.LogoutRequest;
 import com.sprint.mission.discodeit.DTO.response.LoginResponse;
-import com.sprint.mission.discodeit.DTO.response.LogoutResponse;
-import com.sprint.mission.discodeit.DTO.response.UserResponse;
+import com.sprint.mission.discodeit.entity.User;
 import com.sprint.mission.discodeit.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -16,9 +14,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Auth", description = "인증 API")
@@ -55,38 +53,11 @@ public class AuthController {
           )
       )
   })
-  @RequestMapping(value = "/login", method = RequestMethod.POST)
-  public ResponseEntity<UserResponse> login(@RequestBody LoginRequest request) {
-    UserResponse userResponse = authService.login(request);
+  @PostMapping(path = "/login")
+  public ResponseEntity<User> login(@RequestBody LoginRequest request) {
+    User user = authService.login(request);
     return ResponseEntity
         .status(HttpStatus.OK)
-        .body(userResponse);
+        .body(user);
   }
-
-  @Operation(summary = "로그아웃", operationId = "logout")
-  @ApiResponses(value = {
-      @ApiResponse(
-          responseCode = "200",
-          description = "로그아웃 성공",
-          content = @Content(
-              schema = @Schema(
-                  implementation = LogoutResponse.class
-              )
-          )
-      ),
-      @ApiResponse(
-          responseCode = "401",
-          description = "사용자가 이미 로그아웃 상태입니다.",
-          content = @Content(
-              examples = @ExampleObject(value = "User is already logged out.")
-          )
-      )
-  })
-  @RequestMapping(value = "/logout", method = RequestMethod.POST)
-  public ResponseEntity<LogoutResponse> logout(@RequestBody LogoutRequest request) {
-    String username = authService.logout(request.id());
-    return ResponseEntity.ok(
-        new LogoutResponse(username + " 님이 로그아웃했습니다."));
-  }
-
 }

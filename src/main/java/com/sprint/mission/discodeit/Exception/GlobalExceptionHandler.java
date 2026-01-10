@@ -17,30 +17,12 @@ public class GlobalExceptionHandler {
   // 커스텀 예외 start
   // 비밀번호 불일치 -> 401 Unauthorized
   @ExceptionHandler(InvalidPasswordException.class)
-  public ResponseEntity<ErrorResponse> handleInvalidPasswordException(InvalidPasswordException e) {
+  public ResponseEntity<ErrorResponse> handleInvalidPasswordException(
+      InvalidPasswordException e) {
     log.warn("Invalid Password: {}", e.getMessage());
     ErrorResponse response = new ErrorResponse("AUTH_INVALID_PW", e.getMessage());
 
     return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
-  }
-
-  // 이미 로그인 상태 -> 409 Conflict
-  @ExceptionHandler(AlreadyLoggedInException.class)
-  public ResponseEntity<ErrorResponse> handleAlreadyLoggedInException(AlreadyLoggedInException e) {
-    log.warn("Already Logged In: {}", e.getMessage());
-    ErrorResponse response = new ErrorResponse("Auth_ALREADY_LOGIN", e.getMessage());
-
-    return new ResponseEntity<>(response, HttpStatus.CONFLICT);
-  }
-
-  // 이미 로그아웃 상태 -> 409 Conflict
-  @ExceptionHandler(AlreadyLoggedOutException.class)
-  public ResponseEntity<ErrorResponse> handleAlreadyLoggedOutException(
-      AlreadyLoggedOutException e) {
-    log.warn("Already Logged Out: {}", e.getMessage());
-    ErrorResponse response = new ErrorResponse("Auth_ALREADY_LOGOUT", e.getMessage());
-
-    return new ResponseEntity<>(response, HttpStatus.CONFLICT);
   }
 
   // 채널 업데이트 불가 -> 403 Forbidden
@@ -62,15 +44,6 @@ public class GlobalExceptionHandler {
 
     return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
   }
-
-  @ExceptionHandler(FileUploadException.class)
-  public ResponseEntity<ErrorResponse> handleFileUploadException(FileUploadException e) {
-    log.warn("File not uploaded: {}", e.getMessage());
-    ErrorResponse response = new ErrorResponse("FILE_NOT_UPLOADED", e.getMessage());
-
-    return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-  }
-
   // 커스텀 예외 end
 
   // 자바 표준 예외 start

@@ -1,8 +1,10 @@
 package com.sprint.mission.discodeit.service.basic;
 
+import com.sprint.mission.discodeit.DTO.request.BinaryContentCreateRequest;
 import com.sprint.mission.discodeit.DTO.request.MessageCreateRequest;
 import com.sprint.mission.discodeit.DTO.request.MessageUpdateRequest;
 import com.sprint.mission.discodeit.DTO.response.MessageResponse;
+import com.sprint.mission.discodeit.entity.BinaryContent;
 import com.sprint.mission.discodeit.entity.Channel;
 import com.sprint.mission.discodeit.entity.Message;
 import com.sprint.mission.discodeit.entity.User;
@@ -27,13 +29,14 @@ import org.springframework.web.multipart.MultipartFile;
 public class BasicMessageService implements MessageService {
 
   private final MessageRepository messageRepository;
+
   private final UserRepository userRepository;
   private final ChannelRepository channelRepository;
   private final BinaryContentRepository binaryContentRepository;
-  private final BinaryContentService binaryContentService;
 
   @Override
-  public MessageResponse create(MessageCreateRequest request, List<MultipartFile> files) {
+  public MessageResponse create(MessageCreateRequest request,
+      List<BinaryContentCreateRequest> binaryContentCreateRequests) {
     UUID userId = request.authorId();
     UUID channelId = request.channelId();
 
@@ -42,7 +45,18 @@ public class BasicMessageService implements MessageService {
     channelRepository.findById(channelId)
         .orElseThrow(() -> new NoSuchElementException("해당하는 채널을 찾을 수 없습니다."));
 
-    List<UUID> attachmentIds = binaryContentService.save(files, "images");
+    List<UUID> attachmentIds = binaryContentCreateRequests.stream()
+        .map(attachmentRequest -> {
+          String fileName = attachmentRequest.fileName();
+          String contentType = attachmentRequest.contentType();
+          byte[] bytes = attachmentRequest.bytes();
+
+          BinaryContent binaryContent = new BinaryContent(fileName, (long) bytes.length,
+              contentType, bytes);
+          BinaryContent createdBinaryContent = binaryContentRepository.save(binaryContent);
+          return createdBinaryContent.getId();
+        })
+        .toList();
 
     Message message = new Message(
         request.content(),
@@ -75,13 +89,15 @@ public class BasicMessageService implements MessageService {
   }
 
   @Override
-  public MessageResponse update(UUID id, MessageUpdateRequest request, List<MultipartFile> files) {
+  public MessageResponse update(UUID id, MessageUpdateRequest request) {
     Message message = messageRepository.findById(id)
         .orElseThrow(() -> new NoSuchElementException("수정하려는 메시지가 없습니다."));
 
     message.update(request.content());
 
-    return MessageResponse.from(message);
+    Message savedMessage = messageRepository.save(message);
+
+    return MessageResponse.from(savedMessage);
   }
 
   @Override
@@ -90,7 +106,7 @@ public class BasicMessageService implements MessageService {
         .orElseThrow(() -> new NoSuchElementException("삭제하려는 메시지가 없습니다."));
 
     if (message.getAttachmentIds() != null) {
-      message.getAttachmentIds().forEach(binaryContentRepository::delete);
+      message.getAttachmentIds().forEach(binaryContentRepository::deleteById);
     }
     messageRepository.delete(id);
   }

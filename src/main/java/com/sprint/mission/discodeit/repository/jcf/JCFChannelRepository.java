@@ -41,11 +41,6 @@ public class JCFChannelRepository implements ChannelRepository {
   }
 
   @Override
-  public List<Channel> findAllByStatus(ChannelType type) {
-    return data.values().stream().filter(channel -> channel.getType().equals(type)).toList();
-  }
-
-  @Override
   public void delete(UUID id) {
     this.data.remove(id);
   }

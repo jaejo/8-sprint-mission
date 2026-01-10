@@ -19,5 +19,5 @@ public interface BinaryContentRepository {
 
   List<BinaryContent> findAllByIn(List<UUID> binaryContentIds);
 
-  void delete(UUID id);
+  void deleteById(UUID id);
 }
