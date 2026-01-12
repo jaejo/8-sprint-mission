@@ -1,7 +1,6 @@
 package com.sprint.mission.discodeit.controller;
 
 import com.sprint.mission.discodeit.DTO.request.LoginRequest;
-import com.sprint.mission.discodeit.DTO.response.LoginResponse;
 import com.sprint.mission.discodeit.entity.User;
 import com.sprint.mission.discodeit.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,7 +33,7 @@ public class AuthController {
           description = "로그인 성공",
           content = @Content(
               schema = @Schema(
-                  implementation = LoginResponse.class
+                  implementation = User.class
               )
           )
       ),

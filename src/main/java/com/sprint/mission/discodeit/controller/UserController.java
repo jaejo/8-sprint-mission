@@ -4,7 +4,7 @@ import com.sprint.mission.discodeit.DTO.request.BinaryContentCreateRequest;
 import com.sprint.mission.discodeit.DTO.request.UserCreateRequest;
 import com.sprint.mission.discodeit.DTO.request.UserStatusUpdateRequest;
 import com.sprint.mission.discodeit.DTO.request.UserUpdateRequest;
-import com.sprint.mission.discodeit.DTO.response.UserResponse;
+import com.sprint.mission.discodeit.DTO.response.UserDto;
 import com.sprint.mission.discodeit.entity.User;
 import com.sprint.mission.discodeit.entity.UserStatus;
 import com.sprint.mission.discodeit.service.UserService;
@@ -51,7 +51,7 @@ public class UserController {
           responseCode = "201",
           description = "User가 성공적으로 생성됨",
           content = @Content(
-              schema = @Schema(implementation = UserResponse.class)
+              schema = @Schema(implementation = User.class)
           )
       ),
       @ApiResponse(
@@ -80,12 +80,12 @@ public class UserController {
       responseCode = "200",
       description = "User 목록 조회 성공",
       content = @Content(
-          schema = @Schema(implementation = UserResponse.class)
+          schema = @Schema(implementation = UserDto.class)
       )
   )
   @GetMapping
-  public ResponseEntity<List<UserResponse>> findAll() {
-    List<UserResponse> userResponses = userService.findAll();
+  public ResponseEntity<List<UserDto>> findAll() {
+    List<UserDto> userResponses = userService.findAll();
     return ResponseEntity
         .status(HttpStatus.OK)
         .body(userResponses);
@@ -110,7 +110,7 @@ public class UserController {
           responseCode = "200",
           description = "User 정보가 성공적으로 수정됨",
           content = @Content(
-              schema = @Schema(implementation = UserResponse.class)
+              schema = @Schema(implementation = User.class)
           )
       )
   })

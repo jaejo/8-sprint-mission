@@ -4,7 +4,6 @@ import com.sprint.mission.discodeit.DTO.request.PublicChannelUpdateRequest;
 import com.sprint.mission.discodeit.DTO.request.PrivateChannelCreateRequest;
 import com.sprint.mission.discodeit.DTO.request.PublicChannelCreateRequest;
 import com.sprint.mission.discodeit.DTO.response.ChannelResponse;
-import com.sprint.mission.discodeit.Exception.ChannelUpdateNotAllowedException;
 import com.sprint.mission.discodeit.entity.Channel;
 import com.sprint.mission.discodeit.entity.ChannelType;
 import com.sprint.mission.discodeit.entity.ReadStatus;
@@ -76,7 +75,7 @@ public class BasicChannelService implements ChannelService {
         .orElseThrow(() -> new NoSuchElementException("수정하려는 채널이 없습니다."));
 
     if (channel.getType().equals(ChannelType.PRIVATE)) {
-      throw new ChannelUpdateNotAllowedException();
+      throw new IllegalArgumentException("개인 채널은 수정할 수 없습니다.");
     }
 
     channel.update(request.newName(), request.newDescription());

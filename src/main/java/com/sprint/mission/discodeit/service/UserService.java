@@ -3,7 +3,7 @@ package com.sprint.mission.discodeit.service;
 import com.sprint.mission.discodeit.DTO.request.BinaryContentCreateRequest;
 import com.sprint.mission.discodeit.DTO.request.UserCreateRequest;
 import com.sprint.mission.discodeit.DTO.request.UserUpdateRequest;
-import com.sprint.mission.discodeit.DTO.response.UserResponse;
+import com.sprint.mission.discodeit.DTO.response.UserDto;
 import com.sprint.mission.discodeit.entity.User;
 import java.util.List;
 import java.util.Optional;
@@ -15,11 +15,11 @@ public interface UserService {
       Optional<BinaryContentCreateRequest> profileCreateRequest);
 
   // 단건 조회
-  UserResponse findById(UUID id);
+  UserDto find(UUID id);
 
   //다건 조회
   //- 전체 조회
-  List<UserResponse> findAll();
+  List<UserDto> findAll();
 
   User update(UUID id, UserUpdateRequest request,
       Optional<BinaryContentCreateRequest> profileCreateRequest);

@@ -3,7 +3,7 @@ package com.sprint.mission.discodeit.service.basic;
 import com.sprint.mission.discodeit.DTO.request.BinaryContentCreateRequest;
 import com.sprint.mission.discodeit.DTO.request.UserCreateRequest;
 import com.sprint.mission.discodeit.DTO.request.UserUpdateRequest;
-import com.sprint.mission.discodeit.DTO.response.UserResponse;
+import com.sprint.mission.discodeit.DTO.response.UserDto;
 import com.sprint.mission.discodeit.entity.BinaryContent;
 import com.sprint.mission.discodeit.entity.User;
 import com.sprint.mission.discodeit.entity.UserStatus;
@@ -65,20 +65,19 @@ public class BasicUserService implements UserService {
     return savedUser;
   }
 
-
   @Override
-  public UserResponse findById(UUID id) {
-    return userRepository.findById(id)
-        .map(this::toResponse)
-        .orElseThrow(() -> new NoSuchElementException(id + "가 존재하지 않습니다."));
+  public UserDto find(UUID userId) {
+    return userRepository.findById(userId)
+        .map(this::toDto)
+        .orElseThrow(() -> new NoSuchElementException(userId + "에 해당하는 유저가 없습니다."));
   }
 
   @Override
-  public List<UserResponse> findAll() {
+  public List<UserDto> findAll() {
     List<User> users = userRepository.findAll();
 
     return users.stream()
-        .map(this::toResponse)
+        .map(this::toDto)
         .toList();
   }
 
@@ -140,12 +139,12 @@ public class BasicUserService implements UserService {
     userRepository.delete(userId);
   }
 
-  private UserResponse toResponse(User user) {
+  private UserDto toDto(User user) {
     Boolean online = userStatusRepository.findByUserId(user.getId())
         .map(UserStatus::isOnline)
         .orElse(null);
 
-    return new UserResponse(
+    return new UserDto(
         user.getId(),
         user.getCreatedAt(),
         user.getUpdatedAt(),
