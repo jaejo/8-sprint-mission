@@ -10,13 +10,13 @@ public interface UserStatusRepository {
 
   UserStatus save(UserStatus userStatus);
 
-  boolean existsByUserId(UUID userId);
-
   Optional<UserStatus> findById(UUID id);
 
   Optional<UserStatus> findByUserId(UUID userId);
 
   List<UserStatus> findAll();
+
+  boolean existsById(UUID id);
 
   void deleteById(UUID id);
 

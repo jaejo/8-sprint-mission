@@ -37,7 +37,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Tag(name = "Message", description = "Message API")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/messages")
+@RequestMapping("/api/messages")
 public class MessageController {
 
   private final MessageService messageService;
@@ -123,12 +123,12 @@ public class MessageController {
           )
       )
   })
-  @PatchMapping(path = "/{messageId}")
+  @PatchMapping(path = "{messageId}")
   public ResponseEntity<MessageResponse> update(
       @Parameter(description = "수정할 Message ID", required = true)
       @PathVariable(value = "messageId") UUID messageId,
       @RequestBody MessageUpdateRequest messageUpdateRequest) {
-    System.out.println(messageUpdateRequest.content());
+    System.out.println(messageUpdateRequest.newContent());
     MessageResponse messageResponse = messageService.update(messageId, messageUpdateRequest);
     return ResponseEntity
         .status(HttpStatus.OK)
@@ -149,7 +149,7 @@ public class MessageController {
           )
       )
   })
-  @DeleteMapping(path = "/{messageId}")
+  @DeleteMapping(path = "{messageId}")
   public ResponseEntity<Void> delete(
       @Parameter(description = "삭제할 Message ID", required = true)
       @PathVariable(value = "messageId") UUID messageId) {

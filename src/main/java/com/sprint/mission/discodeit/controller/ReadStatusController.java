@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "ReadStatus", description = "Message 읽음 상태 API")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/readStatuses")
+@RequestMapping("/api/readStatuses")
 public class ReadStatusController {
 
   private final ReadStatusService readStatusService;
@@ -103,7 +103,7 @@ public class ReadStatusController {
           )
       )
   })
-  @PatchMapping(path = "/{readStatusId}")
+  @PatchMapping(path = "{readStatusId}")
   public ResponseEntity<ReadStatus> update(
       @Parameter(description = "수정할 읽음 상태 ID", required = true)
       @PathVariable("readStatusId") UUID readStatusId,

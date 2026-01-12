@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Auth", description = "인증 API")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 
   private final AuthService authService;
@@ -53,7 +53,7 @@ public class AuthController {
           )
       )
   })
-  @PostMapping(path = "/login")
+  @PostMapping(path = "login")
   public ResponseEntity<User> login(@RequestBody LoginRequest request) {
     User user = authService.login(request);
     return ResponseEntity

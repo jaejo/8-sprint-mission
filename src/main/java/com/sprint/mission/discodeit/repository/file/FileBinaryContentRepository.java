@@ -57,17 +57,6 @@ public class FileBinaryContentRepository implements BinaryContentRepository {
   }
 
   @Override
-  public List<BinaryContent> saveAll(List<BinaryContent> contents) {
-    if (contents == null || contents.isEmpty()) {
-      return Collections.emptyList();
-    }
-    for (BinaryContent binaryContent : contents) {
-      this.save(binaryContent);
-    }
-    return contents;
-  }
-
-  @Override
   public Optional<BinaryContent> findById(UUID id) {
     BinaryContent binaryContentNullable = null;
     Path filePath = resolvePath(id);

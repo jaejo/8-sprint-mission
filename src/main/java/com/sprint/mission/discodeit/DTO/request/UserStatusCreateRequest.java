@@ -7,7 +7,7 @@ import java.util.UUID;
 @Schema(description = "생성할 UserStatus 정보")
 public record UserStatusCreateRequest(
     UUID userId,
-    Instant lastAccessAt
+    Instant lastActiveAt
 ) {
 
 }

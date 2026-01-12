@@ -93,7 +93,7 @@ public class BasicMessageService implements MessageService {
     Message message = messageRepository.findById(id)
         .orElseThrow(() -> new NoSuchElementException("수정하려는 메시지가 없습니다."));
 
-    message.update(request.content());
+    message.update(request.newContent());
 
     Message savedMessage = messageRepository.save(message);
 

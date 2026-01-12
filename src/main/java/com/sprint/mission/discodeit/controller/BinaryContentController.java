@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "BinaryContent", description = "첨부 파일 API")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/binaryContents")
+@RequestMapping("/api/binaryContents")
 public class BinaryContentController {
 
   private final BinaryContentService binaryContentService;
@@ -65,8 +65,8 @@ public class BinaryContentController {
           )
       )
   })
-  @GetMapping("/{binaryContentId}")
-  public ResponseEntity<BinaryContentResponse> findById(
+  @GetMapping("{binaryContentId}")
+  public ResponseEntity<BinaryContentResponse> find(
       @Parameter(description = "조회할 첨부 파일 ID", required = true)
       @PathVariable("binaryContentId") UUID binaryContentId) {
     return ResponseEntity

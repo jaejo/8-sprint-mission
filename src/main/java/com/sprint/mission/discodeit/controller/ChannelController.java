@@ -2,7 +2,7 @@ package com.sprint.mission.discodeit.controller;
 
 import com.sprint.mission.discodeit.DTO.request.PrivateChannelCreateRequest;
 import com.sprint.mission.discodeit.DTO.request.PublicChannelCreateRequest;
-import com.sprint.mission.discodeit.DTO.request.ChannelUpdateRequest;
+import com.sprint.mission.discodeit.DTO.request.PublicChannelUpdateRequest;
 import com.sprint.mission.discodeit.DTO.response.ChannelResponse;
 import com.sprint.mission.discodeit.service.ChannelService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,14 +25,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Channel", description = "Channel API")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/channels")
+@RequestMapping("/api/channels")
 public class ChannelController {
 
   private final ChannelService channelService;
@@ -47,7 +46,7 @@ public class ChannelController {
           )
       )
   )
-  @PostMapping("/public")
+  @PostMapping("public")
   public ResponseEntity<ChannelResponse> createPublicChannel(
       @RequestBody PublicChannelCreateRequest channelCreateRequest) {
     return ResponseEntity
@@ -65,7 +64,7 @@ public class ChannelController {
           )
       )
   )
-  @PostMapping("/private")
+  @PostMapping("private")
   public ResponseEntity<ChannelResponse> createPrivateChannel(
       @RequestBody PrivateChannelCreateRequest channelCreateRequest) {
     return ResponseEntity
@@ -117,11 +116,11 @@ public class ChannelController {
           )
       )
   })
-  @PatchMapping("/{channelId}")
+  @PatchMapping("{channelId}")
   public ResponseEntity<ChannelResponse> update(
       @Parameter(description = "수정할 Channel ID", required = true)
       @PathVariable("channelId") UUID channelId,
-      @RequestBody ChannelUpdateRequest channelUpdateRequest) {
+      @RequestBody PublicChannelUpdateRequest channelUpdateRequest) {
     ChannelResponse channelResponse = channelService.update(channelId, channelUpdateRequest);
     return ResponseEntity
         .status(HttpStatus.OK)
@@ -142,7 +141,7 @@ public class ChannelController {
           description = "Channel이 성공적으로 삭제됨"
       )
   })
-  @DeleteMapping(value = "/{channelId}")
+  @DeleteMapping(value = "{channelId}")
   public ResponseEntity<Void> delete(
       @Parameter(description = "삭제할 Channel ID", required = true)
       @PathVariable("channelId") UUID channelId) {

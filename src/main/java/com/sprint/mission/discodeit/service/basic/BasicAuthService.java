@@ -18,6 +18,7 @@ public class BasicAuthService implements AuthService {
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
 
+  @Override
   public User login(LoginRequest request) {
     User user = userRepository.findByUsername(request.username())
         .orElseThrow(() -> new NoSuchElementException("해당 유저가 존재하지 않습니다."));

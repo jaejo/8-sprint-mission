@@ -30,11 +30,6 @@ public class JCFUserStatusRepository implements UserStatusRepository {
   }
 
   @Override
-  public boolean existsByUserId(UUID userId) {
-    return data.values().stream().anyMatch(userStatus -> userStatus.getUserId().equals(userId));
-  }
-
-  @Override
   public Optional<UserStatus> findById(UUID id) {
     return Optional.ofNullable(data.get(id));
   }
@@ -50,6 +45,10 @@ public class JCFUserStatusRepository implements UserStatusRepository {
     return data.values().stream().toList();
   }
 
+  @Override
+  public boolean existsById(UUID id) {
+    return this.data.containsKey(id);
+  }
 
   @Override
   public void deleteById(UUID id) {

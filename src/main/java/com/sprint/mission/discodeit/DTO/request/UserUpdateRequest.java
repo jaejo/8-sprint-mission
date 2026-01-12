@@ -7,8 +7,9 @@ import java.util.UUID;
 @Schema(description = "수정할 User 정보")
 public record UserUpdateRequest(
     String newUsername,
-    String newPassword,
-    String newEmail
+    String newEmail,
+    String newPassword
+
 ) {
 
 }

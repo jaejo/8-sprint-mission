@@ -5,7 +5,7 @@ import com.sprint.mission.discodeit.DTO.request.UserCreateRequest;
 import com.sprint.mission.discodeit.DTO.request.UserStatusUpdateRequest;
 import com.sprint.mission.discodeit.DTO.request.UserUpdateRequest;
 import com.sprint.mission.discodeit.DTO.response.UserResponse;
-import com.sprint.mission.discodeit.DTO.response.UserStatusResponse;
+import com.sprint.mission.discodeit.entity.User;
 import com.sprint.mission.discodeit.entity.UserStatus;
 import com.sprint.mission.discodeit.service.UserService;
 import com.sprint.mission.discodeit.service.UserStatusService;
@@ -39,7 +39,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Tag(name = "User", description = "User API")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
 
   private final UserService userService;
@@ -63,7 +63,7 @@ public class UserController {
       )
   })
   @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-  public ResponseEntity<UserResponse> create(
+  public ResponseEntity<User> create(
       @Parameter(description = "User 생성 요청 정보", required = true)
       @RequestPart(value = "userCreateRequest") UserCreateRequest userCreateRequest,
       @Parameter(description = "User 프로필 이미지")
@@ -115,10 +115,10 @@ public class UserController {
       )
   })
   @PatchMapping(
-      path = "/{userId}",
+      path = "{userId}",
       consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
   )
-  public ResponseEntity<UserResponse> update(
+  public ResponseEntity<User> update(
       @Parameter(description = "수정할 UserID", required = true)
       @PathVariable(value = "userId") UUID userId,
       @Parameter(description = "User 변경 요청 정보", required = true)
@@ -145,17 +145,17 @@ public class UserController {
           responseCode = "200",
           description = "User 온라인 상태가 성공적으로 업데이트됨",
           content = @Content(
-              schema = @Schema(implementation = UserStatusResponse.class)
+              schema = @Schema(implementation = UserStatus.class)
           )
       )
   })
-  @PatchMapping(path = "/{userId}/userStatus")
+  @PatchMapping(path = "{userId}/userStatus")
   public ResponseEntity<UserStatus> updateUserStateByUserId(
       @Parameter(description = "상태를 변경할 User ID", required = true)
       @PathVariable(value = "userId") UUID userId,
       @Parameter(description = "유저 온라인 상태 업데이트 요청", required = true)
       @RequestBody UserStatusUpdateRequest userStatusUpdateRequest) {
-    UserStatus updatedUserStatus = userStatusService.updateUserStatusByUserId(userId,
+    UserStatus updatedUserStatus = userStatusService.updateByUserId(userId,
         userStatusUpdateRequest);
     return ResponseEntity
         .status(HttpStatus.OK)
@@ -176,11 +176,11 @@ public class UserController {
           )
       )
   })
-  @DeleteMapping(path = "/{id}")
+  @DeleteMapping(path = "/{userId}")
   public ResponseEntity<Void> delete(
       @Parameter(description = "삭제할 User ID")
-      @PathVariable("id") UUID id) {
-    userService.delete(id);
+      @PathVariable("userId") UUID userId) {
+    userService.delete(userId);
     return ResponseEntity
         .status(HttpStatus.NO_CONTENT)
         .build();

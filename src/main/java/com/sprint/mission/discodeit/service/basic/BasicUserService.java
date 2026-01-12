@@ -31,7 +31,7 @@ public class BasicUserService implements UserService {
   private final PasswordEncoder passwordEncoder;
 
   @Override
-  public UserResponse create(UserCreateRequest request,
+  public User create(UserCreateRequest request,
       Optional<BinaryContentCreateRequest> optionalProfileCreateRequest) {
     if (userRepository.existsByName(request.username())) {
       throw new IllegalArgumentException(
@@ -54,12 +54,7 @@ public class BasicUserService implements UserService {
 
     String encodedPassword = passwordEncoder.encode(request.password());
 
-    User user = new User(
-        request.username(),
-        encodedPassword,
-        request.email(),
-        profileIdNullable
-    );
+    User user = new User(request.username(), request.email(), encodedPassword, profileIdNullable);
 
     User savedUser = userRepository.save(user);
 
@@ -67,7 +62,7 @@ public class BasicUserService implements UserService {
     UserStatus status = new UserStatus(savedUser.getId(), now);
     userStatusRepository.save(status);
 
-    return toResponse(savedUser);
+    return savedUser;
   }
 
 
@@ -88,7 +83,7 @@ public class BasicUserService implements UserService {
   }
 
   @Override
-  public UserResponse update(UUID userId, UserUpdateRequest request,
+  public User update(UUID userId, UserUpdateRequest request,
       Optional<BinaryContentCreateRequest> optionalProfileCreateRequest) {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new NoSuchElementException("수정하려는 유저가 없습니다."));
@@ -126,16 +121,9 @@ public class BasicUserService implements UserService {
       encodedPassword = passwordEncoder.encode(request.newPassword());
     }
 
-    user.update(
-        request.newUsername(),
-        encodedPassword,
-        request.newEmail(),
-        nullableProfileId)
-    ;
+    user.update(request.newUsername(), request.newEmail(), encodedPassword, nullableProfileId);
 
-    User savedUser = userRepository.save(user);
-
-    return toResponse(savedUser);
+    return userRepository.save(user);
   }
 
   @Override
@@ -159,11 +147,11 @@ public class BasicUserService implements UserService {
 
     return new UserResponse(
         user.getId(),
+        user.getCreatedAt(),
+        user.getUpdatedAt(),
         user.getUsername(),
         user.getEmail(),
         user.getProfileId(),
-        user.getCreatedAt(),
-        user.getModifiedAt(),
         online
     );
   }

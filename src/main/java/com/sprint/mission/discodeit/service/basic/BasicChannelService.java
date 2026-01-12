@@ -1,6 +1,6 @@
 package com.sprint.mission.discodeit.service.basic;
 
-import com.sprint.mission.discodeit.DTO.request.ChannelUpdateRequest;
+import com.sprint.mission.discodeit.DTO.request.PublicChannelUpdateRequest;
 import com.sprint.mission.discodeit.DTO.request.PrivateChannelCreateRequest;
 import com.sprint.mission.discodeit.DTO.request.PublicChannelCreateRequest;
 import com.sprint.mission.discodeit.DTO.response.ChannelResponse;
@@ -71,7 +71,7 @@ public class BasicChannelService implements ChannelService {
   }
 
   @Override
-  public ChannelResponse update(UUID channelId, ChannelUpdateRequest request) {
+  public ChannelResponse update(UUID channelId, PublicChannelUpdateRequest request) {
     Channel channel = channelRepository.findById(channelId)
         .orElseThrow(() -> new NoSuchElementException("수정하려는 채널이 없습니다."));
 
@@ -79,7 +79,7 @@ public class BasicChannelService implements ChannelService {
       throw new ChannelUpdateNotAllowedException();
     }
 
-    channel.update(request.channelName(), request.description());
+    channel.update(request.newName(), request.newDescription());
 
     channelRepository.save(channel);
 
