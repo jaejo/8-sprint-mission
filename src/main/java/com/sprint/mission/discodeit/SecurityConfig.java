@@ -26,7 +26,7 @@ public class SecurityConfig {
                 "/swagger-ui.html"
             ).permitAll()
             .requestMatchers("/assets/**").permitAll()
-            .requestMatchers("/", "/index.html", "/user-list.html").permitAll()
+            .requestMatchers("/", "/index.html").permitAll()
             .requestMatchers("/api/users/**", "/api/channels/**", "/api/messages/**",
                 "/api/readStatuses/**").permitAll()
             .requestMatchers("/api/auth/**").permitAll()

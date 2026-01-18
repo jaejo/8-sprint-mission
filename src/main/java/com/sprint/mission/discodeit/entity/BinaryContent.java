@@ -35,13 +35,9 @@ public class BinaryContent extends BaseEntity implements Serializable {
   @Column(name = "content_type", nullable = false)
   private String contentType;
 
-  @Column(name = "bytes", nullable = false)
-  private byte[] bytes;
-
-  public BinaryContent(String fileName, Long size, String contentType, byte[] bytes) {
+  public BinaryContent(String fileName, Long size, String contentType) {
     this.fileName = fileName;
     this.size = size;
     this.contentType = contentType;
-    this.bytes = bytes;
   }
 }

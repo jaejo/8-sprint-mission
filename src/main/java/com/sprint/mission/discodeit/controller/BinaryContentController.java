@@ -1,7 +1,9 @@
 package com.sprint.mission.discodeit.controller;
 
-import com.sprint.mission.discodeit.DTO.response.BinaryContentResponse;
+import com.sprint.mission.discodeit.DTO.dto.BinaryContentDto;
 import com.sprint.mission.discodeit.service.BinaryContentService;
+import com.sprint.mission.discodeit.storage.BinaryContentStorage;
+import com.sprint.mission.discodeit.storage.LocalBinaryContentStorage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -28,20 +30,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class BinaryContentController {
 
   private final BinaryContentService binaryContentService;
+  private final BinaryContentStorage binaryContentStorage;
 
   @Operation(summary = "여러 첨부 파일 조회", operationId = "findAllByIdIn")
   @ApiResponse(
       responseCode = "200",
       description = "첨부 파일 목록 조회 성공",
       content = @Content(
-          schema = @Schema(implementation = BinaryContentResponse.class)
+          schema = @Schema(implementation = BinaryContentDto.class)
       )
   )
   @GetMapping
-  public ResponseEntity<List<BinaryContentResponse>> findAllByIdIn(
+  public ResponseEntity<List<BinaryContentDto>> findAllByIdIn(
       @Parameter(description = "조회할 첨부 파일 ID 목록", required = true)
       @RequestParam("binaryContentIds") List<UUID> binaryContentIds) {
-    List<BinaryContentResponse> binaryContentResponses = binaryContentService.findAllByIn(
+    List<BinaryContentDto> binaryContentResponses = binaryContentService.findAllByIn(
         binaryContentIds);
     return ResponseEntity
         .status(HttpStatus.OK)
@@ -54,7 +57,7 @@ public class BinaryContentController {
           responseCode = "200",
           description = "첨부 파일 조회 성공",
           content = @Content(
-              schema = @Schema(implementation = BinaryContentResponse.class)
+              schema = @Schema(implementation = BinaryContentDto.class)
           )
       ),
       @ApiResponse(
@@ -66,11 +69,19 @@ public class BinaryContentController {
       )
   })
   @GetMapping("{binaryContentId}")
-  public ResponseEntity<BinaryContentResponse> find(
+  public ResponseEntity<BinaryContentDto> find(
       @Parameter(description = "조회할 첨부 파일 ID", required = true)
       @PathVariable("binaryContentId") UUID binaryContentId) {
     return ResponseEntity
         .status(HttpStatus.OK)
         .body(binaryContentService.find(binaryContentId));
+  }
+
+  @GetMapping("{binaryContentId}/download")
+  public ResponseEntity<?> download(
+      @Parameter(description = "다운로드할 파일 ID", required = true)
+      @PathVariable("binaryContentId") UUID binaryContentId) {
+    BinaryContentDto binaryContentDto = binaryContentService.find(binaryContentId);
+    return binaryContentStorage.download(binaryContentDto);
   }
 }

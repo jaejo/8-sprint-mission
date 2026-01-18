@@ -1,11 +1,11 @@
 -- 1. 테이블 삭제
--- DROP TABLE IF EXISTS users CASCADE;
--- DROP TABLE IF EXISTS user_statuses CASCADE;
--- DROP TABLE IF EXISTS channels CASCADE;
--- DROP TABLE IF EXISTS messages CASCADE;
--- DROP TABLE IF EXISTS read_statuses CASCADE;
--- DROP TABLE IF EXISTS binary_contents CASCADE;
--- DROP TABLE IF EXISTS message_attachments CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS user_statuses CASCADE;
+DROP TABLE IF EXISTS channels CASCADE;
+DROP TABLE IF EXISTS messages CASCADE;
+DROP TABLE IF EXISTS read_statuses CASCADE;
+DROP TABLE IF EXISTS binary_contents CASCADE;
+DROP TABLE IF EXISTS message_attachments CASCADE;
 
 -- 2. 테이블 생성
 CREATE TABLE IF NOT EXISTS binary_contents
@@ -16,9 +16,21 @@ CREATE TABLE IF NOT EXISTS binary_contents
     file_name    varchar(255) NOT NULL,
     size         bigint       NOT NULL,
     content_type varchar(100) NOT NULL,
-    bytes        bytea        NOT NULL,
     -- table level constraints
     CONSTRAINT pk_binary_contents_id PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS channels
+(
+    -- column level constraints
+    id          uuid        NOT NULL,
+    created_at  timestamptz NOT NULL,
+    updated_at  timestamptz,
+    name        varchar(100),
+    description varchar(500),
+    type        varchar(10) NOT NULL,
+    -- table level constraints
+    CONSTRAINT pk_channels_id PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS users
@@ -35,20 +47,7 @@ CREATE TABLE IF NOT EXISTS users
     CONSTRAINT pk_users_id PRIMARY KEY (id),
     CONSTRAINT uk_users_name UNIQUE (username),
     CONSTRAINT uk_users_email UNIQUE (email),
-    CONSTRAINT fk_users_profile_id FOREIGN KEY (profile_id) REFERENCES binary_contents (id)
-);
-
-CREATE TABLE IF NOT EXISTS channels
-(
-    -- column level constraints
-    id          uuid        NOT NULL,
-    created_at  timestamptz NOT NULL,
-    updated_at  timestamptz,
-    name        varchar(100),
-    description varchar(500),
-    type        varchar(10) NOT NULL,
-    -- table level constraints
-    CONSTRAINT pk_channels_id PRIMARY KEY (id)
+    CONSTRAINT fk_users_profile_id FOREIGN KEY (profile_id) REFERENCES binary_contents (id) ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS user_statuses
@@ -60,9 +59,9 @@ CREATE TABLE IF NOT EXISTS user_statuses
     user_id        uuid        NOT NULL,
     last_active_at timestamptz NOT NULL,
     -- table level constraints
-    CONSTRAINT pk_user_statues_id PRIMARY KEY (id),
-    CONSTRAINT fk_user_statues_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
-    CONSTRAINT uk_user_statues_user_id UNIQUE (user_id)
+    CONSTRAINT pk_user_statuses_id PRIMARY KEY (id),
+    CONSTRAINT fk_user_statuses_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    CONSTRAINT uk_user_statuses_user_id UNIQUE (user_id)
 );
 
 CREATE TABLE IF NOT EXISTS messages
@@ -102,7 +101,7 @@ CREATE TABLE IF NOT EXISTS message_attachments
     attachment_id uuid NOT NULL,
     -- table level constraints
     CONSTRAINT pk_message_id_attachment_id PRIMARY KEY (message_id, attachment_id),
-    CONSTRAINT fk_message_attachments_message_id FOREIGN KEY (message_id) REFERENCES messages ON DELETE CASCADE,
+    CONSTRAINT fk_message_attachments_message_id FOREIGN KEY (message_id) REFERENCES messages (id) ON DELETE CASCADE,
     CONSTRAINT fk_message_attachments_attachment_id FOREIGN KEY (attachment_id) REFERENCES binary_contents (id) ON DELETE CASCADE
 );
 
@@ -155,7 +154,6 @@ COMMENT ON COLUMN binary_contents.created_at IS '첨부파일생성시간';
 COMMENT ON COLUMN binary_contents.file_name IS '첨부파일이름';
 COMMENT ON COLUMN binary_contents.size IS '첨부파일크기';
 COMMENT ON COLUMN binary_contents.content_type IS '첨부파일타입';
-COMMENT ON COLUMN binary_contents.bytes IS '첨부파일바이트';
 
 COMMENT ON COLUMN message_attachments.message_id IS '상위 메시지코드';
 COMMENT ON COLUMN message_attachments.attachment_id IS '상위 첨부파일코드';

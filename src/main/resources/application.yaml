@@ -40,9 +40,10 @@ spring:
 #    org.hibernate.orm.jdbc.bind: true
 
 discodeit:
-  repository:
-    type: file   # jcf | file
-    file-directory: .discodeit
+  storage:
+    type: local
+    local:
+      root-path: ./uploadfiles
 
   session:
     timeout: 5
@@ -61,5 +62,4 @@ discodeit:
       # API 정렬 기준
       operations-sorter: method # HTTP 메서드의 알파벳 기준
       # operations-sorter: alpha # Java 메서드의 알파벳 기준
-
 

@@ -49,10 +49,10 @@ public class ReadStatus extends BaseUpdatableEntity implements Serializable {
   @Column(name = "last_read_at")
   private Instant lastReadAt;
 
-  public ReadStatus(User user, Channel channel) {
+  public ReadStatus(User user, Channel channel, Instant lastReadAt) {
     this.user = user;
     this.channel = channel;
-    this.lastReadAt = Instant.now();
+    this.lastReadAt = lastReadAt;
   }
 
   public void update(Instant newLastReadAt) {

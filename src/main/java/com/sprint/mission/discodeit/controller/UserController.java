@@ -1,10 +1,11 @@
 package com.sprint.mission.discodeit.controller;
 
+import com.sprint.mission.discodeit.DTO.dto.UserStatusDto;
 import com.sprint.mission.discodeit.DTO.request.BinaryContentCreateRequest;
 import com.sprint.mission.discodeit.DTO.request.UserCreateRequest;
 import com.sprint.mission.discodeit.DTO.request.UserStatusUpdateRequest;
 import com.sprint.mission.discodeit.DTO.request.UserUpdateRequest;
-import com.sprint.mission.discodeit.DTO.response.UserDto;
+import com.sprint.mission.discodeit.DTO.dto.UserDto;
 import com.sprint.mission.discodeit.entity.User;
 import com.sprint.mission.discodeit.entity.UserStatus;
 import com.sprint.mission.discodeit.service.UserService;
@@ -63,7 +64,7 @@ public class UserController {
       )
   })
   @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-  public ResponseEntity<User> create(
+  public ResponseEntity<UserDto> create(
       @Parameter(description = "User 생성 요청 정보", required = true)
       @RequestPart(value = "userCreateRequest") UserCreateRequest userCreateRequest,
       @Parameter(description = "User 프로필 이미지")
@@ -118,7 +119,7 @@ public class UserController {
       path = "{userId}",
       consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
   )
-  public ResponseEntity<User> update(
+  public ResponseEntity<UserDto> update(
       @Parameter(description = "수정할 UserID", required = true)
       @PathVariable(value = "userId") UUID userId,
       @Parameter(description = "User 변경 요청 정보", required = true)
@@ -150,16 +151,16 @@ public class UserController {
       )
   })
   @PatchMapping(path = "{userId}/userStatus")
-  public ResponseEntity<UserStatus> updateUserStateByUserId(
+  public ResponseEntity<UserStatusDto> updateUserStateByUserId(
       @Parameter(description = "상태를 변경할 User ID", required = true)
       @PathVariable(value = "userId") UUID userId,
       @Parameter(description = "유저 온라인 상태 업데이트 요청", required = true)
       @RequestBody UserStatusUpdateRequest userStatusUpdateRequest) {
-    UserStatus updatedUserStatus = userStatusService.updateByUserId(userId,
+    UserStatusDto updatedUserStatusDto = userStatusService.updateByUserId(userId,
         userStatusUpdateRequest);
     return ResponseEntity
         .status(HttpStatus.OK)
-        .body(updatedUserStatus);
+        .body(updatedUserStatusDto);
   }
 
   @Operation(summary = "User 삭제", operationId = "delete")
