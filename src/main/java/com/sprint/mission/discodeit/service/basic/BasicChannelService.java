@@ -77,7 +77,8 @@ public class BasicChannelService implements ChannelService {
 
   @Override
   public List<ChannelDto> findAll(UUID userId) {
-    List<UUID> mySubscribedChannelIds = readStatusRepository.findAllByUserId(userId).stream()
+    List<UUID> mySubscribedChannelIds = readStatusRepository.findAllByUserIdWithChannel(userId)
+        .stream()
         .map(readStatus -> readStatus.getChannel().getId())
         .toList();
     return channelRepository.findAll().stream()

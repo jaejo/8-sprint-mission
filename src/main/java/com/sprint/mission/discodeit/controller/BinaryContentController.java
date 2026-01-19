@@ -1,9 +1,9 @@
 package com.sprint.mission.discodeit.controller;
 
 import com.sprint.mission.discodeit.DTO.dto.BinaryContentDto;
+import com.sprint.mission.discodeit.controller.api.BinaryContentApi;
 import com.sprint.mission.discodeit.service.BinaryContentService;
 import com.sprint.mission.discodeit.storage.BinaryContentStorage;
-import com.sprint.mission.discodeit.storage.LocalBinaryContentStorage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -23,23 +22,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "BinaryContent", description = "첨부 파일 API")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/binaryContents")
-public class BinaryContentController {
+public class BinaryContentController implements BinaryContentApi {
 
   private final BinaryContentService binaryContentService;
   private final BinaryContentStorage binaryContentStorage;
 
-  @Operation(summary = "여러 첨부 파일 조회", operationId = "findAllByIdIn")
-  @ApiResponse(
-      responseCode = "200",
-      description = "첨부 파일 목록 조회 성공",
-      content = @Content(
-          schema = @Schema(implementation = BinaryContentDto.class)
-      )
-  )
   @GetMapping
   public ResponseEntity<List<BinaryContentDto>> findAllByIdIn(
       @Parameter(description = "조회할 첨부 파일 ID 목록", required = true)
@@ -51,26 +41,8 @@ public class BinaryContentController {
         .body(binaryContentResponses);
   }
 
-  @Operation(summary = "첨부 파일 조회", operationId = "find")
-  @ApiResponses(value = {
-      @ApiResponse(
-          responseCode = "200",
-          description = "첨부 파일 조회 성공",
-          content = @Content(
-              schema = @Schema(implementation = BinaryContentDto.class)
-          )
-      ),
-      @ApiResponse(
-          responseCode = "400",
-          description = "첨부 파일을 찾을 수 없음",
-          content = @Content(
-              examples = @ExampleObject(value = "BinaryContent with id {binaryContentId} not found")
-          )
-      )
-  })
   @GetMapping("{binaryContentId}")
   public ResponseEntity<BinaryContentDto> find(
-      @Parameter(description = "조회할 첨부 파일 ID", required = true)
       @PathVariable("binaryContentId") UUID binaryContentId) {
     return ResponseEntity
         .status(HttpStatus.OK)
@@ -79,7 +51,6 @@ public class BinaryContentController {
 
   @GetMapping("{binaryContentId}/download")
   public ResponseEntity<?> download(
-      @Parameter(description = "다운로드할 파일 ID", required = true)
       @PathVariable("binaryContentId") UUID binaryContentId) {
     BinaryContentDto binaryContentDto = binaryContentService.find(binaryContentId);
     return binaryContentStorage.download(binaryContentDto);
