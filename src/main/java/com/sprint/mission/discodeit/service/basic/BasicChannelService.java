@@ -56,7 +56,8 @@ public class BasicChannelService implements ChannelService {
         .map(userId -> {
           User user = userRepository.findById(userId)
               .orElseThrow(() -> new NoSuchElementException(" 해당하는 유저가 존재하지 않습니다."));
-          return new ReadStatus(user, channel, Instant.MIN);
+          //Instant.MIN - PostgreSQL 허용 범위를 벗어남
+          return new ReadStatus(user, channel, channel.getCreatedAt());
         })
         .toList();
 
@@ -75,13 +76,13 @@ public class BasicChannelService implements ChannelService {
 
   @Override
   public List<ChannelDto> findAll(UUID userId) {
-    List<Channel> mySubscribedChannelIds = readStatusRepository.findAllByUserId(userId).stream()
-        .map(ReadStatus::getChannel)
+    List<UUID> mySubscribedChannelIds = readStatusRepository.findAllByUserId(userId).stream()
+        .map(readStatus -> readStatus.getChannel().getId())
         .toList();
     return channelRepository.findAll().stream()
         .filter(channel ->
             channel.getType().equals(ChannelType.PUBLIC) ||
-                mySubscribedChannelIds.contains(channel)
+                mySubscribedChannelIds.contains(channel.getId())
         )
         .map(this::toDto)
         .toList();
@@ -114,7 +115,7 @@ public class BasicChannelService implements ChannelService {
     Instant lastMessageAt = messageRepository.findTopByChannelIdOrderByCreatedAtDesc(
             channel.getId())
         .map(Message::getCreatedAt)
-        .orElse(Instant.MIN);
+        .orElse(null);
 
     List<User> participants = new ArrayList<>();
 
