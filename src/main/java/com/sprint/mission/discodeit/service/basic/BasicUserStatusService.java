@@ -16,9 +16,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
+@Transactional(readOnly = true)
 public class BasicUserStatusService implements UserStatusService {
 
   private final UserStatusRepository userStatusRepository;
@@ -27,6 +29,7 @@ public class BasicUserStatusService implements UserStatusService {
   private final UserStatusMapper userStatusMapper;
 
   @Override
+  @Transactional
   public UserStatusDto create(UserStatusCreateRequest request) {
     UUID userId = request.userId();
 
@@ -59,6 +62,7 @@ public class BasicUserStatusService implements UserStatusService {
   }
 
   @Override
+  @Transactional
   public UserStatusDto update(UUID userStatusId, UserStatusUpdateRequest request) {
     Instant newLastActiveAt = request.newLastActiveAt();
 
@@ -82,6 +86,7 @@ public class BasicUserStatusService implements UserStatusService {
   }
 
   @Override
+  @Transactional
   public void delete(UUID userStatusId) {
     UserStatus userStatus = userStatusRepository.findById(userStatusId)
         .orElseThrow(

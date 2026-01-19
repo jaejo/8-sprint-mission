@@ -15,7 +15,6 @@ import com.sprint.mission.discodeit.repository.MessageRepository;
 import com.sprint.mission.discodeit.repository.ReadStatusRepository;
 import com.sprint.mission.discodeit.repository.UserRepository;
 import com.sprint.mission.discodeit.service.ChannelService;
-import jakarta.transaction.Transactional;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +22,11 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
+@Transactional(readOnly = true)
 public class BasicChannelService implements ChannelService {
 
   private final ChannelRepository channelRepository;
@@ -89,6 +90,7 @@ public class BasicChannelService implements ChannelService {
   }
 
   @Override
+  @Transactional
   public ChannelDto update(UUID channelId, PublicChannelUpdateRequest request) {
     Channel channel = channelRepository.findById(channelId)
         .orElseThrow(() -> new NoSuchElementException(channelId + " 해당하는 채널이 존재하지 않습니다."));
@@ -120,7 +122,7 @@ public class BasicChannelService implements ChannelService {
     List<User> participants = new ArrayList<>();
 
     if (channel.getType().equals(ChannelType.PRIVATE)) {
-      readStatusRepository.findAllByChannelId(channel.getId()).stream()
+      readStatusRepository.findAllByChannelIdWithUser(channel.getId()).stream()
           .map(ReadStatus::getUser)
           .forEach(participants::add);
     }

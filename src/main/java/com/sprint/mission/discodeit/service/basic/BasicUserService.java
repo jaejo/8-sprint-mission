@@ -13,7 +13,6 @@ import com.sprint.mission.discodeit.repository.UserRepository;
 import com.sprint.mission.discodeit.repository.UserStatusRepository;
 import com.sprint.mission.discodeit.service.UserService;
 import com.sprint.mission.discodeit.storage.BinaryContentStorage;
-import jakarta.transaction.Transactional;
 import java.time.Instant;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -22,9 +21,11 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
+@Transactional(readOnly = true)
 public class BasicUserService implements UserService {
 
   private final UserRepository userRepository;
@@ -117,7 +118,7 @@ public class BasicUserService implements UserService {
         UUID userProfileId = user.getProfile().getId();
         //byte를 저장해놓은 기존 파일 삭제
         binaryContentStorage.delete(userProfileId);
-        
+
         binaryContentRepository.delete(user.getProfile());
 
       }
