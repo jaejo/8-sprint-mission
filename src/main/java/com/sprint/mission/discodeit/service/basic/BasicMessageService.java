@@ -17,6 +17,7 @@ import com.sprint.mission.discodeit.repository.MessageRepository;
 import com.sprint.mission.discodeit.repository.UserRepository;
 import com.sprint.mission.discodeit.service.MessageService;
 import com.sprint.mission.discodeit.storage.BinaryContentStorage;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -25,7 +26,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,9 +52,9 @@ public class BasicMessageService implements MessageService {
     UUID channelId = request.channelId();
 
     User author = userRepository.findById(userId)
-        .orElseThrow(() -> new NoSuchElementException("해당하는 유저를 찾을 수 없습니다."));
+        .orElseThrow(() -> new NoSuchElementException(userId + " 해당하는 유저를 찾을 수 없습니다."));
     Channel channel = channelRepository.findById(channelId)
-        .orElseThrow(() -> new NoSuchElementException("해당하는 채널을 찾을 수 없습니다."));
+        .orElseThrow(() -> new NoSuchElementException(channelId + " 해당하는 채널을 찾을 수 없습니다."));
 
     List<BinaryContentCreateRequest> fileRequests =
         binaryContentCreateRequests != null ? binaryContentCreateRequests : Collections.emptyList();
@@ -93,17 +93,35 @@ public class BasicMessageService implements MessageService {
   }
 
   @Override
-  public PageResponse<MessageDto> findAllByChannelId(UUID channelId, Pageable pageable) {
+  public PageResponse<MessageDto> findAllByChannelId(UUID channelId, Instant cursor,
+      Pageable pageable) {
     Pageable fixedPageable = PageRequest.of(
-        pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
-        50,
-        Sort.by(Sort.Direction.DESC, "createdAt")
+        0,
+        pageable.getPageSize(),
+        pageable.getSort()
     );
 
-    Slice<Message> messageSlice = messageRepository.findAllByChannelId(channelId, fixedPageable);
+    Slice<Message> messageSlice;
+
+    if (cursor == null) {
+      messageSlice = messageRepository.findAllByChannelId(
+          channelId,
+          fixedPageable
+      );
+    } else {
+      messageSlice = messageRepository.findAllByCursor(
+          channelId,
+          cursor,
+          fixedPageable
+      );
+    }
+
     Slice<MessageDto> messageDtoSlice = messageSlice.map(messageMapper::toDto);
 
-    return pageResponseMapper.fromSlice(messageDtoSlice);
+    return pageResponseMapper.fromSlice(
+        messageDtoSlice,
+        MessageDto::createdAt
+    );
   }
 
   @Override

@@ -70,7 +70,7 @@ public class UserController {
   }
 
   @PatchMapping(path = "{userId}/userStatus")
-  public ResponseEntity<UserStatusDto> updateUserStateByUserId(
+  public ResponseEntity<UserStatusDto> updateUserStatusByUserId(
       @PathVariable(value = "userId") UUID userId,
       @RequestBody UserStatusUpdateRequest userStatusUpdateRequest) {
     UserStatusDto updatedUserStatusDto = userStatusService.updateByUserId(userId,

@@ -5,6 +5,7 @@ import com.sprint.mission.discodeit.DTO.request.LoginRequest;
 import com.sprint.mission.discodeit.entity.User;
 import com.sprint.mission.discodeit.mapper.UserMapper;
 import com.sprint.mission.discodeit.repository.UserRepository;
+import com.sprint.mission.discodeit.repository.UserStatusRepository;
 import com.sprint.mission.discodeit.service.AuthService;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class BasicAuthService implements AuthService {
 
   private final UserRepository userRepository;
@@ -22,6 +23,7 @@ public class BasicAuthService implements AuthService {
   private final UserMapper userMapper;
 
   @Override
+  @Transactional
   public UserDto login(LoginRequest request) {
     String username = request.username();
     String password = request.password();

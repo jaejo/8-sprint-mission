@@ -8,12 +8,21 @@ import org.springframework.data.domain.Slice;
 @Mapper(componentModel = "spring")
 public interface PageResponseMapper {
 
-  // Slice -> PageResponse 변환 (totalElements는 null 처리)
-  // interface에 구현 코드를 넣기 위함
-  default <T> PageResponse<T> fromSlice(Slice<T> slice) {
+  default <T> PageResponse<T> fromSlice(
+      Slice<T> slice,
+      java.util.function.Function<T, Object> cursorExtractor
+  ) {
+    Object nextCursor = null;
+
+    if (!slice.isEmpty()) {
+      T lastElement = slice.getContent()
+          .get(slice.getNumberOfElements() - 1);
+      nextCursor = cursorExtractor.apply(lastElement);
+    }
+
     return new PageResponse<>(
         slice.getContent(),
-        slice.getNumber(),
+        nextCursor,
         slice.getSize(),
         slice.hasNext(),
         null
@@ -23,7 +32,7 @@ public interface PageResponseMapper {
   default <T> PageResponse<T> fromPage(Page<T> page) {
     return new PageResponse<>(
         page.getContent(),
-        page.getNumber(),
+        null,
         page.getSize(),
         page.hasNext(),
         page.getTotalElements()
