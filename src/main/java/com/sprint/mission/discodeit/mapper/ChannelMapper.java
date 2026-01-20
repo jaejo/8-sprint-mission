@@ -18,6 +18,7 @@ import org.mapstruct.Named;
     UserMapper.class})
 public interface ChannelMapper {
 
+  @Mapping(target = "participants")
+  @Mapping(target = "lastMessageAt")
   ChannelDto toDto(Channel channel, List<User> participants, Instant lastMessageAt);
-
 }

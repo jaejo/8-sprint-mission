@@ -14,13 +14,23 @@ public interface ReadStatusRepository extends JpaRepository<ReadStatus, UUID> {
   //N+1  문제 해결
   //Channel - update에서 발생 가능성 있음
   //SELECT * FROM read_statuses where id = user_id_1 이런식으로 (N번 호출)
-  @Query("SELECT rs FROM ReadStatus rs JOIN FETCH rs.user WHERE rs.channel.id = :channelId")
+  @Query(
+      """
+          SELECT rs 
+          FROM ReadStatus rs 
+          JOIN FETCH rs.user 
+          WHERE rs.channel.id = :channelId
+          """)
   List<ReadStatus> findAllByChannelIdWithUser(@Param("channelId") UUID channelId);
 
   // 채널, 유저 정보 즉시 로딩
-  @Query("SELECT rs FROM ReadStatus rs " +
-      "JOIN FETCH rs.channel " +
-      "JOIN FETCH rs.user " +
-      "WHERE rs.user.id = :userId")
+  @Query(
+      """ 
+          SELECT rs 
+          FROM ReadStatus rs
+          JOIN FETCH rs.channel
+          JOIN FETCH rs.user
+          WHERE rs.user.id = :userId
+          """)
   List<ReadStatus> findAllByUserIdWithChannel(@Param("userId") UUID userId);
 }

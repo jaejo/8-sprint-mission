@@ -75,6 +75,7 @@ public class BasicChannelService implements ChannelService {
         .orElseThrow(() -> new NoSuchElementException(channelId + " 해당하는 채널이 존재하지 않습니다."));
   }
 
+  //N+1이 발생할 수 있는 부분
   @Override
   public List<ChannelDto> findAll(UUID userId) {
     List<UUID> mySubscribedChannelIds = readStatusRepository.findAllByUserIdWithChannel(userId)
