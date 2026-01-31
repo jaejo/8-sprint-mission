@@ -17,7 +17,8 @@ public interface ReadStatusRepository extends JpaRepository<ReadStatus, UUID> {
   @Query("""
                   SELECT rs 
                   FROM ReadStatus rs 
-                    JOIN FETCH rs.user 
+                    JOIN FETCH rs.user u
+                    LEFT JOIN FETCH u.profile
                   WHERE rs.channel.id = :channelId
       """)
   List<ReadStatus> findAllByChannelIdWithUser(@Param("channelId") UUID channelId);
@@ -27,7 +28,8 @@ public interface ReadStatusRepository extends JpaRepository<ReadStatus, UUID> {
               SELECT rs 
               FROM ReadStatus rs
                 JOIN FETCH rs.channel
-                JOIN FETCH rs.user
+                JOIN FETCH rs.user u
+                LEFT JOIN FETCH u.profile
               WHERE rs.user.id = :userId
       """)
   List<ReadStatus> findAllByUserIdWithChannel(@Param("userId") UUID userId);
