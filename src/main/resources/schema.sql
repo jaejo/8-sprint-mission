@@ -91,7 +91,8 @@ CREATE TABLE IF NOT EXISTS read_statuses
     -- table level constraints
     CONSTRAINT pk_read_statuses_id PRIMARY KEY (id),
     CONSTRAINT fk_read_statuses_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
-    CONSTRAINT fk_read_statues_channel_id FOREIGN KEY (channel_id) REFERENCES channels (id) ON DELETE CASCADE
+    CONSTRAINT fk_read_statues_channel_id FOREIGN KEY (channel_id) REFERENCES channels (id) ON DELETE CASCADE,
+    CONSTRAINT uk_read_statuses_user_channel UNIQUE (user_id, channel_id)
 );
 
 CREATE TABLE IF NOT EXISTS message_attachments
@@ -104,6 +105,9 @@ CREATE TABLE IF NOT EXISTS message_attachments
     CONSTRAINT fk_message_attachments_message_id FOREIGN KEY (message_id) REFERENCES messages (id) ON DELETE CASCADE,
     CONSTRAINT fk_message_attachments_attachment_id FOREIGN KEY (attachment_id) REFERENCES binary_contents (id) ON DELETE CASCADE
 );
+
+-- 인덱스 추가
+CREATE INDEX idx_messages_channel_created_at ON messages (channel_id, created_at DESC);
 
 -- 테이블 설명 추가
 COMMENT ON TABLE users IS '유저';
