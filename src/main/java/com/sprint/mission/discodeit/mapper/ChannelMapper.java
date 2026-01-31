@@ -15,7 +15,8 @@ import org.mapstruct.Named;
 @Mapper(componentModel = "spring", uses = {
     MessageMapper.class,
     ReadStatusMapper.class,
-    UserMapper.class})
+    UserMapper.class
+})
 public interface ChannelMapper {
 
   @Mapping(target = "participants")

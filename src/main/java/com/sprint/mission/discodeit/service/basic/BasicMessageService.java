@@ -101,20 +101,11 @@ public class BasicMessageService implements MessageService {
         pageable.getSort()
     );
 
-    Slice<Message> messageSlice;
-
-    if (cursor == null) {
-      messageSlice = messageRepository.findAllByChannelId(
-          channelId,
-          fixedPageable
-      );
-    } else {
-      messageSlice = messageRepository.findAllByCursor(
-          channelId,
-          cursor,
-          fixedPageable
-      );
-    }
+    Slice<Message> messageSlice = messageRepository.findAllByChannelIdWithCursor(
+        channelId,
+        cursor,
+        fixedPageable
+    );
 
     Slice<MessageDto> messageDtoSlice = messageSlice.map(messageMapper::toDto);
 

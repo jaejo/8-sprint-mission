@@ -120,7 +120,6 @@ public class BasicUserService implements UserService {
         binaryContentStorage.delete(userProfileId);
 
         binaryContentRepository.delete(user.getProfile());
-
       }
       newProfile = saveBinaryContent(optionalProfileCreateRequest.get());
       binaryContentStorage.put(newProfile.getId(), optionalProfileCreateRequest.get().bytes());

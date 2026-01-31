@@ -6,9 +6,8 @@ import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface MessageRepository extends JpaRepository<Message, UUID>, MessageRepositoryCustom {
+public interface MessageRepositoryCustom {
 
   Slice<Message> findAllByChannelIdWithCursor(UUID channelId, Instant cursor, Pageable pageable);
 

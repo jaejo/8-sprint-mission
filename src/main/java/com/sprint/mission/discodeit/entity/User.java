@@ -50,8 +50,6 @@ public class User extends BaseUpdatableEntity implements Serializable {
   private BinaryContent profile;
 
   // 양방향 일대일 관계
-  // fetch = FetchType.LAZY가 동작안하는 부분에서 삭제해야되지 않은가 싶습니다..
-  // 과제 도식표에서 1:1 양방향 관계로 그려져 있어서 이렇게 해봤습니다.
   @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
   private UserStatus userStatus;
 
