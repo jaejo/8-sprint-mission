@@ -8,7 +8,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import java.io.Serializable;
+import jakarta.validation.constraints.NotNull;
 import java.time.Instant;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,10 +28,9 @@ import lombok.Setter;
         )
     }
 )
-public class ReadStatus extends BaseUpdatableEntity implements Serializable {
+public class ReadStatus extends BaseUpdatableEntity {
 
-  private static final long serialVersionUID = 1L;
-
+  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(
       name = "user_id",
@@ -39,6 +38,7 @@ public class ReadStatus extends BaseUpdatableEntity implements Serializable {
   )
   private User user;
 
+  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(
       name = "channel_id",

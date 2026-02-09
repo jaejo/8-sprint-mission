@@ -7,7 +7,9 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import java.io.Serializable;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,10 +17,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "users", schema = "discodeit_user")
-public class User extends BaseUpdatableEntity implements Serializable {
+public class User extends BaseUpdatableEntity {
 
-  private static final long serialVersionUID = 1L;
-
+  @NotBlank(message = "유저 이름은 필수입니다.")
+  @Size(max = 50, message = "유저 이름은 50자를 초과할 수 없습니다.")
   @Column(
       name = "username",
       length = 50,
@@ -27,6 +29,9 @@ public class User extends BaseUpdatableEntity implements Serializable {
   )
   private String username;
 
+  @NotBlank(message = "이메일은 필수입니다.")
+  @Email(message = "올바른 이메일 형식이 아닙니다.")
+  @Size(max = 100, message = "이메일은 100자를 초과할 수 없습니다.")
   @Column(
       name = "email",
       length = 100,
@@ -35,6 +40,8 @@ public class User extends BaseUpdatableEntity implements Serializable {
   )
   private String email;
 
+  @NotBlank(message = "비밀번호는 필수입니다.")
+  @Size(max = 60, message = "비밀번호는 60자를 초과할 수 없습니다.")
   @Column(
       name = "password",
       length = 60,

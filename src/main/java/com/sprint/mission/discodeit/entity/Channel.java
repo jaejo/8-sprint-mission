@@ -6,6 +6,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,22 +17,25 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "channels", schema = "discodeit_user")
-public class Channel extends BaseUpdatableEntity implements Serializable {
+public class Channel extends BaseUpdatableEntity {
 
-  private static final long serialVersionUID = 1L;
-
+  @NotBlank(message = "채널 이름은 필수입니다.")
+  @Size(max = 100, message = "채널 이름은 100자를 초과할 수 없습니다.")
   @Column(
       name = "name",
       length = 100
   )
   private String name;
 
+  @Size(max = 500, message = "채널 설명은 500자를 초과할 수 없습니다.")
   @Column(
       name = "description",
       length = 500
   )
   private String description;
 
+  @NotNull
+  @Size(max = 10)
   @Enumerated(EnumType.STRING)
   @Column(
       name = "type",

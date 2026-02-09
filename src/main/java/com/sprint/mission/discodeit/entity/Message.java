@@ -10,31 +10,32 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.io.Serializable;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @NoArgsConstructor
 @Entity
 @Table(name = "messages", schema = "discodeit_user")
-public class Message extends BaseUpdatableEntity implements Serializable {
+public class Message extends BaseUpdatableEntity {
 
-  private static final long serialVersionUID = 1L;
-
+  @NotBlank(message = "메시지 내용은 필수입니다.")
   @Column(
       name = "content",
       nullable = false
   )
   private String content;
 
+  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "channel_id")
   private Channel channel;
 
+  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "author_id")
   private User author;

@@ -9,12 +9,10 @@ version = '0.0.1-SNAPSHOT'
 description = 'Demo project for Spring Boot'
 
 java {
-//    toolchain {
-//        languageVersion = JavaLanguageVersion.of(17)
-//    }
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
-
-sourceCompatibility = '17'
 
 configurations {
     compileOnly {
@@ -35,6 +33,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.6'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.postgresql:postgresql'
     annotationProcessor 'org.projectlombok:lombok'
@@ -50,7 +49,7 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-// [QueryDSL Build Options] - QClass 생성 위치 지정 (선택사항이지만 추천)
+// [QueryDSL Build Options] - QClass 생성 위치 지정
 def querydslDir = "$buildDir/generated/querydsl"
 
 sourceSets {

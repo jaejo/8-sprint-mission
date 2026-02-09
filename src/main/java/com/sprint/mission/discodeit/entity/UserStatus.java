@@ -7,7 +7,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import java.io.Serializable;
+import jakarta.validation.constraints.NotNull;
 import java.time.Duration;
 import java.time.Instant;
 import lombok.Getter;
@@ -17,11 +17,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "user_statuses", schema = "discodeit_user")
-public class UserStatus extends BaseUpdatableEntity implements Serializable {
+public class UserStatus extends BaseUpdatableEntity {
 
   private static final int SESSION_TIMEOUT_MINUTES = 5;
-  private static final long serialVersionUID = 1L;
 
+  @NotNull
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(
       name = "user_id",
@@ -30,6 +30,7 @@ public class UserStatus extends BaseUpdatableEntity implements Serializable {
   )
   private User user;
 
+  @NotNull
   @Column(
       name = "last_active_at",
       nullable = false

@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.UUID;
@@ -22,16 +23,17 @@ import org.springframework.data.annotation.CreatedDate;
 @NoArgsConstructor
 @Entity
 @Table(name = "binary_contents", schema = "discodeit_user")
-public class BinaryContent extends BaseEntity implements Serializable {
+public class BinaryContent extends BaseEntity {
 
-  private static final long serialVersionUID = 1L;
-
+  @NotNull
   @Column(name = "file_name", nullable = false)
   private String fileName;
 
+  @NotNull
   @Column(name = "size", nullable = false)
   private Long size;
 
+  @NotNull
   @Column(name = "content_type", nullable = false)
   private String contentType;
 

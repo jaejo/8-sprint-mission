@@ -1,0 +1,27 @@
+server:
+  port: 80
+
+spring:
+  datasource:
+    url: jdbc:postgresql://prod-db-server:5432/discodeit
+    username: prod_user
+    password: prod_password
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    generate-ddl: false
+    properties:
+      hibernate:
+        format_sql: false
+        highlight_sql: false
+        use_sql_comments: false
+
+  sql:
+    init:
+      mode: never
+
+logging:
+  level:
+    org.hibernate.SQL: info
+    org.hibernate.orm.jdbc.bind: info
+    com.sprint.mission.discodeit: info

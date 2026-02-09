@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- 변수 정의 -->
+    <property name="LOG_PATH" value="./.logs"/>
+    <property name="DEV_PATTERN" value="%d{HH:mm:ss.SSS} [%thread] %highlight(%-5level) %cyan(%logger{15}) - %msg%n"/>
+    <property name="PROD_PATTERN" value="%d{yy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+
+    <!-- Appenders -->
+    <appender name="CONSOLE_DEV" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${DEV_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="CONSOLE_PROD" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${PROD_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/application.log</file>
+        <encoder>
+            <pattern>${PROD_PATTERN}</pattern> <!-- 파일에는 항상 PROD 패턴으로 기록 -->
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/application-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <!-- 기본 (프로파일 미지정 시) -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE_PROD"/>
+        <appender-ref ref="FILE"/>
+    </root>
+
+    <!-- dev 프로파일 활성 시 -->
+    <springProfile name="dev">
+        <root level="INFO">
+            <!-- CONSOLE_PROD 참조를 제거하고 CONSOLE_DEV를 사용 -->
+            <appender-ref ref="CONSOLE_DEV"/>
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+
+    <!-- prod 프로파일은 기본 설정을 그대로 사용하므로 별도 정의 필요 없음 -->
+
+</configuration>
