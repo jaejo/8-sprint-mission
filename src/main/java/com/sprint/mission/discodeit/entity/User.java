@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "users", schema = "discodeit_user")
+@Table(name = "users")
 public class User extends BaseUpdatableEntity {
 
   @NotBlank(message = "유저 이름은 필수입니다.")

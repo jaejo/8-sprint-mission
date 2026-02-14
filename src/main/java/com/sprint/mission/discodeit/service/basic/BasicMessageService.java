@@ -124,6 +124,9 @@ public class BasicMessageService implements MessageService {
 
     Slice<MessageDto> messageDtoSlice = messageSlice.map(messageMapper::toDto);
 
+    Instant nextCursor = messageSlice.isEmpty() ? null :
+        messageSlice.getContent().get(messageSlice.getContent().size() - 1).getCreatedAt();
+
     return pageResponseMapper.fromSlice(
         messageDtoSlice,
         MessageDto::createdAt

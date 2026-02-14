@@ -87,7 +87,6 @@ public class BasicChannelService implements ChannelService {
         .orElseThrow(() -> new ChannelNotFoundException(channelId));
   }
 
-  //N+1이 발생할 수 있는 부분
   @Override
   public List<ChannelDto> findAll(UUID userId) {
     List<UUID> mySubscribedChannelIds = readStatusRepository.findAllByUserIdWithChannel(userId)
@@ -134,8 +133,8 @@ public class BasicChannelService implements ChannelService {
           return new ChannelNotFoundException(channelId);
         });
 
-    log.info("Service: 채널 삭제 성공 - ID: {}", channelId);
     channelRepository.delete(channel);
+    log.info("Service: 채널 삭제 성공 - ID: {}", channelId);
   }
 
   private ChannelDto toDto(Channel channel) {

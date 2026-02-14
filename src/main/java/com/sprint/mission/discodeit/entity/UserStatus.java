@@ -16,25 +16,18 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "user_statuses", schema = "discodeit_user")
+@Table(name = "user_statuses")
 public class UserStatus extends BaseUpdatableEntity {
 
   private static final int SESSION_TIMEOUT_MINUTES = 5;
 
   @NotNull
   @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(
-      name = "user_id",
-      unique = true,
-      nullable = false
-  )
+  @JoinColumn(name = "user_id", unique = true, nullable = false)
   private User user;
 
   @NotNull
-  @Column(
-      name = "last_active_at",
-      nullable = false
-  )
+  @Column(name = "last_active_at", nullable = false)
   private Instant lastActiveAt;
 
   public UserStatus(User user, Instant lastActiveAt) {

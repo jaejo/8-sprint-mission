@@ -20,7 +20,6 @@ import lombok.Setter;
 @Entity
 @Table(
     name = "read_statuses",
-    schema = "discodeit_user",
     uniqueConstraints = {
         @UniqueConstraint(
             name = "uk_read_status_user_channel",

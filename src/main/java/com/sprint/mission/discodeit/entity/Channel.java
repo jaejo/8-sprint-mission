@@ -6,20 +6,17 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.io.Serializable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "channels", schema = "discodeit_user")
+@Table(name = "channels")
 public class Channel extends BaseUpdatableEntity {
 
-  @NotBlank(message = "채널 이름은 필수입니다.")
   @Size(max = 100, message = "채널 이름은 100자를 초과할 수 없습니다.")
   @Column(
       name = "name",
@@ -35,7 +32,6 @@ public class Channel extends BaseUpdatableEntity {
   private String description;
 
   @NotNull
-  @Size(max = 10)
   @Enumerated(EnumType.STRING)
   @Column(
       name = "type",
