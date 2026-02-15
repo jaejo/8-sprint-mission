@@ -24,7 +24,6 @@ public abstract class BaseEntity {
   @NotNull
   private UUID id;
 
-  @NotNull
   @CreatedDate
   @Column(
       name = "created_at",

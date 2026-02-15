@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GlobalExceptionHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">discodeit</a> &gt; <a href="index.source.html" class="el_package">com.sprint.mission.discodeit.exception</a> &gt; <span class="el_source">GlobalExceptionHandler.java</span></div><h1>GlobalExceptionHandler.java</h1><pre class="source lang-java linenums">package com.sprint.mission.discodeit.exception;
+
+import java.util.HashMap;
+import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+<span class="fc" id="L12">@Slf4j</span>
+@RestControllerAdvice
+<span class="fc" id="L14">public class GlobalExceptionHandler {</span>
+
+  @ExceptionHandler(DiscodeitException.class)
+  public ResponseEntity&lt;ErrorResponse&gt; handleDiscodeitException(DiscodeitException e) {
+<span class="fc" id="L18">    ErrorCode errorCode = e.getErrorCode();</span>
+<span class="fc" id="L19">    log.warn(&quot;Discode.it Exception: {} - {}&quot;, errorCode.getCode(), errorCode.getMessage());</span>
+<span class="pc bpc" id="L20" title="1 of 2 branches missed.">    if (!e.getDetails().isEmpty()) {</span>
+<span class="fc" id="L21">      log.warn(&quot;Details: {}&quot;, e.getDetails());</span>
+    }
+<span class="fc" id="L23">    return ResponseEntity</span>
+<span class="fc" id="L24">        .status(errorCode.getStatus())</span>
+<span class="fc" id="L25">        .body(ErrorResponse.of(e));</span>
+  }
+
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity&lt;ErrorResponse&gt; handleValidationExceptions(
+      MethodArgumentNotValidException e) {
+<span class="fc" id="L31">    Map&lt;String, Object&gt; details = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L32">    e.getBindingResult().getAllErrors().forEach((error) -&gt; {</span>
+<span class="fc" id="L33">      String fieldName = ((FieldError) error).getField();</span>
+<span class="fc" id="L34">      String errorMessage = error.getDefaultMessage();</span>
+<span class="fc" id="L35">      details.put(fieldName, errorMessage);</span>
+<span class="fc" id="L36">    });</span>
+<span class="fc" id="L37">    log.warn(&quot;Validation failed: {}&quot;, details);</span>
+
+<span class="fc" id="L39">    DiscodeitException discodeitException = new DiscodeitException(ErrorCode.INVALID_REQUEST,</span>
+        details);
+<span class="fc" id="L41">    return ResponseEntity</span>
+<span class="fc" id="L42">        .status(discodeitException.getErrorCode().getStatus())</span>
+<span class="fc" id="L43">        .body(ErrorResponse.of(discodeitException));</span>
+  }
+
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity&lt;ErrorResponse&gt; handleUnexpectedException(Exception e) {
+<span class="nc" id="L48">    log.error(&quot;Unexpected Exception&quot;, e);</span>
+<span class="nc" id="L49">    DiscodeitException discodeitException = new DiscodeitException(ErrorCode.INTERNAL_SERVER_ERROR);</span>
+<span class="nc" id="L50">    return ResponseEntity</span>
+<span class="nc" id="L51">        .status(discodeitException.getErrorCode().getStatus())</span>
+<span class="nc" id="L52">        .body(ErrorResponse.of(discodeitException));</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

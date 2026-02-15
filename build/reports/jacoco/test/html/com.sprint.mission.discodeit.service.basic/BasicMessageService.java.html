@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BasicMessageService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">discodeit</a> &gt; <a href="index.source.html" class="el_package">com.sprint.mission.discodeit.service.basic</a> &gt; <span class="el_source">BasicMessageService.java</span></div><h1>BasicMessageService.java</h1><pre class="source lang-java linenums">package com.sprint.mission.discodeit.service.basic;
+
+import com.sprint.mission.discodeit.DTO.dto.MessageDto;
+import com.sprint.mission.discodeit.DTO.request.BinaryContentCreateRequest;
+import com.sprint.mission.discodeit.DTO.request.MessageCreateRequest;
+import com.sprint.mission.discodeit.DTO.request.MessageUpdateRequest;
+import com.sprint.mission.discodeit.DTO.response.PageResponse;
+import com.sprint.mission.discodeit.entity.BinaryContent;
+import com.sprint.mission.discodeit.entity.Channel;
+import com.sprint.mission.discodeit.entity.Message;
+import com.sprint.mission.discodeit.entity.User;
+import com.sprint.mission.discodeit.exception.ChannelExcption.ChannelNotFoundException;
+import com.sprint.mission.discodeit.exception.MessageException.MessageNotFoundException;
+import com.sprint.mission.discodeit.exception.UserException.UserNotFoundException;
+import com.sprint.mission.discodeit.mapper.MessageMapper;
+import com.sprint.mission.discodeit.mapper.PageResponseMapper;
+import com.sprint.mission.discodeit.repository.BinaryContentRepository;
+import com.sprint.mission.discodeit.repository.ChannelRepository;
+import com.sprint.mission.discodeit.repository.MessageRepository;
+import com.sprint.mission.discodeit.repository.UserRepository;
+import com.sprint.mission.discodeit.service.MessageService;
+import com.sprint.mission.discodeit.storage.BinaryContentStorage;
+import java.time.Instant;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+<span class="fc" id="L35">@Slf4j</span>
+@RequiredArgsConstructor
+@Service
+@Transactional(readOnly = true)
+public class BasicMessageService implements MessageService {
+
+  private final MessageRepository messageRepository;
+
+  private final UserRepository userRepository;
+  private final ChannelRepository channelRepository;
+  private final BinaryContentRepository binaryContentRepository;
+  private final BinaryContentStorage binaryContentStorage;
+
+  private final MessageMapper messageMapper;
+  private final PageResponseMapper pageResponseMapper;
+
+  @Override
+  @Transactional
+  public MessageDto create(MessageCreateRequest request,
+      List&lt;BinaryContentCreateRequest&gt; binaryContentCreateRequests) {
+<span class="fc" id="L55">    UUID userId = request.authorId();</span>
+<span class="fc" id="L56">    UUID channelId = request.channelId();</span>
+<span class="fc" id="L57">    String content = request.content();</span>
+
+<span class="fc" id="L59">    log.info(&quot;Service: 硫붿떆吏� �깮�꽦 �슂泥� - content: {}&quot;, content);</span>
+<span class="fc" id="L60">    User author = userRepository.findById(userId)</span>
+<span class="fc" id="L61">        .orElseThrow(() -&gt; {</span>
+<span class="fc" id="L62">          log.warn(&quot;Service: 硫붿떆吏� �깮�꽦 �떎�뙣(議댁옱�븯吏� �븡�뒗 �쑀��) - ID: {}&quot;, userId);</span>
+<span class="fc" id="L63">          return new UserNotFoundException(userId);</span>
+        });
+
+<span class="fc" id="L66">    Channel channel = channelRepository.findById(channelId)</span>
+<span class="fc" id="L67">        .orElseThrow(() -&gt; {</span>
+<span class="nc" id="L68">          log.warn(&quot;Service: 硫붿떆吏� �깮�꽦 �떎�뙣(議댁옱�븯吏� �븡�뒗 梨꾨꼸) - ID: {}&quot;, channelId);</span>
+<span class="nc" id="L69">          return new ChannelNotFoundException(channelId);</span>
+        });
+
+    List&lt;BinaryContentCreateRequest&gt; fileRequests =
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">        binaryContentCreateRequests != null ? binaryContentCreateRequests : Collections.emptyList();</span>
+
+<span class="fc" id="L75">    List&lt;BinaryContent&gt; attachments = fileRequests.stream()</span>
+<span class="fc" id="L76">        .map(fileRequest -&gt; {</span>
+<span class="nc" id="L77">              BinaryContent binaryContent = new BinaryContent(</span>
+<span class="nc" id="L78">                  fileRequest.fileName(),</span>
+<span class="nc" id="L79">                  (long) fileRequest.bytes().length,</span>
+<span class="nc" id="L80">                  fileRequest.contentType()</span>
+              );
+<span class="nc" id="L82">              binaryContentRepository.save(binaryContent);</span>
+
+<span class="nc" id="L84">              binaryContentStorage.put(binaryContent.getId(), fileRequest.bytes());</span>
+<span class="nc" id="L85">              log.debug(&quot;Service: 硫붿떆吏� 泥⑤��뙆�씪 �뾽濡쒕뱶 �꽦怨� - ID: {}&quot;, binaryContent.getId());</span>
+<span class="nc" id="L86">              return binaryContent;</span>
+            }
+        )
+<span class="fc" id="L89">        .toList();</span>
+
+<span class="fc" id="L91">    Message message = new Message(</span>
+<span class="fc" id="L92">        request.content(),</span>
+        channel,
+        author,
+        attachments
+    );
+
+<span class="fc" id="L98">    Message savedMessage = messageRepository.save(message);</span>
+<span class="fc" id="L99">    log.info(&quot;Service: 硫붿떆吏� �깮�꽦 �꽦怨� - ID: {}&quot;, savedMessage.getId());</span>
+<span class="fc" id="L100">    return messageMapper.toDto(savedMessage);</span>
+  }
+
+  @Override
+  public MessageDto findById(UUID messageId) {
+<span class="nc" id="L105">    return messageRepository.findById(messageId)</span>
+<span class="nc" id="L106">        .map(messageMapper::toDto)</span>
+<span class="nc" id="L107">        .orElseThrow(() -&gt; new MessageNotFoundException(messageId));</span>
+  }
+
+  @Override
+  public PageResponse&lt;MessageDto&gt; findAllByChannelId(UUID channelId, Instant cursor,
+      Pageable pageable) {
+<span class="nc" id="L113">    Pageable fixedPageable = PageRequest.of(</span>
+        0,
+<span class="nc" id="L115">        pageable.getPageSize(),</span>
+<span class="nc" id="L116">        pageable.getSort()</span>
+    );
+
+<span class="nc" id="L119">    Slice&lt;Message&gt; messageSlice = messageRepository.findAllByChannelIdWithCursor(</span>
+        channelId,
+        cursor,
+        fixedPageable
+    );
+
+<span class="nc" id="L125">    Slice&lt;MessageDto&gt; messageDtoSlice = messageSlice.map(messageMapper::toDto);</span>
+
+<span class="nc bnc" id="L127" title="All 2 branches missed.">    Instant nextCursor = messageSlice.isEmpty() ? null :</span>
+<span class="nc" id="L128">        messageSlice.getContent().get(messageSlice.getContent().size() - 1).getCreatedAt();</span>
+
+<span class="nc" id="L130">    return pageResponseMapper.fromSlice(</span>
+        messageDtoSlice,
+        MessageDto::createdAt
+    );
+  }
+
+  @Override
+  @Transactional
+  public MessageDto update(UUID messageId, MessageUpdateRequest request) {
+<span class="fc" id="L139">    log.info(&quot;Service: 硫붿떆吏� �닔�젙 �슂泥� - ID: {}&quot;, messageId);</span>
+<span class="fc" id="L140">    Message message = messageRepository.findById(messageId)</span>
+<span class="fc" id="L141">        .orElseThrow(() -&gt; {</span>
+<span class="fc" id="L142">          log.warn(&quot;Service: 硫붿떆吏� �닔�젙 �떎�뙣(議댁옱�븯吏� �븡�뒗 硫붿떆吏�) - ID: {}&quot;, messageId);</span>
+<span class="fc" id="L143">          return new MessageNotFoundException(messageId);</span>
+        });
+
+<span class="fc" id="L146">    message.update(request.newContent());</span>
+<span class="fc" id="L147">    Message savedMessage = messageRepository.save(message);</span>
+<span class="fc" id="L148">    log.info(&quot;Service: 硫붿떆吏� �닔�젙 �셿猷� - ID: {}&quot;, messageId);</span>
+<span class="fc" id="L149">    return messageMapper.toDto(savedMessage);</span>
+  }
+
+  @Override
+  @Transactional
+  public void delete(UUID messageId) {
+<span class="fc" id="L155">    log.info(&quot;Service: 硫붿떆吏� �궘�젣 �슂泥� - ID: {}&quot;, messageId);</span>
+<span class="fc" id="L156">    Message message = messageRepository.findById(messageId)</span>
+<span class="fc" id="L157">        .orElseThrow(() -&gt; {</span>
+<span class="fc" id="L158">          log.warn(&quot;Service: 硫붿떆吏� �궘�젣 �떎�뙣(議댁옱�븯吏� �븡�뒗 硫붿떆吏�) - ID: {}&quot;, messageId);</span>
+<span class="fc" id="L159">          return new MessageNotFoundException(messageId);</span>
+        });
+
+<span class="fc" id="L162">    messageRepository.delete(message);</span>
+<span class="fc" id="L163">    log.info(&quot;Service: 硫붿떆吏� �궘�젣 �셿猷� - ID: {}&quot;, messageId);</span>
+<span class="fc" id="L164">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

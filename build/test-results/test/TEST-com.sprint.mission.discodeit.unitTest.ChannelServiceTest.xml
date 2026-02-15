@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.sprint.mission.discodeit.unitTest.ChannelServiceTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-02-15T01:04:41.008Z" hostname="DESKTOP-0JVG8OV" time="0.377">
+  <properties/>
+  <testcase name="채널 조회 테스트 - 성공" classname="com.sprint.mission.discodeit.unitTest.ChannelServiceTest" time="0.324"/>
+  <testcase name="채널 정보 수정 테스트 - 실패(존재하지 않는 채널)" classname="com.sprint.mission.discodeit.unitTest.ChannelServiceTest" time="0.014"/>
+  <testcase name="채널 정보 수정 테스트 - 실패(Private 채널은 수정할 수 없음)" classname="com.sprint.mission.discodeit.unitTest.ChannelServiceTest" time="0.009"/>
+  <testcase name="Private 채널 생성 테스트 - 성공" classname="com.sprint.mission.discodeit.unitTest.ChannelServiceTest" time="0.005"/>
+  <testcase name="Public 채널 생성 성공" classname="com.sprint.mission.discodeit.unitTest.ChannelServiceTest" time="0.005"/>
+  <testcase name="채널 삭제 테스트 - 성공" classname="com.sprint.mission.discodeit.unitTest.ChannelServiceTest" time="0.005"/>
+  <testcase name="채널 정보 수정 테스트 - 성공" classname="com.sprint.mission.discodeit.unitTest.ChannelServiceTest" time="0.006"/>
+  <testcase name="채널 삭제 테스트 - 실패(존재하지 않는 채널)" classname="com.sprint.mission.discodeit.unitTest.ChannelServiceTest" time="0.007"/>
+  <system-out><![CDATA[26-02-15 10:04:41.357 [Test worker] INFO  c.s.m.d.s.basic.BasicChannelService [ |  | ] - Service: Public 채널 수정 요청 - ID: 5b53532f-1575-438f-abec-0f79622d19fa
+26-02-15 10:04:41.357 [Test worker] WARN  c.s.m.d.s.basic.BasicChannelService [ |  | ] - Service: Public 채널 수정 실패(존재하지 않는 채널) - ID: 5b53532f-1575-438f-abec-0f79622d19fa
+26-02-15 10:04:41.365 [Test worker] INFO  c.s.m.d.s.basic.BasicChannelService [ |  | ] - Service: Public 채널 수정 요청 - ID: a66d5393-2d6f-4a8a-ada1-baa6fa38cd6f
+26-02-15 10:04:41.365 [Test worker] WARN  c.s.m.d.s.basic.BasicChannelService [ |  | ] - Service: Private 채널은 수정할 수 없습니다. - ID: a66d5393-2d6f-4a8a-ada1-baa6fa38cd6f
+26-02-15 10:04:41.365 [Test worker] INFO  c.s.m.d.s.basic.BasicChannelService [ |  | ] - Service - Private 채널 생성 요청
+26-02-15 10:04:41.365 [Test worker] INFO  c.s.m.d.s.basic.BasicChannelService [ |  | ] - Service - Private 채널 생성 완료 - ID: 41bbfcb4-f7d6-4834-b3a9-51e43b31c476
+26-02-15 10:04:41.365 [Test worker] INFO  c.s.m.d.s.basic.BasicChannelService [ |  | ] - Service: Public 채널 생성 요청 - name: General, description: Public Channel
+26-02-15 10:04:41.365 [Test worker] INFO  c.s.m.d.s.basic.BasicChannelService [ |  | ] - Service: Public 채널 생성 완료 - ID: 4b33ff11-846d-4720-819b-8bb375d9aa25
+26-02-15 10:04:41.380 [Test worker] INFO  c.s.m.d.s.basic.BasicChannelService [ |  | ] - Service: 채널 삭제 요청 - ID: 3d9a8108-7cd1-4e0e-9706-12ebe3cde28b
+26-02-15 10:04:41.380 [Test worker] INFO  c.s.m.d.s.basic.BasicChannelService [ |  | ] - Service: 채널 삭제 성공 - ID: 3d9a8108-7cd1-4e0e-9706-12ebe3cde28b
+26-02-15 10:04:41.380 [Test worker] INFO  c.s.m.d.s.basic.BasicChannelService [ |  | ] - Service: Public 채널 수정 요청 - ID: 7e6a0a73-d751-401a-8dd0-ed5052d1f522
+26-02-15 10:04:41.380 [Test worker] INFO  c.s.m.d.s.basic.BasicChannelService [ |  | ] - Service: Public 채널 수정 완료 - ID: 7e6a0a73-d751-401a-8dd0-ed5052d1f522
+26-02-15 10:04:41.396 [Test worker] INFO  c.s.m.d.s.basic.BasicChannelService [ |  | ] - Service: 채널 삭제 요청 - ID: 6b4bd54b-b4a8-4086-b05d-05f80b2a01b0
+26-02-15 10:04:41.396 [Test worker] WARN  c.s.m.d.s.basic.BasicChannelService [ |  | ] - Service: 채널 삭제 실패(존재하지 않는 채널) - ID: 6b4bd54b-b4a8-4086-b05d-05f80b2a01b0
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

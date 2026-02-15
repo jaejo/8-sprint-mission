@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BasicChannelService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">discodeit</a> &gt; <a href="index.source.html" class="el_package">com.sprint.mission.discodeit.service.basic</a> &gt; <span class="el_source">BasicChannelService.java</span></div><h1>BasicChannelService.java</h1><pre class="source lang-java linenums">package com.sprint.mission.discodeit.service.basic;
+
+import com.sprint.mission.discodeit.DTO.dto.ChannelDto;
+import com.sprint.mission.discodeit.DTO.request.PrivateChannelCreateRequest;
+import com.sprint.mission.discodeit.DTO.request.PublicChannelCreateRequest;
+import com.sprint.mission.discodeit.DTO.request.PublicChannelUpdateRequest;
+import com.sprint.mission.discodeit.entity.Channel;
+import com.sprint.mission.discodeit.entity.ChannelType;
+import com.sprint.mission.discodeit.entity.Message;
+import com.sprint.mission.discodeit.entity.ReadStatus;
+import com.sprint.mission.discodeit.entity.User;
+import com.sprint.mission.discodeit.exception.ChannelExcption.ChannelNotFoundException;
+import com.sprint.mission.discodeit.exception.ChannelExcption.PrivateChannelModificationNotAllowedException;
+import com.sprint.mission.discodeit.exception.UserException.UserNotFoundException;
+import com.sprint.mission.discodeit.mapper.ChannelMapper;
+import com.sprint.mission.discodeit.repository.ChannelRepository;
+import com.sprint.mission.discodeit.repository.MessageRepository;
+import com.sprint.mission.discodeit.repository.ReadStatusRepository;
+import com.sprint.mission.discodeit.repository.UserRepository;
+import com.sprint.mission.discodeit.service.ChannelService;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+<span class="fc" id="L30">@Slf4j</span>
+@RequiredArgsConstructor
+@Service
+@Transactional(readOnly = true)
+public class BasicChannelService implements ChannelService {
+
+  private final ChannelRepository channelRepository;
+  private final UserRepository userRepository;
+  private final MessageRepository messageRepository;
+  private final ReadStatusRepository readStatusRepository;
+
+  private final ChannelMapper channelMapper;
+
+  @Transactional
+  @Override
+  public ChannelDto create(PublicChannelCreateRequest request) {
+<span class="fc" id="L46">    String name = request.name();</span>
+<span class="fc" id="L47">    String description = request.description();</span>
+
+<span class="fc" id="L49">    log.info(&quot;Service: Public 梨꾨꼸 �깮�꽦 �슂泥� - name: {}, description: {}&quot;, name, description);</span>
+<span class="fc" id="L50">    Channel channel = new Channel(name, description, ChannelType.PUBLIC);</span>
+<span class="fc" id="L51">    Channel savedChannel = channelRepository.save(channel);</span>
+<span class="fc" id="L52">    log.info(&quot;Service: Public 梨꾨꼸 �깮�꽦 �셿猷� - ID: {}&quot;, savedChannel.getId());</span>
+
+<span class="fc" id="L54">    return this.toDto(savedChannel);</span>
+  }
+
+  @Transactional
+  @Override
+  public ChannelDto create(PrivateChannelCreateRequest request) {
+<span class="fc" id="L60">    log.info(&quot;Service - Private 梨꾨꼸 �깮�꽦 �슂泥�&quot;);</span>
+<span class="fc" id="L61">    Channel channel = new Channel(null, null, ChannelType.PRIVATE);</span>
+<span class="fc" id="L62">    Channel savedChannel = channelRepository.save(channel);</span>
+
+<span class="fc" id="L64">    List&lt;ReadStatus&gt; readStatuses = request.participantIds().stream()</span>
+<span class="fc" id="L65">        .map(userId -&gt; {</span>
+<span class="fc" id="L66">          User user = userRepository.findById(userId)</span>
+<span class="fc" id="L67">              .orElseThrow(() -&gt; {</span>
+<span class="nc" id="L68">                log.warn(&quot;Service: Private 梨꾨꼸 �깮�꽦 �떎�뙣(議댁옱�븯吏� �븡�뒗 �쑀��) - ID: {}&quot;, userId);</span>
+<span class="nc" id="L69">                return new UserNotFoundException(userId);</span>
+              });
+
+<span class="fc" id="L72">          return new ReadStatus(user, channel, channel.getCreatedAt());</span>
+        })
+<span class="fc" id="L74">        .toList();</span>
+
+    //�꽦�뒫 �뼢�긽�쓣 �쐞�빐 �븯�굹�뵫 ���옣�븯�뒗 寃껊낫�떎 �븳踰덉뿉 ���옣�븯�뒗 濡쒖쭅
+<span class="fc" id="L77">    readStatusRepository.saveAll(readStatuses);</span>
+
+<span class="fc" id="L79">    log.info(&quot;Service - Private 梨꾨꼸 �깮�꽦 �셿猷� - ID: {}&quot;, savedChannel.getId());</span>
+<span class="fc" id="L80">    return this.toDto(savedChannel);</span>
+  }
+
+  @Override
+  public ChannelDto find(UUID channelId) {
+<span class="nc" id="L85">    return channelRepository.findById(channelId)</span>
+<span class="nc" id="L86">        .map(this::toDto)</span>
+<span class="nc" id="L87">        .orElseThrow(() -&gt; new ChannelNotFoundException(channelId));</span>
+  }
+
+  @Override
+  public List&lt;ChannelDto&gt; findAll(UUID userId) {
+<span class="fc" id="L92">    List&lt;UUID&gt; mySubscribedChannelIds = readStatusRepository.findAllByUserIdWithChannel(userId)</span>
+<span class="fc" id="L93">        .stream()</span>
+<span class="fc" id="L94">        .map(ReadStatus::getChannel)</span>
+<span class="fc" id="L95">        .map(Channel::getId)</span>
+<span class="fc" id="L96">        .toList();</span>
+
+<span class="fc" id="L98">    return channelRepository.findAllByTypeOrIdIn(ChannelType.PUBLIC, mySubscribedChannelIds)</span>
+<span class="fc" id="L99">        .stream()</span>
+<span class="fc" id="L100">        .map(this::toDto)</span>
+<span class="fc" id="L101">        .toList();</span>
+  }
+
+  @Override
+  @Transactional
+  public ChannelDto update(UUID channelId, PublicChannelUpdateRequest request) {
+<span class="fc" id="L107">    log.info(&quot;Service: Public 梨꾨꼸 �닔�젙 �슂泥� - ID: {}&quot;, channelId);</span>
+<span class="fc" id="L108">    Channel channel = channelRepository.findById(channelId)</span>
+<span class="fc" id="L109">        .orElseThrow(() -&gt; {</span>
+<span class="fc" id="L110">          log.warn(&quot;Service: Public 梨꾨꼸 �닔�젙 �떎�뙣(議댁옱�븯吏� �븡�뒗 梨꾨꼸) - ID: {}&quot;, channelId);</span>
+<span class="fc" id="L111">          return new ChannelNotFoundException(channelId);</span>
+        });
+
+<span class="fc bfc" id="L114" title="All 2 branches covered.">    if (channel.getType().equals(ChannelType.PRIVATE)) {</span>
+<span class="fc" id="L115">      log.warn(&quot;Service: Private 梨꾨꼸�� �닔�젙�븷 �닔 �뾾�뒿�땲�떎. - ID: {}&quot;, channelId);</span>
+<span class="fc" id="L116">      throw new PrivateChannelModificationNotAllowedException(channelId);</span>
+    }
+
+<span class="fc" id="L119">    channel.update(request.newName(), request.newDescription());</span>
+
+<span class="fc" id="L121">    log.info(&quot;Service: Public 梨꾨꼸 �닔�젙 �셿猷� - ID: {}&quot;, channelId);</span>
+<span class="fc" id="L122">    return this.toDto(channelRepository.save(channel));</span>
+  }
+
+  @Override
+  @Transactional
+  public void delete(UUID channelId) {
+<span class="fc" id="L128">    log.info(&quot;Service: 梨꾨꼸 �궘�젣 �슂泥� - ID: {}&quot;, channelId);</span>
+<span class="fc" id="L129">    Channel channel = channelRepository.findById(channelId)</span>
+<span class="fc" id="L130">        .orElseThrow(() -&gt; {</span>
+<span class="fc" id="L131">          log.warn(&quot;Service: 梨꾨꼸 �궘�젣 �떎�뙣(議댁옱�븯吏� �븡�뒗 梨꾨꼸) - ID: {}&quot;, channelId);</span>
+<span class="fc" id="L132">          return new ChannelNotFoundException(channelId);</span>
+        });
+
+<span class="fc" id="L135">    channelRepository.delete(channel);</span>
+<span class="fc" id="L136">    log.info(&quot;Service: 梨꾨꼸 �궘�젣 �꽦怨� - ID: {}&quot;, channelId);</span>
+<span class="fc" id="L137">  }</span>
+
+  private ChannelDto toDto(Channel channel) {
+<span class="fc" id="L140">    Instant lastMessageAt = messageRepository.findTopByChannelIdOrderByCreatedAtDesc(</span>
+<span class="fc" id="L141">            channel.getId())</span>
+<span class="fc" id="L142">        .map(Message::getCreatedAt)</span>
+<span class="fc" id="L143">        .orElse(null);</span>
+
+<span class="fc" id="L145">    List&lt;User&gt; participants = new ArrayList&lt;&gt;();</span>
+
+<span class="fc bfc" id="L147" title="All 2 branches covered.">    if (channel.getType().equals(ChannelType.PRIVATE)) {</span>
+<span class="fc" id="L148">      readStatusRepository.findAllByChannelIdWithUser(channel.getId()).stream()</span>
+<span class="fc" id="L149">          .map(ReadStatus::getUser)</span>
+<span class="fc" id="L150">          .forEach(participants::add);</span>
+    }
+
+<span class="fc" id="L153">    return channelMapper.toDto(channel, participants, lastMessageAt);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

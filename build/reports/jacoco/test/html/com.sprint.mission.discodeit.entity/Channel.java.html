@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Channel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">discodeit</a> &gt; <a href="index.source.html" class="el_package">com.sprint.mission.discodeit.entity</a> &gt; <span class="el_source">Channel.java</span></div><h1>Channel.java</h1><pre class="source lang-java linenums">package com.sprint.mission.discodeit.entity;
+
+import com.sprint.mission.discodeit.entity.base.BaseUpdatableEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor
+@Entity
+@Table(name = &quot;channels&quot;)
+public class Channel extends BaseUpdatableEntity {
+
+  @Size(max = 100, message = &quot;梨꾨꼸 �씠由꾩� 100�옄瑜� 珥덇낵�븷 �닔 �뾾�뒿�땲�떎.&quot;)
+  @Column(
+      name = &quot;name&quot;,
+      length = 100
+  )
+  private String name;
+
+  @Size(max = 500, message = &quot;梨꾨꼸 �꽕紐낆� 500�옄瑜� 珥덇낵�븷 �닔 �뾾�뒿�땲�떎.&quot;)
+  @Column(
+      name = &quot;description&quot;,
+      length = 500
+  )
+  private String description;
+
+  @NotNull
+  @Enumerated(EnumType.STRING)
+  @Column(
+      name = &quot;type&quot;,
+      length = 10,
+      nullable = false
+  )
+  private ChannelType type;
+
+<span class="fc" id="L43">  public Channel(String name, String description, ChannelType type) {</span>
+<span class="fc" id="L44">    this.name = name;</span>
+<span class="fc" id="L45">    this.description = description;</span>
+<span class="fc" id="L46">    this.type = type;</span>
+<span class="fc" id="L47">  }</span>
+
+  public void update(String newName, String newDescription) {
+<span class="pc bpc" id="L50" title="2 of 4 branches missed.">    if (newName != null &amp;&amp; !newName.equals(this.name)) {</span>
+<span class="fc" id="L51">      this.name = newName;</span>
+    }
+<span class="pc bpc" id="L53" title="2 of 4 branches missed.">    if (newDescription != null &amp;&amp; !newDescription.equals(this.description)) {</span>
+<span class="fc" id="L54">      this.description = newDescription;</span>
+    }
+<span class="fc" id="L56">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

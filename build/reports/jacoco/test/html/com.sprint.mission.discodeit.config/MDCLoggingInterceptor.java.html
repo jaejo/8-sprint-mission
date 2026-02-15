@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MDCLoggingInterceptor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">discodeit</a> &gt; <a href="index.source.html" class="el_package">com.sprint.mission.discodeit.config</a> &gt; <span class="el_source">MDCLoggingInterceptor.java</span></div><h1>MDCLoggingInterceptor.java</h1><pre class="source lang-java linenums">package com.sprint.mission.discodeit.config;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.HandlerInterceptor;
+
+<span class="fc" id="L11">@Slf4j</span>
+@Component
+<span class="fc" id="L13">public class MDCLoggingInterceptor implements HandlerInterceptor {</span>
+
+  private static final String REQUEST_ID = &quot;requestId&quot;;
+  private static final String REQUEST_METHOD = &quot;requestMethod&quot;;
+  private static final String REQUEST_URI = &quot;requestUri&quot;;
+  private static final String REQUEST_ID_HEADER = &quot;Discodeit-Request-ID&quot;;
+
+  @Override
+  public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
+      Object handler) {
+<span class="fc" id="L23">    String requestId = UUID.randomUUID().toString().replaceAll(&quot;-&quot;, &quot;&quot;);</span>
+
+<span class="fc" id="L25">    MDC.put(REQUEST_ID, requestId);</span>
+<span class="fc" id="L26">    MDC.put(REQUEST_METHOD, request.getMethod());</span>
+<span class="fc" id="L27">    MDC.put(REQUEST_URI, request.getRequestURI());</span>
+
+<span class="fc" id="L29">    response.setHeader(REQUEST_ID_HEADER, requestId);</span>
+
+<span class="fc" id="L31">    log.debug(&quot;�슂泥� �떆�옉&quot;);</span>
+<span class="fc" id="L32">    return true;</span>
+  }
+
+  @Override
+  public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
+      Object handler, Exception e) {
+<span class="fc" id="L38">    log.debug(&quot;�슂泥� �셿猷�&quot;);</span>
+<span class="fc" id="L39">    MDC.clear();</span>
+<span class="fc" id="L40">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

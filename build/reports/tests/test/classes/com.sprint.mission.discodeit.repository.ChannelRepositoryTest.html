@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - ChannelRepositoryTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>ChannelRepositoryTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/com.sprint.mission.discodeit.repository.html">com.sprint.mission.discodeit.repository</a> &gt; ChannelRepositoryTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">3</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">0.104s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="tab-container">
+<ul class="tabLinks">
+<li>
+<a href="#">Tests</a>
+</li>
+<li>
+<a href="#">Standard output</a>
+</li>
+</ul>
+<div class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Method name</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">ID 목록이 비어있으면 타입이 PUBLIC인 채널만 조회</td>
+<td class="success">findAllByTypeOrIdIn_EmptyIdList_ReturnsOnlyPublicChannels()</td>
+<td class="success">0.028s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">타입이 PUBLIC이거나 ID 목록에 포함된 채널을 모두 조회</td>
+<td class="success">findAllByTypeOrIdIn_ReturnsPublicAndSelectedPrivateChannels()</td>
+<td class="success">0.052s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Public 채널 저장 테스트</td>
+<td class="success">save_PublicChannel_Success()</td>
+<td class="success">0.024s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>26-02-15 10:04:39.941 [Test worker] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils [ |  | ] - Could not detect default configuration classes for test class [com.sprint.mission.discodeit.repository.ChannelRepositoryTest]: ChannelRepositoryTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+26-02-15 10:04:39.943 [Test worker] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper [ |  | ] - Found @SpringBootConfiguration com.sprint.mission.discodeit.DiscodeitApplication for test class com.sprint.mission.discodeit.repository.ChannelRepositoryTest
+26-02-15 10:04:39.955 [Test worker] DEBUG org.hibernate.SQL [ |  | ] - 
+    insert 
+    into
+        channels
+        (created_at, description, name, type, updated_at, id) 
+    values
+        (?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        channels
+        (created_at, description, name, type, updated_at, id) 
+    values
+        (?, ?, ?, ?, ?, ?)
+26-02-15 10:04:39.955 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (1:TIMESTAMP_UTC) &lt;- [2026-02-15T01:04:39.955225400Z]
+26-02-15 10:04:39.955 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (2:VARCHAR) &lt;- [Description for 공개채널1]
+26-02-15 10:04:39.955 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (3:VARCHAR) &lt;- [공개채널1]
+26-02-15 10:04:39.955 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (4:VARCHAR) &lt;- [PUBLIC]
+26-02-15 10:04:39.955 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (5:TIMESTAMP_UTC) &lt;- [2026-02-15T01:04:39.955225400Z]
+26-02-15 10:04:39.955 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (6:UUID) &lt;- [d8772bd5-6a61-4a0b-88d3-0b8066af3667]
+26-02-15 10:04:39.955 [Test worker] DEBUG org.hibernate.SQL [ |  | ] - 
+    insert 
+    into
+        channels
+        (created_at, description, name, type, updated_at, id) 
+    values
+        (?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        channels
+        (created_at, description, name, type, updated_at, id) 
+    values
+        (?, ?, ?, ?, ?, ?)
+26-02-15 10:04:39.955 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (1:TIMESTAMP_UTC) &lt;- [2026-02-15T01:04:39.955225400Z]
+26-02-15 10:04:39.955 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (2:VARCHAR) &lt;- [Description for 공개채널2]
+26-02-15 10:04:39.955 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (3:VARCHAR) &lt;- [공개채널2]
+26-02-15 10:04:39.955 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (4:VARCHAR) &lt;- [PUBLIC]
+26-02-15 10:04:39.955 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (5:TIMESTAMP_UTC) &lt;- [2026-02-15T01:04:39.955225400Z]
+26-02-15 10:04:39.955 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (6:UUID) &lt;- [55d69864-ab62-4e34-935f-e33199be9be9]
+26-02-15 10:04:39.965 [Test worker] DEBUG org.hibernate.SQL [ |  | ] - 
+    insert 
+    into
+        channels
+        (created_at, description, name, type, updated_at, id) 
+    values
+        (?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        channels
+        (created_at, description, name, type, updated_at, id) 
+    values
+        (?, ?, ?, ?, ?, ?)
+26-02-15 10:04:39.965 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (1:TIMESTAMP_UTC) &lt;- [2026-02-15T01:04:39.955225400Z]
+26-02-15 10:04:39.965 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (2:VARCHAR) &lt;- [Description for 비공개채널1]
+26-02-15 10:04:39.965 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (3:VARCHAR) &lt;- [비공개채널1]
+26-02-15 10:04:39.965 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (4:VARCHAR) &lt;- [PRIVATE]
+26-02-15 10:04:39.965 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (5:TIMESTAMP_UTC) &lt;- [2026-02-15T01:04:39.955225400Z]
+26-02-15 10:04:39.965 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (6:UUID) &lt;- [00b3a536-c82b-4ae3-b091-60cc9f112af2]
+26-02-15 10:04:39.965 [Test worker] DEBUG org.hibernate.SQL [ |  | ] - 
+    insert 
+    into
+        channels
+        (created_at, description, name, type, updated_at, id) 
+    values
+        (?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        channels
+        (created_at, description, name, type, updated_at, id) 
+    values
+        (?, ?, ?, ?, ?, ?)
+26-02-15 10:04:39.965 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (1:TIMESTAMP_UTC) &lt;- [2026-02-15T01:04:39.965003300Z]
+26-02-15 10:04:39.965 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (2:VARCHAR) &lt;- [Description for 비공개채널2]
+26-02-15 10:04:39.965 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (3:VARCHAR) &lt;- [비공개채널2]
+26-02-15 10:04:39.965 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (4:VARCHAR) &lt;- [PRIVATE]
+26-02-15 10:04:39.965 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (5:TIMESTAMP_UTC) &lt;- [2026-02-15T01:04:39.965003300Z]
+26-02-15 10:04:39.965 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (6:UUID) &lt;- [a5889d93-b218-44e2-9c17-4236155a80fd]
+26-02-15 10:04:39.981 [Test worker] DEBUG org.hibernate.SQL [ |  | ] - 
+    select
+        c1_0.id,
+        c1_0.created_at,
+        c1_0.description,
+        c1_0.name,
+        c1_0.type,
+        c1_0.updated_at 
+    from
+        channels c1_0 
+    where
+        c1_0.type=? 
+        or c1_0.id in (?)
+Hibernate: 
+    select
+        c1_0.id,
+        c1_0.created_at,
+        c1_0.description,
+        c1_0.name,
+        c1_0.type,
+        c1_0.updated_at 
+    from
+        channels c1_0 
+    where
+        c1_0.type=? 
+        or c1_0.id in (?)
+26-02-15 10:04:39.981 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (1:VARCHAR) &lt;- [PUBLIC]
+26-02-15 10:04:39.981 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (2:UUID) &lt;- [00b3a536-c82b-4ae3-b091-60cc9f112af2]
+26-02-15 10:04:40.002 [Test worker] DEBUG org.hibernate.SQL [ |  | ] - 
+    insert 
+    into
+        channels
+        (created_at, description, name, type, updated_at, id) 
+    values
+        (?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        channels
+        (created_at, description, name, type, updated_at, id) 
+    values
+        (?, ?, ?, ?, ?, ?)
+26-02-15 10:04:40.002 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (1:TIMESTAMP_UTC) &lt;- [2026-02-15T01:04:40.002008700Z]
+26-02-15 10:04:40.013 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (2:VARCHAR) &lt;- [Description for 공개채널1]
+26-02-15 10:04:40.013 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (3:VARCHAR) &lt;- [공개채널1]
+26-02-15 10:04:40.013 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (4:VARCHAR) &lt;- [PUBLIC]
+26-02-15 10:04:40.013 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (5:TIMESTAMP_UTC) &lt;- [2026-02-15T01:04:40.002008700Z]
+26-02-15 10:04:40.013 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (6:UUID) &lt;- [a9ff2579-55ce-4126-ac9f-0cbf41a3010a]
+26-02-15 10:04:40.013 [Test worker] DEBUG org.hibernate.SQL [ |  | ] - 
+    insert 
+    into
+        channels
+        (created_at, description, name, type, updated_at, id) 
+    values
+        (?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        channels
+        (created_at, description, name, type, updated_at, id) 
+    values
+        (?, ?, ?, ?, ?, ?)
+26-02-15 10:04:40.013 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (1:TIMESTAMP_UTC) &lt;- [2026-02-15T01:04:40.013035800Z]
+26-02-15 10:04:40.013 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (2:VARCHAR) &lt;- [Description for 공개채널2]
+26-02-15 10:04:40.013 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (3:VARCHAR) &lt;- [공개채널2]
+26-02-15 10:04:40.013 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (4:VARCHAR) &lt;- [PUBLIC]
+26-02-15 10:04:40.013 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (5:TIMESTAMP_UTC) &lt;- [2026-02-15T01:04:40.013035800Z]
+26-02-15 10:04:40.013 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (6:UUID) &lt;- [6ac2cede-82da-4de5-a9c0-6fa532cf7314]
+26-02-15 10:04:40.013 [Test worker] DEBUG org.hibernate.SQL [ |  | ] - 
+    insert 
+    into
+        channels
+        (created_at, description, name, type, updated_at, id) 
+    values
+        (?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        channels
+        (created_at, description, name, type, updated_at, id) 
+    values
+        (?, ?, ?, ?, ?, ?)
+26-02-15 10:04:40.013 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (1:TIMESTAMP_UTC) &lt;- [2026-02-15T01:04:40.013035800Z]
+26-02-15 10:04:40.013 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (2:VARCHAR) &lt;- [Description for 비공개채널1]
+26-02-15 10:04:40.013 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (3:VARCHAR) &lt;- [비공개채널1]
+26-02-15 10:04:40.013 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (4:VARCHAR) &lt;- [PRIVATE]
+26-02-15 10:04:40.013 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (5:TIMESTAMP_UTC) &lt;- [2026-02-15T01:04:40.013035800Z]
+26-02-15 10:04:40.013 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (6:UUID) &lt;- [fface2b6-46f2-4746-b24e-edbee55520c3]
+26-02-15 10:04:40.013 [Test worker] DEBUG org.hibernate.SQL [ |  | ] - 
+    select
+        c1_0.id,
+        c1_0.created_at,
+        c1_0.description,
+        c1_0.name,
+        c1_0.type,
+        c1_0.updated_at 
+    from
+        channels c1_0 
+    where
+        c1_0.type=? 
+        or c1_0.id in (?)
+Hibernate: 
+    select
+        c1_0.id,
+        c1_0.created_at,
+        c1_0.description,
+        c1_0.name,
+        c1_0.type,
+        c1_0.updated_at 
+    from
+        channels c1_0 
+    where
+        c1_0.type=? 
+        or c1_0.id in (?)
+26-02-15 10:04:40.013 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (1:VARCHAR) &lt;- [PUBLIC]
+26-02-15 10:04:40.013 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (2:UUID) &lt;- [null]
+26-02-15 10:04:40.028 [Test worker] DEBUG org.hibernate.SQL [ |  | ] - 
+    insert 
+    into
+        channels
+        (created_at, description, name, type, updated_at, id) 
+    values
+        (?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        channels
+        (created_at, description, name, type, updated_at, id) 
+    values
+        (?, ?, ?, ?, ?, ?)
+26-02-15 10:04:40.028 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (1:TIMESTAMP_UTC) &lt;- [2026-02-15T01:04:40.028742700Z]
+26-02-15 10:04:40.028 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (2:VARCHAR) &lt;- [Public discussion channel]
+26-02-15 10:04:40.028 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (3:VARCHAR) &lt;- [general]
+26-02-15 10:04:40.028 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (4:VARCHAR) &lt;- [PUBLIC]
+26-02-15 10:04:40.028 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (5:TIMESTAMP_UTC) &lt;- [2026-02-15T01:04:40.028742700Z]
+26-02-15 10:04:40.028 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (6:UUID) &lt;- [c8c60851-7105-4a57-a89e-9e99c9bd2e22]
+26-02-15 10:04:40.044 [Test worker] DEBUG org.hibernate.SQL [ |  | ] - 
+    select
+        c1_0.id,
+        c1_0.created_at,
+        c1_0.description,
+        c1_0.name,
+        c1_0.type,
+        c1_0.updated_at 
+    from
+        channels c1_0 
+    where
+        c1_0.id=?
+Hibernate: 
+    select
+        c1_0.id,
+        c1_0.created_at,
+        c1_0.description,
+        c1_0.name,
+        c1_0.type,
+        c1_0.updated_at 
+    from
+        channels c1_0 
+    where
+        c1_0.id=?
+26-02-15 10:04:40.044 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (1:UUID) &lt;- [c8c60851-7105-4a57-a89e-9e99c9bd2e22]
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="https://www.gradle.org">Gradle 8.14.3</a> at 2026. 2. 15. 오전 10:04:42</p>
+</div>
+</div>
+</body>
+</html>

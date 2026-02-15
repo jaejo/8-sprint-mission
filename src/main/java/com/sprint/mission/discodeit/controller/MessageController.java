@@ -47,7 +47,7 @@ public class MessageController implements MessageApi {
       @Valid @RequestPart(value = "messageCreateRequest") MessageCreateRequest messageCreateRequest,
       @RequestPart(value = "attachments", required = false) List<MultipartFile> attachments
   ) {
-    log.info("Controller: 메시지 생성 요청 - channelId: {}, authorId: {}", 
+    log.info("Controller: 메시지 생성 요청 - channelId: {}, authorId: {}",
         messageCreateRequest.channelId(), messageCreateRequest.authorId());
     List<BinaryContentCreateRequest> attachmentRequests = Optional.ofNullable(attachments)
         .map(files -> files.stream()
@@ -65,7 +65,7 @@ public class MessageController implements MessageApi {
             })
             .toList())
         .orElse(new ArrayList<>());
-    
+
     MessageDto messageDto = messageService.create(messageCreateRequest, attachmentRequests);
     log.info("Controller: 메시지 생성 완료 - ID: {}", messageDto.id());
     return ResponseEntity

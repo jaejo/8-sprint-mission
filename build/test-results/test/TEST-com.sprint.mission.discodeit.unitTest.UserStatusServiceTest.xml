@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.sprint.mission.discodeit.unitTest.UserStatusServiceTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-02-15T01:04:41.790Z" hostname="DESKTOP-0JVG8OV" time="0.075">
+  <properties/>
+  <testcase name="사용자 ID로 상태 업데이트 실패 - 존재하지 않는 사용자 상태" classname="com.sprint.mission.discodeit.unitTest.UserStatusServiceTest" time="0.065"/>
+  <testcase name="사용자 상태 생성 성공" classname="com.sprint.mission.discodeit.unitTest.UserStatusServiceTest" time="0.006"/>
+  <testcase name="사용자 ID로 상태 업데이트 성공" classname="com.sprint.mission.discodeit.unitTest.UserStatusServiceTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

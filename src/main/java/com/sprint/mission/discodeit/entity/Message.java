@@ -47,7 +47,6 @@ public class Message extends BaseUpdatableEntity {
   )
   @JoinTable(
       name = "message_attachments",
-      schema = "discodeit_user",
       joinColumns = @JoinColumn(name = "message_id"),
       inverseJoinColumns = @JoinColumn(name = "attachment_id")
   )

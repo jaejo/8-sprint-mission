@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MessageController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">discodeit</a> &gt; <a href="index.source.html" class="el_package">com.sprint.mission.discodeit.controller</a> &gt; <span class="el_source">MessageController.java</span></div><h1>MessageController.java</h1><pre class="source lang-java linenums">package com.sprint.mission.discodeit.controller;
+
+import com.sprint.mission.discodeit.DTO.dto.MessageDto;
+import com.sprint.mission.discodeit.DTO.request.BinaryContentCreateRequest;
+import com.sprint.mission.discodeit.DTO.request.MessageCreateRequest;
+import com.sprint.mission.discodeit.DTO.request.MessageUpdateRequest;
+import com.sprint.mission.discodeit.DTO.response.PageResponse;
+import com.sprint.mission.discodeit.controller.api.MessageApi;
+import com.sprint.mission.discodeit.service.MessageService;
+import jakarta.validation.Valid;
+import java.io.IOException;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+<span class="fc" id="L37">@Slf4j</span>
+@RequiredArgsConstructor
+@RestController
+@RequestMapping(&quot;/api/messages&quot;)
+public class MessageController implements MessageApi {
+
+  private final MessageService messageService;
+
+  @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+  public ResponseEntity&lt;MessageDto&gt; create(
+      @Valid @RequestPart(value = &quot;messageCreateRequest&quot;) MessageCreateRequest messageCreateRequest,
+      @RequestPart(value = &quot;attachments&quot;, required = false) List&lt;MultipartFile&gt; attachments
+  ) {
+<span class="fc" id="L50">    log.info(&quot;Controller: 硫붿떆吏� �깮�꽦 �슂泥� - channelId: {}, authorId: {}&quot;,</span>
+<span class="fc" id="L51">        messageCreateRequest.channelId(), messageCreateRequest.authorId());</span>
+<span class="fc" id="L52">    List&lt;BinaryContentCreateRequest&gt; attachmentRequests = Optional.ofNullable(attachments)</span>
+<span class="pc" id="L53">        .map(files -&gt; files.stream()</span>
+<span class="nc" id="L54">            .map(file -&gt; {</span>
+              try {
+<span class="nc" id="L56">                return new BinaryContentCreateRequest(</span>
+<span class="nc" id="L57">                    file.getOriginalFilename(),</span>
+<span class="nc" id="L58">                    file.getContentType(),</span>
+<span class="nc" id="L59">                    file.getBytes()</span>
+                );
+<span class="nc" id="L61">              } catch (IOException e) {</span>
+<span class="nc" id="L62">                log.error(&quot;Controller: 泥⑤��뙆�씪 泥섎━ 以� �삤瑜� 諛쒖깮 - error: {}&quot;, e.getMessage());</span>
+<span class="nc" id="L63">                throw new RuntimeException(e);</span>
+              }
+            })
+<span class="nc" id="L66">            .toList())</span>
+<span class="fc" id="L67">        .orElse(new ArrayList&lt;&gt;());</span>
+
+<span class="fc" id="L69">    MessageDto messageDto = messageService.create(messageCreateRequest, attachmentRequests);</span>
+<span class="fc" id="L70">    log.info(&quot;Controller: 硫붿떆吏� �깮�꽦 �셿猷� - ID: {}&quot;, messageDto.id());</span>
+<span class="fc" id="L71">    return ResponseEntity</span>
+<span class="fc" id="L72">        .status(HttpStatus.CREATED)</span>
+<span class="fc" id="L73">        .body(messageDto);</span>
+  }
+
+  @GetMapping
+  public ResponseEntity&lt;PageResponse&lt;MessageDto&gt;&gt; findAllByChannelId(
+      @RequestParam(value = &quot;channelId&quot;) UUID channelId,
+      @RequestParam(value = &quot;cursor&quot;, required = false) Instant cursor,
+      @PageableDefault(
+          size = 50,
+          sort = &quot;createdAt&quot;,
+          direction = Sort.Direction.DESC
+      ) Pageable pageable
+  ) {
+<span class="nc" id="L86">    return ResponseEntity</span>
+<span class="nc" id="L87">        .status(HttpStatus.OK)</span>
+<span class="nc" id="L88">        .body(messageService.findAllByChannelId(channelId, cursor, pageable));</span>
+  }
+
+  @PatchMapping(path = &quot;{messageId}&quot;)
+  public ResponseEntity&lt;MessageDto&gt; update(
+      @PathVariable(value = &quot;messageId&quot;) UUID messageId,
+      @Valid @RequestBody MessageUpdateRequest messageUpdateRequest) {
+<span class="nc" id="L95">    log.info(&quot;Controller: 硫붿떆吏� �닔�젙 �슂泥� - ID: {}&quot;, messageId);</span>
+<span class="nc" id="L96">    MessageDto messageResponse = messageService.update(messageId, messageUpdateRequest);</span>
+<span class="nc" id="L97">    log.info(&quot;Controller: 硫붿떆吏� �닔�젙 �셿猷� - ID: {}&quot;, messageId);</span>
+<span class="nc" id="L98">    return ResponseEntity</span>
+<span class="nc" id="L99">        .status(HttpStatus.OK)</span>
+<span class="nc" id="L100">        .body(messageResponse);</span>
+  }
+
+  @DeleteMapping(path = &quot;{messageId}&quot;)
+  public ResponseEntity&lt;Void&gt; delete(
+      @PathVariable(value = &quot;messageId&quot;) UUID messageId) {
+<span class="fc" id="L106">    log.info(&quot;Controller: 硫붿떆吏� �궘�젣 �슂泥� - ID: {}&quot;, messageId);</span>
+<span class="fc" id="L107">    messageService.delete(messageId);</span>
+<span class="fc" id="L108">    log.info(&quot;Controller: 硫붿떆吏� �궘�젣 �셿猷� - ID: {}&quot;, messageId);</span>
+<span class="fc" id="L109">    return ResponseEntity</span>
+<span class="fc" id="L110">        .status(HttpStatus.NO_CONTENT)</span>
+<span class="fc" id="L111">        .build();</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

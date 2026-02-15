@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - ChannelControllerTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>ChannelControllerTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/com.sprint.mission.discodeit.controllerTest.html">com.sprint.mission.discodeit.controllerTest</a> &gt; ChannelControllerTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">4</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">1.336s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="tab-container">
+<ul class="tabLinks">
+<li>
+<a href="#">Tests</a>
+</li>
+<li>
+<a href="#">Standard output</a>
+</li>
+</ul>
+<div class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Method name</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">POST /api/channels/public - Public 채널 생성 실패 (유효성 검사)</td>
+<td class="success">createPublicChannel_fail_validation()</td>
+<td class="success">0.064s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">POST /api/channels/public - Public 채널 생성 성공</td>
+<td class="success">createPublicChannel_success()</td>
+<td class="success">0.569s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">DELETE /api/channels/{channelId} - 채널 삭제 실패 (존재하지 않는 채널)</td>
+<td class="success">deleteChannel_fail_not_found()</td>
+<td class="success">0.690s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">DELETE /api/channels/{channelId} - 채널 삭제 성공</td>
+<td class="success">deleteChannel_success()</td>
+<td class="success">0.013s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>26-02-15 10:04:30.755 [Test worker] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils [ |  | ] - Could not detect default configuration classes for test class [com.sprint.mission.discodeit.controllerTest.ChannelControllerTest]: ChannelControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+26-02-15 10:04:30.771 [Test worker] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper [ |  | ] - Found @SpringBootConfiguration com.sprint.mission.discodeit.DiscodeitApplication for test class com.sprint.mission.discodeit.controllerTest.ChannelControllerTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.5.8)
+
+26-02-15 10:04:30.834 [Test worker] INFO  c.s.m.d.c.ChannelControllerTest [ |  | ] - Starting ChannelControllerTest using Java 17.0.16 with PID 6864 (started by LEEJAEJOON in C:\myWs\leejaejoon\path\8-sprint-mission)
+26-02-15 10:04:30.834 [Test worker] DEBUG c.s.m.d.c.ChannelControllerTest [ |  | ] - Running with Spring Boot v3.5.8, Spring v6.2.14
+26-02-15 10:04:30.834 [Test worker] INFO  c.s.m.d.c.ChannelControllerTest [ |  | ] - No active profile set, falling back to 1 default profile: &quot;default&quot;
+26-02-15 10:04:31.597 [Test worker] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping [ |  | ] - Adding welcome page: class path resource [static/index.html]
+26-02-15 10:04:31.836 [Test worker] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration [ |  | ] - 
+
+Using generated security password: 19bb032d-3370-4d3f-8d15-f096849bf3fe
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+26-02-15 10:04:31.836 [Test worker] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer [ |  | ] - Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+26-02-15 10:04:32.187 [Test worker] INFO  o.s.b.t.m.w.SpringBootMockServletContext [ |  | ] - Initializing Spring TestDispatcherServlet ''
+26-02-15 10:04:32.187 [Test worker] INFO  o.s.t.w.s.TestDispatcherServlet [ |  | ] - Initializing Servlet ''
+26-02-15 10:04:32.187 [Test worker] INFO  o.s.t.w.s.TestDispatcherServlet [ |  | ] - Completed initialization in 0 ms
+26-02-15 10:04:32.222 [Test worker] INFO  c.s.m.d.c.ChannelControllerTest [ |  | ] - Started ChannelControllerTest in 1.436 seconds (process running for 17.793)
+26-02-15 10:04:32.504 [Test worker] DEBUG c.s.m.d.config.MDCLoggingInterceptor [a8861664f1844a418c452e5d3cb14f7a | DELETE | /api/channels/720ed5ee-a487-4099-887e-87a04505917a] - 요청 시작
+26-02-15 10:04:32.585 [Test worker] INFO  c.s.m.d.controller.ChannelController [a8861664f1844a418c452e5d3cb14f7a | DELETE | /api/channels/720ed5ee-a487-4099-887e-87a04505917a] - Controller: 채널 삭제 요청 - ID: 720ed5ee-a487-4099-887e-87a04505917a
+26-02-15 10:04:32.602 [Test worker] WARN  c.s.m.d.e.GlobalExceptionHandler [a8861664f1844a418c452e5d3cb14f7a | DELETE | /api/channels/720ed5ee-a487-4099-887e-87a04505917a] - Discode.it Exception: CH001 - 해당하는 channel을 찾을 수 없습니다.
+26-02-15 10:04:32.602 [Test worker] WARN  c.s.m.d.e.GlobalExceptionHandler [a8861664f1844a418c452e5d3cb14f7a | DELETE | /api/channels/720ed5ee-a487-4099-887e-87a04505917a] - Details: {channelId=720ed5ee-a487-4099-887e-87a04505917a}
+26-02-15 10:04:32.878 [Test worker] DEBUG c.s.m.d.config.MDCLoggingInterceptor [a8861664f1844a418c452e5d3cb14f7a | DELETE | /api/channels/720ed5ee-a487-4099-887e-87a04505917a] - 요청 완료
+26-02-15 10:04:32.980 [Test worker] DEBUG c.s.m.d.config.MDCLoggingInterceptor [d4bb0f50a0c1451e875a47ecd00c03b3 | POST | /api/channels/public] - 요청 시작
+26-02-15 10:04:33.229 [Test worker] INFO  c.s.m.d.controller.ChannelController [d4bb0f50a0c1451e875a47ecd00c03b3 | POST | /api/channels/public] - Controller: Public 채널 생성 요청 - name: General
+26-02-15 10:04:33.229 [Test worker] INFO  c.s.m.d.controller.ChannelController [d4bb0f50a0c1451e875a47ecd00c03b3 | POST | /api/channels/public] - Controller: Public 채널 생성 완료 - ID: da56e8e3-cdda-4211-a874-8ac9f72ec3c4
+26-02-15 10:04:33.292 [Test worker] DEBUG c.s.m.d.config.MDCLoggingInterceptor [d4bb0f50a0c1451e875a47ecd00c03b3 | POST | /api/channels/public] - 요청 완료
+26-02-15 10:04:33.505 [Test worker] DEBUG c.s.m.d.config.MDCLoggingInterceptor [2daccbf98f6c472ea4b84b24f3ef6b86 | POST | /api/channels/public] - 요청 시작
+26-02-15 10:04:33.536 [Test worker] WARN  c.s.m.d.e.GlobalExceptionHandler [2daccbf98f6c472ea4b84b24f3ef6b86 | POST | /api/channels/public] - Validation failed: {name=Channel name must be between 2 and 100 characters}
+26-02-15 10:04:33.559 [Test worker] DEBUG c.s.m.d.config.MDCLoggingInterceptor [2daccbf98f6c472ea4b84b24f3ef6b86 | POST | /api/channels/public] - 요청 완료
+26-02-15 10:04:33.574 [Test worker] DEBUG c.s.m.d.config.MDCLoggingInterceptor [00b6337074cb4721b5774315d4cb401e | DELETE | /api/channels/a8ef02a4-4345-432a-b1cf-8aedda108965] - 요청 시작
+26-02-15 10:04:33.575 [Test worker] INFO  c.s.m.d.controller.ChannelController [00b6337074cb4721b5774315d4cb401e | DELETE | /api/channels/a8ef02a4-4345-432a-b1cf-8aedda108965] - Controller: 채널 삭제 요청 - ID: a8ef02a4-4345-432a-b1cf-8aedda108965
+26-02-15 10:04:33.575 [Test worker] INFO  c.s.m.d.controller.ChannelController [00b6337074cb4721b5774315d4cb401e | DELETE | /api/channels/a8ef02a4-4345-432a-b1cf-8aedda108965] - Controller: 채널 삭제 완료 - ID: a8ef02a4-4345-432a-b1cf-8aedda108965
+26-02-15 10:04:33.575 [Test worker] DEBUG c.s.m.d.config.MDCLoggingInterceptor [00b6337074cb4721b5774315d4cb401e | DELETE | /api/channels/a8ef02a4-4345-432a-b1cf-8aedda108965] - 요청 완료
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="https://www.gradle.org">Gradle 8.14.3</a> at 2026. 2. 15. 오전 10:04:42</p>
+</div>
+</div>
+</body>
+</html>

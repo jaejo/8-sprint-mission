@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.sprint.mission.discodeit.unitTest.MessageServiceTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-02-15T01:04:41.390Z" hostname="DESKTOP-0JVG8OV" time="0.164">
+  <properties/>
+  <testcase name="메시지 수정 테스트 - 실패 (존재하지 않는 메시지)" classname="com.sprint.mission.discodeit.unitTest.MessageServiceTest" time="0.136"/>
+  <testcase name="메시지 생성 테스트 - 성공" classname="com.sprint.mission.discodeit.unitTest.MessageServiceTest" time="0.006"/>
+  <testcase name="메시지 생성 테스트 - 실패(존재하지 않는 유저)" classname="com.sprint.mission.discodeit.unitTest.MessageServiceTest" time="0.004"/>
+  <testcase name="메시지 삭제 테스트 - 실패(존재하지 않는 메시지" classname="com.sprint.mission.discodeit.unitTest.MessageServiceTest" time="0.005"/>
+  <testcase name="메시지 삭제 테스트 - 성공" classname="com.sprint.mission.discodeit.unitTest.MessageServiceTest" time="0.003"/>
+  <testcase name="메시지 수정 테스트 - 성공" classname="com.sprint.mission.discodeit.unitTest.MessageServiceTest" time="0.006"/>
+  <system-out><![CDATA[26-02-15 10:04:41.524 [Test worker] INFO  c.s.m.d.s.basic.BasicMessageService [ |  | ] - Service: 메시지 수정 요청 - ID: 4817067a-fd63-4cf4-9e9a-31a275cf92d2
+26-02-15 10:04:41.524 [Test worker] WARN  c.s.m.d.s.basic.BasicMessageService [ |  | ] - Service: 메시지 수정 실패(존재하지 않는 메시지) - ID: 4817067a-fd63-4cf4-9e9a-31a275cf92d2
+26-02-15 10:04:41.540 [Test worker] INFO  c.s.m.d.s.basic.BasicMessageService [ |  | ] - Service: 메시지 생성 요청 - content: Test Message
+26-02-15 10:04:41.540 [Test worker] INFO  c.s.m.d.s.basic.BasicMessageService [ |  | ] - Service: 메시지 생성 성공 - ID: ee0d1488-b695-4b49-8ec5-1f844bf47e5b
+26-02-15 10:04:41.540 [Test worker] INFO  c.s.m.d.s.basic.BasicMessageService [ |  | ] - Service: 메시지 생성 요청 - content: Test Message
+26-02-15 10:04:41.540 [Test worker] WARN  c.s.m.d.s.basic.BasicMessageService [ |  | ] - Service: 메시지 생성 실패(존재하지 않는 유저) - ID: 29a776d8-659a-4abd-bf2b-adb55c9c2b02
+26-02-15 10:04:41.540 [Test worker] INFO  c.s.m.d.s.basic.BasicMessageService [ |  | ] - Service: 메시지 삭제 요청 - ID: 24ac7281-8ceb-4480-93b4-c12b1ed442ba
+26-02-15 10:04:41.540 [Test worker] WARN  c.s.m.d.s.basic.BasicMessageService [ |  | ] - Service: 메시지 삭제 실패(존재하지 않는 메시지) - ID: 24ac7281-8ceb-4480-93b4-c12b1ed442ba
+26-02-15 10:04:41.557 [Test worker] INFO  c.s.m.d.s.basic.BasicMessageService [ |  | ] - Service: 메시지 삭제 요청 - ID: aef0de14-3156-4ff7-95b5-6695ca26a656
+26-02-15 10:04:41.557 [Test worker] INFO  c.s.m.d.s.basic.BasicMessageService [ |  | ] - Service: 메시지 삭제 완료 - ID: aef0de14-3156-4ff7-95b5-6695ca26a656
+26-02-15 10:04:41.557 [Test worker] INFO  c.s.m.d.s.basic.BasicMessageService [ |  | ] - Service: 메시지 수정 요청 - ID: 0f134fda-ea7e-4cdf-8a82-28556a156988
+26-02-15 10:04:41.557 [Test worker] INFO  c.s.m.d.s.basic.BasicMessageService [ |  | ] - Service: 메시지 수정 완료 - ID: 0f134fda-ea7e-4cdf-8a82-28556a156988
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

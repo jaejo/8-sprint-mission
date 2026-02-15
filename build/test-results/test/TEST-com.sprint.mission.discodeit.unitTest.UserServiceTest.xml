@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.sprint.mission.discodeit.unitTest.UserServiceTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-02-15T01:04:41.650Z" hostname="DESKTOP-0JVG8OV" time="0.137">
+  <properties/>
+  <testcase name="유저 생성 테스트 - 실패(중복된 이메일)" classname="com.sprint.mission.discodeit.unitTest.UserServiceTest" time="0.094"/>
+  <testcase name="유저 생성 테스트 - 성공" classname="com.sprint.mission.discodeit.unitTest.UserServiceTest" time="0.003"/>
+  <testcase name="유저 삭제 테스트 - 실패(존재하지 않는 유저)" classname="com.sprint.mission.discodeit.unitTest.UserServiceTest" time="0.005"/>
+  <testcase name="유저 생성 테스트 - 실패(중복된 사용자명)" classname="com.sprint.mission.discodeit.unitTest.UserServiceTest" time="0.004"/>
+  <testcase name="유저 수정 테스트 - 실패(중복된 이메일)" classname="com.sprint.mission.discodeit.unitTest.UserServiceTest" time="0.007"/>
+  <testcase name="유저 수정 테스트 - 실패(중복된 사용자명)" classname="com.sprint.mission.discodeit.unitTest.UserServiceTest" time="0.005"/>
+  <testcase name="유저 삭제 테스트 - 성공" classname="com.sprint.mission.discodeit.unitTest.UserServiceTest" time="0.004"/>
+  <testcase name="유저 수정 테스트 - 성공" classname="com.sprint.mission.discodeit.unitTest.UserServiceTest" time="0.005"/>
+  <testcase name="유저 수정 테스트 - 실패(존재하지 않는 유저)" classname="com.sprint.mission.discodeit.unitTest.UserServiceTest" time="0.005"/>
+  <system-out><![CDATA[26-02-15 10:04:41.746 [Test worker] INFO  c.s.m.d.s.basic.BasicUserService [ |  | ] - Service: 유저 생성 로직 시작 - email: testUser, username: test@example.com
+26-02-15 10:04:41.758 [Test worker] INFO  c.s.m.d.s.basic.BasicUserService [ |  | ] - Service: 유저 생성 로직 시작 - email: testUser, username: test@example.com
+26-02-15 10:04:41.758 [Test worker] INFO  c.s.m.d.s.basic.BasicUserService [ |  | ] - Service: 유저 생성 완료 및 DB 저장 완료 - ID: fcc080a5-7acc-4e8d-bc5c-83a0dd04b18a
+26-02-15 10:04:41.763 [Test worker] WARN  c.s.m.d.s.basic.BasicUserService [ |  | ] - Service - 사용자 삭제 실패(존재하지 않는 유저) - ID: 87ca3e64-5e92-4407-a2ee-790bf8c6598e
+26-02-15 10:04:41.763 [Test worker] INFO  c.s.m.d.s.basic.BasicUserService [ |  | ] - Service: 유저 생성 로직 시작 - email: testUser, username: test@example.com
+26-02-15 10:04:41.763 [Test worker] INFO  c.s.m.d.s.basic.BasicUserService [ |  | ] - Service: 유저 수정 요청 - ID: 46ceda49-2596-4e16-a174-3ea1aee3d138
+26-02-15 10:04:41.778 [Test worker] WARN  c.s.m.d.s.basic.BasicUserService [ |  | ] - Service: 유저 수정 실패(이미 해당 유저 이메일 존재) - email: test2@example.com
+26-02-15 10:04:41.778 [Test worker] INFO  c.s.m.d.s.basic.BasicUserService [ |  | ] - Service: 유저 수정 요청 - ID: 8d97c43f-3496-40fe-be6d-3949c64accb0
+26-02-15 10:04:41.778 [Test worker] WARN  c.s.m.d.s.basic.BasicUserService [ |  | ] - Service: 유저 수정 실패(이미 해당 유저 이름 존재) - username: testUser2
+26-02-15 10:04:41.778 [Test worker] INFO  c.s.m.d.s.basic.BasicUserService [ |  | ] - Service: 사용자 DB 삭제 완료 - ID: 5756ae0a-2325-4e3e-a473-a4c1ecba9619
+26-02-15 10:04:41.793 [Test worker] INFO  c.s.m.d.s.basic.BasicUserService [ |  | ] - Service: 유저 수정 요청 - ID: f61a7e7b-baa0-4229-8b39-4251eb939e85
+26-02-15 10:04:41.793 [Test worker] DEBUG c.s.m.d.s.basic.BasicUserService [ |  | ] - Service: 사용자 비밀번호 수정 및 암호화 완료
+26-02-15 10:04:41.793 [Test worker] INFO  c.s.m.d.s.basic.BasicUserService [ |  | ] - Service: 유저 수정 완료 - ID: f61a7e7b-baa0-4229-8b39-4251eb939e85
+26-02-15 10:04:41.793 [Test worker] INFO  c.s.m.d.s.basic.BasicUserService [ |  | ] - Service: 유저 수정 요청 - ID: 17daefa6-3bcc-49a4-aed2-e603361a8f5d
+26-02-15 10:04:41.793 [Test worker] WARN  c.s.m.d.s.basic.BasicUserService [ |  | ] - Service: 유저 수정 실패(존재하지 않는 ID) - ID: 17daefa6-3bcc-49a4-aed2-e603361a8f5d
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

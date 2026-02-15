@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.sprint.mission.discodeit.controllerTest.UserControllerTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-02-15T01:04:35.135Z" hostname="DESKTOP-0JVG8OV" time="0.175">
+  <properties/>
+  <testcase name="DELETE /api/users/{userId} - 사용자 삭제 성공" classname="com.sprint.mission.discodeit.controllerTest.UserControllerTest" time="0.047"/>
+  <testcase name="PATCH /api/users/{userId} - 사용자 정보 수정 성공" classname="com.sprint.mission.discodeit.controllerTest.UserControllerTest" time="0.05"/>
+  <testcase name="POST /api/users - 사용자 생성 실패 (유효성 검사)" classname="com.sprint.mission.discodeit.controllerTest.UserControllerTest" time="0.033"/>
+  <testcase name="DELETE /api/users/{userId} - 사용자 삭제 실패 (존재하지 않는 유저)" classname="com.sprint.mission.discodeit.controllerTest.UserControllerTest" time="0.018"/>
+  <testcase name="Post /api/users - 사용자 생성 성공" classname="com.sprint.mission.discodeit.controllerTest.UserControllerTest" time="0.018"/>
+  <system-out><![CDATA[26-02-15 10:04:34.437 [Test worker] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils [ |  | ] - Could not detect default configuration classes for test class [com.sprint.mission.discodeit.controllerTest.UserControllerTest]: UserControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+26-02-15 10:04:34.452 [Test worker] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper [ |  | ] - Found @SpringBootConfiguration com.sprint.mission.discodeit.DiscodeitApplication for test class com.sprint.mission.discodeit.controllerTest.UserControllerTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.5.8)
+
+26-02-15 10:04:34.503 [Test worker] INFO  c.s.m.d.c.UserControllerTest [ |  | ] - Starting UserControllerTest using Java 17.0.16 with PID 6864 (started by LEEJAEJOON in C:\myWs\leejaejoon\path\8-sprint-mission)
+26-02-15 10:04:34.503 [Test worker] DEBUG c.s.m.d.c.UserControllerTest [ |  | ] - Running with Spring Boot v3.5.8, Spring v6.2.14
+26-02-15 10:04:34.503 [Test worker] INFO  c.s.m.d.c.UserControllerTest [ |  | ] - No active profile set, falling back to 1 default profile: "default"
+26-02-15 10:04:34.957 [Test worker] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping [ |  | ] - Adding welcome page: class path resource [static/index.html]
+26-02-15 10:04:35.067 [Test worker] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration [ |  | ] - 
+
+Using generated security password: 6c6cb015-9832-42c9-900d-54bd1a4eb128
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+26-02-15 10:04:35.081 [Test worker] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer [ |  | ] - Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+26-02-15 10:04:35.116 [Test worker] INFO  o.s.b.t.m.w.SpringBootMockServletContext [ |  | ] - Initializing Spring TestDispatcherServlet ''
+26-02-15 10:04:35.116 [Test worker] INFO  o.s.t.w.s.TestDispatcherServlet [ |  | ] - Initializing Servlet ''
+26-02-15 10:04:35.116 [Test worker] INFO  o.s.t.w.s.TestDispatcherServlet [ |  | ] - Completed initialization in 0 ms
+26-02-15 10:04:35.133 [Test worker] INFO  c.s.m.d.c.UserControllerTest [ |  | ] - Started UserControllerTest in 0.672 seconds (process running for 20.695)
+26-02-15 10:04:35.144 [Test worker] DEBUG c.s.m.d.config.MDCLoggingInterceptor [19ac04c9414f40479e459f98e945e0c3 | DELETE | /api/users/c7feb65e-e613-4455-b559-40a22cd042eb] - 요청 시작
+26-02-15 10:04:35.146 [Test worker] INFO  c.s.m.d.controller.UserController [19ac04c9414f40479e459f98e945e0c3 | DELETE | /api/users/c7feb65e-e613-4455-b559-40a22cd042eb] - Controller: 사용자 삭제 요청 - ID: c7feb65e-e613-4455-b559-40a22cd042eb
+26-02-15 10:04:35.147 [Test worker] INFO  c.s.m.d.controller.UserController [19ac04c9414f40479e459f98e945e0c3 | DELETE | /api/users/c7feb65e-e613-4455-b559-40a22cd042eb] - Controller: 사용자 삭제 완료 - ID: c7feb65e-e613-4455-b559-40a22cd042eb
+26-02-15 10:04:35.149 [Test worker] DEBUG c.s.m.d.config.MDCLoggingInterceptor [19ac04c9414f40479e459f98e945e0c3 | DELETE | /api/users/c7feb65e-e613-4455-b559-40a22cd042eb] - 요청 완료
+26-02-15 10:04:35.194 [Test worker] DEBUG c.s.m.d.config.MDCLoggingInterceptor [e381e2a405d74367bca25fada54670db | PATCH | /api/users/0c3eede2-6c31-48e6-be4d-bce73c1db82c] - 요청 시작
+26-02-15 10:04:35.225 [Test worker] INFO  c.s.m.d.controller.UserController [e381e2a405d74367bca25fada54670db | PATCH | /api/users/0c3eede2-6c31-48e6-be4d-bce73c1db82c] - Controller: 사용자 정보 수정 요청 - ID: 0c3eede2-6c31-48e6-be4d-bce73c1db82c
+26-02-15 10:04:35.225 [Test worker] INFO  c.s.m.d.controller.UserController [e381e2a405d74367bca25fada54670db | PATCH | /api/users/0c3eede2-6c31-48e6-be4d-bce73c1db82c] - Controller: 사용자 정보 수정 완료 - ID: 0c3eede2-6c31-48e6-be4d-bce73c1db82c
+26-02-15 10:04:35.225 [Test worker] DEBUG c.s.m.d.config.MDCLoggingInterceptor [e381e2a405d74367bca25fada54670db | PATCH | /api/users/0c3eede2-6c31-48e6-be4d-bce73c1db82c] - 요청 완료
+26-02-15 10:04:35.249 [Test worker] DEBUG c.s.m.d.config.MDCLoggingInterceptor [d4a62edb838c4e2182f06e0b8e1ea382 | POST | /api/users] - 요청 시작
+26-02-15 10:04:35.257 [Test worker] WARN  c.s.m.d.e.GlobalExceptionHandler [d4a62edb838c4e2182f06e0b8e1ea382 | POST | /api/users] - Validation failed: {password=Password must be at least 8 characters long}
+26-02-15 10:04:35.265 [Test worker] DEBUG c.s.m.d.config.MDCLoggingInterceptor [d4a62edb838c4e2182f06e0b8e1ea382 | POST | /api/users] - 요청 완료
+26-02-15 10:04:35.273 [Test worker] DEBUG c.s.m.d.config.MDCLoggingInterceptor [830862ee5ce74e71b9cabdf48705d342 | DELETE | /api/users/024d68a6-ed5a-493d-8a1b-546504fcc1b7] - 요청 시작
+26-02-15 10:04:35.273 [Test worker] INFO  c.s.m.d.controller.UserController [830862ee5ce74e71b9cabdf48705d342 | DELETE | /api/users/024d68a6-ed5a-493d-8a1b-546504fcc1b7] - Controller: 사용자 삭제 요청 - ID: 024d68a6-ed5a-493d-8a1b-546504fcc1b7
+26-02-15 10:04:35.273 [Test worker] WARN  c.s.m.d.e.GlobalExceptionHandler [830862ee5ce74e71b9cabdf48705d342 | DELETE | /api/users/024d68a6-ed5a-493d-8a1b-546504fcc1b7] - Discode.it Exception: U001 - User를 찾을 수 없습니다.
+26-02-15 10:04:35.273 [Test worker] WARN  c.s.m.d.e.GlobalExceptionHandler [830862ee5ce74e71b9cabdf48705d342 | DELETE | /api/users/024d68a6-ed5a-493d-8a1b-546504fcc1b7] - Details: {userId=024d68a6-ed5a-493d-8a1b-546504fcc1b7}
+26-02-15 10:04:35.273 [Test worker] DEBUG c.s.m.d.config.MDCLoggingInterceptor [830862ee5ce74e71b9cabdf48705d342 | DELETE | /api/users/024d68a6-ed5a-493d-8a1b-546504fcc1b7] - 요청 완료
+26-02-15 10:04:35.298 [Test worker] DEBUG c.s.m.d.config.MDCLoggingInterceptor [a6bcb22adb7d438593aba4d8ceaa2ae8 | POST | /api/users] - 요청 시작
+26-02-15 10:04:35.298 [Test worker] INFO  c.s.m.d.controller.UserController [a6bcb22adb7d438593aba4d8ceaa2ae8 | POST | /api/users] - Controller: 사용자 생성 요청 - email: test@codeit.com, username: test
+26-02-15 10:04:35.300 [Test worker] INFO  c.s.m.d.controller.UserController [a6bcb22adb7d438593aba4d8ceaa2ae8 | POST | /api/users] - Controller: 사용자 생성 완료 - ID: 1bf3fd84-8fad-4a49-bef6-45d3cefc9eba
+26-02-15 10:04:35.302 [Test worker] DEBUG c.s.m.d.config.MDCLoggingInterceptor [a6bcb22adb7d438593aba4d8ceaa2ae8 | POST | /api/users] - 요청 완료
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

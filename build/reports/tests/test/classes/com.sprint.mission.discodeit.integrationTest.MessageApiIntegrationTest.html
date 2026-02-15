@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - MessageApiIntegrationTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>MessageApiIntegrationTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/com.sprint.mission.discodeit.integrationTest.html">com.sprint.mission.discodeit.integrationTest</a> &gt; MessageApiIntegrationTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">4</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">0.426s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="tab-container">
+<ul class="tabLinks">
+<li>
+<a href="#">Tests</a>
+</li>
+<li>
+<a href="#">Standard output</a>
+</li>
+</ul>
+<div class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Method name</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">POST /api/messages - 메시지 생성 통합 테스트 실패 (유효성 검사 실패</td>
+<td class="success">createMessage_integration_fail_validation()</td>
+<td class="success">0.059s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">POST /api/messages - 메시지 생성 통합 테스트 성공</td>
+<td class="success">createMessage_integration_success()</td>
+<td class="success">0.193s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">DELETE /api/message/{messageId} - 메시지 삭제 통합 테스트 실패 (존재하지 않는 메시지</td>
+<td class="success">deleteMessage_integration_fail_messageNotFound()</td>
+<td class="success">0.031s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">DELETE /api/messages/{messageId} - 메시지 삭제 통합 테스트 성공</td>
+<td class="success">deleteMessage_integration_success()</td>
+<td class="success">0.143s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>26-02-15 10:04:38.904 [Test worker] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils [ |  | ] - Could not detect default configuration classes for test class [com.sprint.mission.discodeit.integrationTest.MessageApiIntegrationTest]: MessageApiIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+26-02-15 10:04:38.904 [Test worker] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper [ |  | ] - Found @SpringBootConfiguration com.sprint.mission.discodeit.DiscodeitApplication for test class com.sprint.mission.discodeit.integrationTest.MessageApiIntegrationTest
+26-02-15 10:04:38.929 [Test worker] DEBUG c.s.m.d.config.MDCLoggingInterceptor [a956897f739c45adb373583f3b1d14c8 | POST | /api/messages] - 요청 시작
+26-02-15 10:04:38.961 [Test worker] WARN  c.s.m.d.e.GlobalExceptionHandler [a956897f739c45adb373583f3b1d14c8 | POST | /api/messages] - Validation failed: {channelId=Channel ID is required}
+26-02-15 10:04:38.961 [Test worker] DEBUG c.s.m.d.config.MDCLoggingInterceptor [a956897f739c45adb373583f3b1d14c8 | POST | /api/messages] - 요청 완료
+26-02-15 10:04:38.993 [Test worker] DEBUG c.s.m.d.config.MDCLoggingInterceptor [3ac149d1fe5d4f079633c8d718c167c6 | DELETE | /api/messages/356f1c84-ed8c-4055-8869-e8a4b8357595] - 요청 시작
+26-02-15 10:04:38.993 [Test worker] INFO  c.s.m.d.controller.MessageController [3ac149d1fe5d4f079633c8d718c167c6 | DELETE | /api/messages/356f1c84-ed8c-4055-8869-e8a4b8357595] - Controller: 메시지 삭제 요청 - ID: 356f1c84-ed8c-4055-8869-e8a4b8357595
+26-02-15 10:04:38.993 [Test worker] INFO  c.s.m.d.s.basic.BasicMessageService [3ac149d1fe5d4f079633c8d718c167c6 | DELETE | /api/messages/356f1c84-ed8c-4055-8869-e8a4b8357595] - Service: 메시지 삭제 요청 - ID: 356f1c84-ed8c-4055-8869-e8a4b8357595
+26-02-15 10:04:38.999 [Test worker] DEBUG org.hibernate.SQL [3ac149d1fe5d4f079633c8d718c167c6 | DELETE | /api/messages/356f1c84-ed8c-4055-8869-e8a4b8357595] - 
+    select
+        m1_0.id,
+        m1_0.author_id,
+        m1_0.channel_id,
+        m1_0.content,
+        m1_0.created_at,
+        m1_0.updated_at 
+    from
+        messages m1_0 
+    where
+        m1_0.id=?
+Hibernate: 
+    select
+        m1_0.id,
+        m1_0.author_id,
+        m1_0.channel_id,
+        m1_0.content,
+        m1_0.created_at,
+        m1_0.updated_at 
+    from
+        messages m1_0 
+    where
+        m1_0.id=?
+26-02-15 10:04:38.999 [Test worker] TRACE org.hibernate.orm.jdbc.bind [3ac149d1fe5d4f079633c8d718c167c6 | DELETE | /api/messages/356f1c84-ed8c-4055-8869-e8a4b8357595] - binding parameter (1:UUID) &lt;- [356f1c84-ed8c-4055-8869-e8a4b8357595]
+26-02-15 10:04:38.999 [Test worker] WARN  c.s.m.d.s.basic.BasicMessageService [3ac149d1fe5d4f079633c8d718c167c6 | DELETE | /api/messages/356f1c84-ed8c-4055-8869-e8a4b8357595] - Service: 메시지 삭제 실패(존재하지 않는 메시지) - ID: 356f1c84-ed8c-4055-8869-e8a4b8357595
+26-02-15 10:04:39.004 [Test worker] WARN  c.s.m.d.e.GlobalExceptionHandler [3ac149d1fe5d4f079633c8d718c167c6 | DELETE | /api/messages/356f1c84-ed8c-4055-8869-e8a4b8357595] - Discode.it Exception: M001 - Message를 찾을 수 없습니다.
+26-02-15 10:04:39.004 [Test worker] WARN  c.s.m.d.e.GlobalExceptionHandler [3ac149d1fe5d4f079633c8d718c167c6 | DELETE | /api/messages/356f1c84-ed8c-4055-8869-e8a4b8357595] - Details: {messageId=356f1c84-ed8c-4055-8869-e8a4b8357595}
+26-02-15 10:04:39.004 [Test worker] DEBUG c.s.m.d.config.MDCLoggingInterceptor [3ac149d1fe5d4f079633c8d718c167c6 | DELETE | /api/messages/356f1c84-ed8c-4055-8869-e8a4b8357595] - 요청 완료
+26-02-15 10:04:39.019 [Test worker] INFO  c.s.m.d.s.basic.BasicUserService [ |  | ] - Service: 유저 생성 로직 시작 - email: test, username: test@codeit.com
+26-02-15 10:04:39.019 [Test worker] DEBUG org.hibernate.SQL [ |  | ] - 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.username=? 
+    fetch
+        first ? rows only
+Hibernate: 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.username=? 
+    fetch
+        first ? rows only
+26-02-15 10:04:39.019 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (1:VARCHAR) &lt;- [test]
+26-02-15 10:04:39.019 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (2:INTEGER) &lt;- [1]
+26-02-15 10:04:39.019 [Test worker] DEBUG org.hibernate.SQL [ |  | ] - 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.email=? 
+    fetch
+        first ? rows only
+Hibernate: 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.email=? 
+    fetch
+        first ? rows only
+26-02-15 10:04:39.019 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (1:VARCHAR) &lt;- [test@codeit.com]
+26-02-15 10:04:39.019 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (2:INTEGER) &lt;- [1]
+26-02-15 10:04:39.138 [Test worker] INFO  c.s.m.d.s.basic.BasicUserService [ |  | ] - Service: 유저 생성 완료 및 DB 저장 완료 - ID: 750447aa-c19d-45d0-aa24-3f5747fbd9f4
+26-02-15 10:04:39.138 [Test worker] INFO  c.s.m.d.s.basic.BasicChannelService [ |  | ] - Service: Public 채널 생성 요청 - name: public channel, description: public channel description
+26-02-15 10:04:39.138 [Test worker] INFO  c.s.m.d.s.basic.BasicChannelService [ |  | ] - Service: Public 채널 생성 완료 - ID: dd3ead37-973b-4463-83c3-5c1b6023b2b5
+26-02-15 10:04:39.142 [Test worker] DEBUG org.hibernate.SQL [ |  | ] - 
+    select
+        m1_0.id,
+        m1_0.author_id,
+        m1_0.channel_id,
+        m1_0.content,
+        m1_0.created_at,
+        m1_0.updated_at 
+    from
+        messages m1_0 
+    where
+        m1_0.channel_id=? 
+    order by
+        m1_0.created_at desc 
+    fetch
+        first ? rows only
+Hibernate: 
+    select
+        m1_0.id,
+        m1_0.author_id,
+        m1_0.channel_id,
+        m1_0.content,
+        m1_0.created_at,
+        m1_0.updated_at 
+    from
+        messages m1_0 
+    where
+        m1_0.channel_id=? 
+    order by
+        m1_0.created_at desc 
+    fetch
+        first ? rows only
+26-02-15 10:04:39.142 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (1:UUID) &lt;- [dd3ead37-973b-4463-83c3-5c1b6023b2b5]
+26-02-15 10:04:39.142 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (2:INTEGER) &lt;- [1]
+26-02-15 10:04:39.149 [Test worker] DEBUG c.s.m.d.config.MDCLoggingInterceptor [dedd04edbee148d189189fa2d53f6418 | POST | /api/messages] - 요청 시작
+26-02-15 10:04:39.149 [Test worker] INFO  c.s.m.d.controller.MessageController [dedd04edbee148d189189fa2d53f6418 | POST | /api/messages] - Controller: 메시지 생성 요청 - channelId: dd3ead37-973b-4463-83c3-5c1b6023b2b5, authorId: 750447aa-c19d-45d0-aa24-3f5747fbd9f4
+26-02-15 10:04:39.149 [Test worker] INFO  c.s.m.d.s.basic.BasicMessageService [dedd04edbee148d189189fa2d53f6418 | POST | /api/messages] - Service: 메시지 생성 요청 - content: test message
+26-02-15 10:04:39.169 [Test worker] INFO  c.s.m.d.s.basic.BasicMessageService [dedd04edbee148d189189fa2d53f6418 | POST | /api/messages] - Service: 메시지 생성 성공 - ID: d902c098-06ab-4551-beeb-1325ec935ccd
+26-02-15 10:04:39.169 [Test worker] INFO  c.s.m.d.controller.MessageController [dedd04edbee148d189189fa2d53f6418 | POST | /api/messages] - Controller: 메시지 생성 완료 - ID: d902c098-06ab-4551-beeb-1325ec935ccd
+26-02-15 10:04:39.195 [Test worker] DEBUG c.s.m.d.config.MDCLoggingInterceptor [dedd04edbee148d189189fa2d53f6418 | POST | /api/messages] - 요청 완료
+26-02-15 10:04:39.211 [Test worker] INFO  c.s.m.d.s.basic.BasicChannelService [ |  | ] - Service: Public 채널 생성 요청 - name: public channel, description: public channel description
+26-02-15 10:04:39.211 [Test worker] INFO  c.s.m.d.s.basic.BasicChannelService [ |  | ] - Service: Public 채널 생성 완료 - ID: 427e165f-82d2-4e0a-abb3-fdc366e568d1
+26-02-15 10:04:39.211 [Test worker] DEBUG org.hibernate.SQL [ |  | ] - 
+    select
+        m1_0.id,
+        m1_0.author_id,
+        m1_0.channel_id,
+        m1_0.content,
+        m1_0.created_at,
+        m1_0.updated_at 
+    from
+        messages m1_0 
+    where
+        m1_0.channel_id=? 
+    order by
+        m1_0.created_at desc 
+    fetch
+        first ? rows only
+Hibernate: 
+    select
+        m1_0.id,
+        m1_0.author_id,
+        m1_0.channel_id,
+        m1_0.content,
+        m1_0.created_at,
+        m1_0.updated_at 
+    from
+        messages m1_0 
+    where
+        m1_0.channel_id=? 
+    order by
+        m1_0.created_at desc 
+    fetch
+        first ? rows only
+26-02-15 10:04:39.215 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (1:UUID) &lt;- [427e165f-82d2-4e0a-abb3-fdc366e568d1]
+26-02-15 10:04:39.215 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (2:INTEGER) &lt;- [1]
+26-02-15 10:04:39.217 [Test worker] INFO  c.s.m.d.s.basic.BasicUserService [ |  | ] - Service: 유저 생성 로직 시작 - email: test, username: test@codeit.com
+26-02-15 10:04:39.217 [Test worker] DEBUG org.hibernate.SQL [ |  | ] - 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.username=? 
+    fetch
+        first ? rows only
+Hibernate: 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.username=? 
+    fetch
+        first ? rows only
+26-02-15 10:04:39.217 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (1:VARCHAR) &lt;- [test]
+26-02-15 10:04:39.217 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (2:INTEGER) &lt;- [1]
+26-02-15 10:04:39.217 [Test worker] DEBUG org.hibernate.SQL [ |  | ] - 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.email=? 
+    fetch
+        first ? rows only
+Hibernate: 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.email=? 
+    fetch
+        first ? rows only
+26-02-15 10:04:39.217 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (1:VARCHAR) &lt;- [test@codeit.com]
+26-02-15 10:04:39.217 [Test worker] TRACE org.hibernate.orm.jdbc.bind [ |  | ] - binding parameter (2:INTEGER) &lt;- [1]
+26-02-15 10:04:39.326 [Test worker] INFO  c.s.m.d.s.basic.BasicUserService [ |  | ] - Service: 유저 생성 완료 및 DB 저장 완료 - ID: de044e4e-2821-482d-956c-17136d201ded
+26-02-15 10:04:39.326 [Test worker] INFO  c.s.m.d.s.basic.BasicMessageService [ |  | ] - Service: 메시지 생성 요청 - content: test message
+26-02-15 10:04:39.335 [Test worker] INFO  c.s.m.d.s.basic.BasicMessageService [ |  | ] - Service: 메시지 생성 성공 - ID: 2e22a568-0f37-48da-a488-9c1f00f29438
+26-02-15 10:04:39.335 [Test worker] DEBUG c.s.m.d.config.MDCLoggingInterceptor [5a946fa85528450a929aa9d5a6ace54b | DELETE | /api/messages/2e22a568-0f37-48da-a488-9c1f00f29438] - 요청 시작
+26-02-15 10:04:39.335 [Test worker] INFO  c.s.m.d.controller.MessageController [5a946fa85528450a929aa9d5a6ace54b | DELETE | /api/messages/2e22a568-0f37-48da-a488-9c1f00f29438] - Controller: 메시지 삭제 요청 - ID: 2e22a568-0f37-48da-a488-9c1f00f29438
+26-02-15 10:04:39.335 [Test worker] INFO  c.s.m.d.s.basic.BasicMessageService [5a946fa85528450a929aa9d5a6ace54b | DELETE | /api/messages/2e22a568-0f37-48da-a488-9c1f00f29438] - Service: 메시지 삭제 요청 - ID: 2e22a568-0f37-48da-a488-9c1f00f29438
+26-02-15 10:04:39.342 [Test worker] INFO  c.s.m.d.s.basic.BasicMessageService [5a946fa85528450a929aa9d5a6ace54b | DELETE | /api/messages/2e22a568-0f37-48da-a488-9c1f00f29438] - Service: 메시지 삭제 완료 - ID: 2e22a568-0f37-48da-a488-9c1f00f29438
+26-02-15 10:04:39.342 [Test worker] INFO  c.s.m.d.controller.MessageController [5a946fa85528450a929aa9d5a6ace54b | DELETE | /api/messages/2e22a568-0f37-48da-a488-9c1f00f29438] - Controller: 메시지 삭제 완료 - ID: 2e22a568-0f37-48da-a488-9c1f00f29438
+26-02-15 10:04:39.342 [Test worker] DEBUG c.s.m.d.config.MDCLoggingInterceptor [5a946fa85528450a929aa9d5a6ace54b | DELETE | /api/messages/2e22a568-0f37-48da-a488-9c1f00f29438] - 요청 완료
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="https://www.gradle.org">Gradle 8.14.3</a> at 2026. 2. 15. 오전 10:04:42</p>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReadStatusMapperImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">discodeit</a> &gt; <a href="index.source.html" class="el_package">com.sprint.mission.discodeit.mapper</a> &gt; <span class="el_source">ReadStatusMapperImpl.java</span></div><h1>ReadStatusMapperImpl.java</h1><pre class="source lang-java linenums">package com.sprint.mission.discodeit.mapper;
+
+import com.sprint.mission.discodeit.DTO.dto.ReadStatusDto;
+import com.sprint.mission.discodeit.entity.Channel;
+import com.sprint.mission.discodeit.entity.ReadStatus;
+import com.sprint.mission.discodeit.entity.User;
+import java.time.Instant;
+import java.util.UUID;
+import javax.annotation.processing.Generated;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = &quot;org.mapstruct.ap.MappingProcessor&quot;,
+    date = &quot;2026-02-15T10:04:13+0900&quot;,
+    comments = &quot;version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.14.3.jar, environment: Java 17.0.16 (Oracle Corporation)&quot;
+)
+@Component
+<span class="fc" id="L18">public class ReadStatusMapperImpl implements ReadStatusMapper {</span>
+
+    @Override
+    public ReadStatusDto toDto(ReadStatus readStatus) {
+<span class="nc bnc" id="L22" title="All 2 branches missed.">        if ( readStatus == null ) {</span>
+<span class="nc" id="L23">            return null;</span>
+        }
+
+<span class="nc" id="L26">        UUID userId = null;</span>
+<span class="nc" id="L27">        UUID channelId = null;</span>
+<span class="nc" id="L28">        UUID id = null;</span>
+<span class="nc" id="L29">        Instant lastReadAt = null;</span>
+
+<span class="nc" id="L31">        userId = readStatusUserId( readStatus );</span>
+<span class="nc" id="L32">        channelId = readStatusChannelId( readStatus );</span>
+<span class="nc" id="L33">        id = readStatus.getId();</span>
+<span class="nc" id="L34">        lastReadAt = readStatus.getLastReadAt();</span>
+
+<span class="nc" id="L36">        ReadStatusDto readStatusDto = new ReadStatusDto( id, userId, channelId, lastReadAt );</span>
+
+<span class="nc" id="L38">        return readStatusDto;</span>
+    }
+
+    private UUID readStatusUserId(ReadStatus readStatus) {
+<span class="nc bnc" id="L42" title="All 2 branches missed.">        if ( readStatus == null ) {</span>
+<span class="nc" id="L43">            return null;</span>
+        }
+<span class="nc" id="L45">        User user = readStatus.getUser();</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">        if ( user == null ) {</span>
+<span class="nc" id="L47">            return null;</span>
+        }
+<span class="nc" id="L49">        UUID id = user.getId();</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">        if ( id == null ) {</span>
+<span class="nc" id="L51">            return null;</span>
+        }
+<span class="nc" id="L53">        return id;</span>
+    }
+
+    private UUID readStatusChannelId(ReadStatus readStatus) {
+<span class="nc bnc" id="L57" title="All 2 branches missed.">        if ( readStatus == null ) {</span>
+<span class="nc" id="L58">            return null;</span>
+        }
+<span class="nc" id="L60">        Channel channel = readStatus.getChannel();</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        if ( channel == null ) {</span>
+<span class="nc" id="L62">            return null;</span>
+        }
+<span class="nc" id="L64">        UUID id = channel.getId();</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        if ( id == null ) {</span>
+<span class="nc" id="L66">            return null;</span>
+        }
+<span class="nc" id="L68">        return id;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
