@@ -7,16 +7,16 @@ import jakarta.validation.constraints.Size;
 
 @Schema(description = "User 생성 정보")
 public record UserCreateRequest(
-    @NotBlank(message = "Username is required")
-    @Size(min = 2, max = 50, message = "Username must be between 2 and 50 characters")
+    @NotBlank(message = "유저 이름은 필수 정보입니다.")
+    @Size(min = 2, max = 50, message = "유저 이름의 길이는 2이상 100이하여야 합니다.")
     String username,
 
-    @NotBlank(message = "Email is required")
-    @Email(message = "Invalid email format")
+    @NotBlank(message = "이메일은 필수 정보입니다.")
+    @Email(message = "유효하지 않는 이메일 형식입니다.")
     String email,
 
-    @NotBlank(message = "Password is required")
-    @Size(min = 8, message = "Password must be at least 8 characters long")
+    @NotBlank(message = "패스워드는 필수 정보입니다.")
+    @Size(min = 8, message = "패스워드는 8자 이상이여야 합니다.")
     String password
 ) {
 
