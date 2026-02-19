@@ -10,8 +10,6 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
@@ -23,21 +21,24 @@ import lombok.NoArgsConstructor;
 @Table(name = "messages")
 public class Message extends BaseUpdatableEntity {
 
-  @NotBlank(message = "메시지 내용은 필수입니다.")
   @Column(
       name = "content",
       nullable = false
   )
   private String content;
 
-  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "channel_id")
+  @JoinColumn(
+      name = "channel_id",
+      nullable = false
+  )
   private Channel channel;
 
-  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "author_id")
+  @JoinColumn(
+      name = "author_id",
+      nullable = false
+  )
   private User author;
 
   @OneToMany(

@@ -7,7 +7,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 import java.time.Duration;
 import java.time.Instant;
 import lombok.Getter;
@@ -21,13 +20,18 @@ public class UserStatus extends BaseUpdatableEntity {
 
   private static final int SESSION_TIMEOUT_MINUTES = 5;
 
-  @NotNull
   @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id", unique = true, nullable = false)
+  @JoinColumn(
+      name = "user_id",
+      unique = true,
+      nullable = false
+  )
   private User user;
 
-  @NotNull
-  @Column(name = "last_active_at", nullable = false)
+  @Column(
+      name = "last_active_at",
+      nullable = false
+  )
   private Instant lastActiveAt;
 
   public UserStatus(User user, Instant lastActiveAt) {

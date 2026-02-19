@@ -10,7 +10,6 @@ import com.sprint.mission.discodeit.entity.Message;
 import com.sprint.mission.discodeit.entity.User;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -121,10 +120,6 @@ class MessageRepositoryTest {
   @Test
   @DisplayName("가장 최근 메시지 1건 조회 테스트")
   void findTopByChannelIdOrderByCreatedAtDesc_success() {
-    // given
-//    User user = new User("testUser", "test@discodeit.com", "password123", null);
-//    Channel channel = new Channel("test channel", "test channel description", ChannelType.PUBLIC);
-
     Instant now = Instant.now();
     Instant fiveMinutesAgo = now.minus(5, ChronoUnit.MINUTES);
     Instant tenMinutesAgo = now.minus(10, ChronoUnit.MINUTES);

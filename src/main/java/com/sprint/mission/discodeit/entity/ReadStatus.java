@@ -8,14 +8,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import jakarta.validation.constraints.NotNull;
 import java.time.Instant;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @Entity
 @Table(
@@ -29,7 +26,6 @@ import lombok.Setter;
 )
 public class ReadStatus extends BaseUpdatableEntity {
 
-  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(
       name = "user_id",
@@ -37,7 +33,6 @@ public class ReadStatus extends BaseUpdatableEntity {
   )
   private User user;
 
-  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(
       name = "channel_id",
