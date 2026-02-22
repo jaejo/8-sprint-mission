@@ -1,4 +1,4 @@
-package com.sprint.mission.discodeit.stoarge.s3;
+package com.sprint.mission.discodeit.storage.s3;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 

@@ -29,6 +29,8 @@ services:
       DISCODEIT_STORAGE_LOCAL_ROOT_PATH: /app/data/uploadfiles
     ports:
       - "${APP_PORT:-8888}:${SERVER_PORT:-8080}"
+    env_file:
+      - .env
     volumes:
       - app_logs:/app/logs
       - app_data:/app/data/uploadfiles
