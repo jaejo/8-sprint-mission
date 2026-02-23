@@ -1,12 +1,19 @@
 FROM amazoncorretto:17 AS builder
 
 WORKDIR /app
-COPY . .
+
+COPY gradlew .
+COPY gradle gradle
+COPY build.gradle settings.gradle ./
 RUN chmod +x ./gradlew
-RUN ./gradlew build --no-daemon
+# 의존성 패키지만 미리 다운로드
+RUN ./gradlew dependencies --no-daemon || true
 
-FROM amazoncorretto:17
+# 소스 코드 복사 및 실제 빌드
+COPY . .
+RUN ./gradlew build -x test --no-daemon
 
+FROM amazoncorretto:17-alpine
 WORKDIR /app
 
 ENV PROJECT_NAME=discodeit
