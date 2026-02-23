@@ -38,6 +38,7 @@ target/
 ### Security ###
 .env
 .env.*
+*.env
 application-dev.yaml
 
 
