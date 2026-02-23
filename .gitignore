@@ -38,10 +38,12 @@ target/
 .env
 .env.*
 *.env
+**/.env
 !.env.example
-application-*.yml
-!application-local.yml
-!application-aws.yml
+**/application-*.yml
+**/application-*.yaml
+!**/application-local.yml
+!**/application-aws.yml
 
 ### AWS 관련 민감 파일들 ###
 *.pem
