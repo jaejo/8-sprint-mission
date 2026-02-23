@@ -41,7 +41,7 @@ jobs:
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
         env:
-          ECR_REGISTRY: public.ecr.aws/o2t0o1h5/discodeit
+          ECR_REGISTRY: public.ecr.aws/o2t0o1h5
           ECR_REPOSITORY: discodeit
           IMAGE_TAG: ${{ github.sha }}
         run: |
