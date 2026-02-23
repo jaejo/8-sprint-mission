@@ -1,0 +1,12 @@
+name: Deploy to AWS ECS Discodeit
+
+on:
+  push:
+    branches: [ release ]
+
+env:
+  AWS_REGION: ap-northeast-2
+  ECR_REPOSITORY_URI: public.ecr.aws/o2t0o1h5/discodeit
+  ECS_CLUSTER: discodeit-cluster
+  ECS_SERVICE: discodeit-service
+  ECS_TASK_DEFINITION: discodeit-task
