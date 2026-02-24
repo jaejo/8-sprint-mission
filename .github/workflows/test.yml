@@ -2,7 +2,7 @@ name: CI WorkFlow
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [ 이재준-sprint8 ]
 
 jobs:
   test:
