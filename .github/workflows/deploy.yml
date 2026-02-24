@@ -88,9 +88,7 @@ jobs:
             --cluster ${{ env.ECS_CLUSTER }} \
             --service ${{ env.ECS_SERVICE }} \
             --desired-count 0
-          aws ecs wait services-stable \
-            --cluster ${{ env.ECS_CLUSTER }} \
-            --service ${{ env.ECS_SERVICE }}
+          sleep 30
 
       - name: Deploy new task definition to Amazon ECS
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
