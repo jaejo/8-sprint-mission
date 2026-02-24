@@ -87,7 +87,7 @@ jobs:
         run: |
           aws ecs update-service \
             --cluster ${{ env.ECS_CLUSTER }} \
-            --service ${{ env.ECS.SERVICE }} \
+            --service ${{ env.ECS_SERVICE }} \
             --desired-count 0
           
           # 이전 컨테이너가 완전히 종료되어 메모리와 포트를 반환할 때 까지 대기
