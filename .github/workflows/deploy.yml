@@ -2,7 +2,7 @@ name: Deploy to AWS ECS Discodeit
 
 on:
   push:
-    branches: [ 이재준-sprint8 ]
+    branches: [ release ]
 
 env:
   AWS_REGION: ${{ vars.AWS_REGION }}
