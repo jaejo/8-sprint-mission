@@ -72,42 +72,42 @@ jobs:
             AWS_SECRET_ACCESS_KEY=${{ secrets.APP_AWS_SECRET_ACCESS_KEY }}
             RDS_PASSWORD=${{ secrets.RDS_PASSWORD }}
 
-          #      # 테스트 정의를 업데이트하는 Step (새로 렌더링된 JSON을 AWS에 등록)
-          #      - name: Register new ECS task definition
-          #        id: register-task
-          #        run: |
-          #          TASK_DEF_ARN=$(aws ecs register-task-definition \
-          #          --cli-input-json file://${{ steps.task-def.outputs.task-definition }} \
-          #          --query 'taskDefinition.taskDefinitionArn' \
-          #          --output text)
-          #          echo "TASK_DEF_ARN=$TASK_DEF_ARN" >> $GITHUB_ENV
-          #
-          #      # 프리티어 리소스를 고려해 기존 서비스 중단
-          #      - name: Stop existing sevice
-          #        run: |
-          #          aws ecs update-service \
-          #            --cluster ${{ env.ECS_CLUSTER }} \
-          #            --service ${{ env.ECS_SERVICE }} \
-          #            --desired-count 0
-          #
-          #          # 이전 컨테이너가 완전히 종료되어 메모리와 포트를 반환할 때 까지 대기
-          #          aws ecs wait services-stable \
-          #            --cluster ${{ env.ECS_CLUSTER }} \
-          #            --services ${{ env.ECS_SERVICE }}
-          #
-          #      # 새로 등록한 테스크 정의를 사용하도록 ECS 서비스 업데이트
-          #      - name: Update and start ECS service
-          #        run: |
-          #          aws ecs update-service \
-          #            --cluster ${{ env.ECS_CLUSTER }} \
-          #            --service ${{ env.ECS_SERVICE }} \
-          #            --task-definition ${{ env.TASK_DEF_ARN }} \
-          #            --desired-count 1
-          #
-          #          # 새 컨테이너가 정상적으로 RUNNING 상태가 될 때까지 대기함
-          #          aws ecs wait services-stable \
-          #            --cluster ${{ env.ECS_CLUSTER }} \
-          #            --services ${{ env.ECS_SERVICE }}
+      # 테스트 정의를 업데이트하는 Step (새로 렌더링된 JSON을 AWS에 등록)
+      - name: Register new ECS task definition
+        id: register-task
+        run: |
+          TASK_DEF_ARN=$(aws ecs register-task-definition \
+          --cli-input-json file://${{ steps.task-def.outputs.task-definition }} \
+          --query 'taskDefinition.taskDefinitionArn' \
+          --output text)
+          echo "TASK_DEF_ARN=$TASK_DEF_ARN" >> $GITHUB_ENV
+
+      # 프리티어 리소스를 고려해 기존 서비스 중단
+      - name: Stop existing sevice
+        run: |
+          aws ecs update-service \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --service ${{ env.ECS_SERVICE }} \
+            --desired-count 0
+
+          # 이전 컨테이너가 완전히 종료되어 메모리와 포트를 반환할 때 까지 대기
+          aws ecs wait services-stable \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --services ${{ env.ECS_SERVICE }}
+
+      # 새로 등록한 테스크 정의를 사용하도록 ECS 서비스 업데이트
+      - name: Update and start ECS service
+        run: |
+          aws ecs update-service \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --service ${{ env.ECS_SERVICE }} \
+            --task-definition ${{ env.TASK_DEF_ARN }} \
+            --desired-count 1
+
+          # 새 컨테이너가 정상적으로 RUNNING 상태가 될 때까지 대기함
+          aws ecs wait services-stable \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --services ${{ env.ECS_SERVICE }}
           
           
           # 렌더링된 task-definition.json을 기반으로 공식 액션을 사용해 배포
