@@ -1,6 +1,8 @@
 name: CI WorkFlow
 
 on:
+  push:
+    branches: [ "이재준-sprint8" ]
   pull_request:
     branches: [ main ]
 
