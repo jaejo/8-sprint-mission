@@ -13,11 +13,14 @@ env:
   ECS_TASK_DEFINITION: ${{ vars.ECS_TASK_DEFINITION }}
 
 jobs:
-  deploy:
-    name: Deploy
+  build-and-push:
+    name: Build and Push Docker Image to ECR
     runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.build-image.outputs.image }}
+
     steps:
-      - name: Checkout
+      - name: Chceckout
         uses: actions/checkout@v4
 
       - name: Set up JDK 17
@@ -26,14 +29,14 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Configuration AWS credentials for ECR Public
+      - name: Configure AWS credentials for ECR
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: ${{ env.AWS_REGION_ECR }}
 
-      - name: Login to Amazon ECR
+      - name: Login to Amazon ECR Public
         id: login-ecr-public
         uses: aws-actions/amazon-ecr-login@v2
         with:
@@ -53,12 +56,24 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
-      - name: Configuration AWS credentials for ECS
+  deploy:
+    name: Deploy to ECS
+    needs: build-and-push
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure AWS credentials for ECS
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-northeast-2
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Download task definition
+        run: |
+          aws ecs describe-task-definition \
+          --task-definition $ECS_TASK_DEFINITION \
+          --query taskDefinition > task-definition.json
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
@@ -66,55 +81,29 @@ jobs:
         with:
           task-definition: task-definition.json
           container-name: discodeit-app
-          image: ${{ steps.build-image.outputs.image }}
-          environment-variables: |
-            AWS_ACCESS_KEY_ID=${{ secrets.APP_AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY=${{ secrets.APP_AWS_SECRET_ACCESS_KEY }}
-            RDS_PASSWORD=${{ secrets.RDS_PASSWORD }}
+          image: ${{ needs.build-and-push.outputs.image }}
 
-      # 테스트 정의를 업데이트하는 Step (새로 렌더링된 JSON을 AWS에 등록)
-      - name: Register new ECS task definition
-        id: register-task
-        run: |
-          TASK_DEF_ARN=$(aws ecs register-task-definition \
-          --cli-input-json file://${{ steps.task-def.outputs.task-definition }} \
-          --query 'taskDefinition.taskDefinitionArn' \
-          --output text)
-          echo "TASK_DEF_ARN=$TASK_DEF_ARN" >> $GITHUB_ENV
-
-      # 프리티어 리소스를 고려해 기존 서비스 중단
-      - name: Stop existing sevice
+      - name: Stop existing ECS service
         run: |
           aws ecs update-service \
             --cluster ${{ env.ECS_CLUSTER }} \
             --service ${{ env.ECS_SERVICE }} \
             --desired-count 0
-
-          # 이전 컨테이너가 완전히 종료되어 메모리와 포트를 반환할 때 까지 대기
           aws ecs wait services-stable \
             --cluster ${{ env.ECS_CLUSTER }} \
-            --services ${{ env.ECS_SERVICE }}
+            --service ${{ env.ECS_SERVICE }}
 
-      # 새로 등록한 테스크 정의를 사용하도록 ECS 서비스 업데이트
-      - name: Update and start ECS service
+      - name: Deploy new task definition to Amazon ECS
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICES }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
+
+      - name: Start ECS service
         run: |
           aws ecs update-service \
             --cluster ${{ env.ECS_CLUSTER }} \
             --service ${{ env.ECS_SERVICE }} \
-            --task-definition ${{ env.TASK_DEF_ARN }} \
             --desired-count 1
-
-          # 새 컨테이너가 정상적으로 RUNNING 상태가 될 때까지 대기함
-          aws ecs wait services-stable \
-            --cluster ${{ env.ECS_CLUSTER }} \
-            --services ${{ env.ECS_SERVICE }}
-
-
-#          # 렌더링된 task-definition.json을 기반으로 공식 액션을 사용해 배포
-#      - name: Deploy Amazon ECS task definition
-#        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-#        with:
-#          task-definition: ${{ steps.task-def.outputs.task-definition }}
-#          service: ${{ env.ECS_SERVICE }}
-#          cluster: ${{ env.ECS_CLUSTER }}
-#          wait-for-service-stability: true
