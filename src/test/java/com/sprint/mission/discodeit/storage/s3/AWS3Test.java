@@ -29,15 +29,22 @@ public class AWS3Test {
 
   @BeforeEach
   void setUp() throws IOException {
-    Properties properties = new Properties();
-    try (FileInputStream fis = new FileInputStream(".env")) {
-      properties.load(fis);
-    }
+    String accessKey = System.getenv("AWS_S3_ACCESS_KEY");
+    String secretKey = System.getenv("AWS_S3_SECRET_KEY");
+    String regionStr = System.getenv("AWS_S3_REGION");
+    String bucketName = System.getenv("AWS_S3_BUCKET");
 
-    String accessKey = properties.getProperty("AWS_S3_ACCESS_KEY");
-    String secretKey = properties.getProperty("AWS_S3_SECRET_KEY");
-    String regionStr = properties.getProperty("AWS_S3_REGION");
-    this.bucketName = properties.getProperty("AWS_S3_BUCKET");
+    if (accessKey == null || secretKey == null) {
+      Properties properties = new Properties();
+      try (FileInputStream fis = new FileInputStream(".env")) {
+        properties.load(fis);
+      }
+
+      accessKey = properties.getProperty("AWS_S3_ACCESS_KEY");
+      secretKey = properties.getProperty("AWS_S3_SECRET_KEY");
+      regionStr = properties.getProperty("AWS_S3_REGION");
+      bucketName = properties.getProperty("AWS_S3_BUCKET");
+    }
 
     AwsBasicCredentials credentials = AwsBasicCredentials.create(accessKey, secretKey);
     Region region = Region.of(regionStr);
@@ -51,6 +58,8 @@ public class AWS3Test {
         .region(region)
         .credentialsProvider(StaticCredentialsProvider.create(credentials))
         .build();
+
+    this.bucketName = bucketName;
   }
 
   @Test
