@@ -24,7 +24,7 @@ COPY --from=builder /app/build/libs/*.jar $PROJECT_NAME-$PROJECT_VERSION.jar
 
 EXPOSE 80
 
-CMD ["sh", "-c", "java $JVM_OPTS -jar $PROJECT_NAME-$PROJECT_VERSION.jar"]
+ENTRYPOINT ["sh", "-c", "java $JVM_OPTS -jar $PROJECT_NAME-$PROJECT_VERSION.jar"]
 
 # ===================================================================
 # 빌드 및 실행 예시:
