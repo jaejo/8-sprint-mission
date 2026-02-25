@@ -10,7 +10,7 @@ spring:
       # 임시 파일 저장 경로
   config:
     import: optional:file.env[.properties]
-  
+
   jpa:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
