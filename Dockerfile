@@ -19,12 +19,13 @@ WORKDIR /app
 ENV PROJECT_NAME=discodeit
 ENV PROJECT_VERSION=1.2-M8
 ENV JVM_OPTS=""
+ENV SERVER_PORT=80
 
 COPY --from=builder /app/build/libs/*.jar $PROJECT_NAME-$PROJECT_VERSION.jar
 
 EXPOSE 80
 
-CMD ["sh", "-c", "java $JVM_OPTS -jar $PROJECT_NAME-$PROJECT_VERSION.jar"]
+CMD ["sh", "-c", "java $JVM_OPTS -jar $PROJECT_NAME-$PROJECT_VERSION.jar --server.port=80"]
 
 # ===================================================================
 # 빌드 및 실행 예시:
