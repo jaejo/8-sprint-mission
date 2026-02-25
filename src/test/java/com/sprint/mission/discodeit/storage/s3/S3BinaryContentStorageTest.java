@@ -30,15 +30,22 @@ public class S3BinaryContentStorageTest {
 
   @BeforeEach
   void setUp() throws IOException {
-    Properties properties = new Properties();
-    try (FileInputStream fis = new FileInputStream(".env")) {
-      properties.load(fis);
-    }
+    String accessKey = System.getenv("AWS_S3_ACCESS_KEY");
+    String secretKey = System.getenv("AWS_S3_SECRET_KEY");
+    String regionStr = System.getenv("AWS_S3_REGION");
+    String bucketName = System.getenv("AWS_S3_BUCKET");
 
-    String accessKey = properties.getProperty("AWS_S3_ACCESS_KEY");
-    String secretKey = properties.getProperty("AWS_S3_SECRET_KEY");
-    String regionStr = properties.getProperty("AWS_S3_REGION");
-    String bucketName = properties.getProperty("AWS_S3_BUCKET");
+    if (accessKey == null || secretKey == null) {
+      Properties properties = new Properties();
+      try (FileInputStream fis = new FileInputStream(".env")) {
+        properties.load(fis);
+      }
+
+      accessKey = properties.getProperty("AWS_S3_ACCESS_KEY");
+      secretKey = properties.getProperty("AWS_S3_SECRET_KEY");
+      regionStr = properties.getProperty("AWS_S3_REGION");
+      bucketName = properties.getProperty("AWS_S3_BUCKET");
+    }
 
     this.storage = new S3BinaryContentStorage(accessKey, secretKey, regionStr, bucketName);
   }
